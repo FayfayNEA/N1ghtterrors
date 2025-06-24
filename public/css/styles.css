@@ -1,0 +1,664 @@
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    background-color: black;
+    cursor: no-drop;
+    font-size: 10px;
+
+}
+
+.container video {
+
+    opacity: 100%;
+    padding: 2%; /* Optional: Add padding around the video */
+    transition: all 1s;
+    width: 100%;
+    height: 40%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.screaming:hover video {
+    opacity: 0%;
+}
+
+.screaming {
+    position: relative;
+    text-align: center;
+    font-weight: 700;
+    font-family: "chandler-42-regular", sans-serif;
+    
+}
+
+.screaming:hover .intro {
+    opacity: 100%;
+}
+
+
+a.button {
+    color: rgba(255, 255, 255, 0.7);  /* Background color of the box */
+    text-decoration: none;
+    font-family: "chandler-42-regular", sans-serif;
+    cursor: pointer;
+    font-size: 1.6em;
+    font-weight: 100;
+    font-style: normal;
+}
+
+
+.intro {
+    list-style-type:none;
+    width: 100%;           /* Set the width of the box */
+    height: 50%;          /* Set the height of the box */
+    padding: 20%;          /* Add padding inside the box */
+    overflow: auto;   
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    transition: .6s ease;
+    opacity: 0%;
+
+}
+
+.WIP {
+    list-style-type:none;
+    width: 100%;           /* Set the width of the box */
+    height: 50%;          /* Set the height of the box */
+    padding: 20%;          /* Add padding inside the box */
+    overflow: auto;   
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    transition: .6s ease;
+    opacity: 0%;
+
+}
+
+a.button:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.video-container {
+    position: relative; /* Allows centering of child elements */
+    width: 80%; /* Set the desired width of the video */
+    height: auto; /* Adjust height based on video aspect ratio */
+    background: black; /* Optional: background color */
+    margin: 0 auto; /* Center the container horizontally */
+    display: flex; /* Enables Flexbox for centering */
+    justify-content: center; /* Centers the video horizontally */
+    align-items: center; /* Centers the video vertically */
+    padding: 20px; /* Optional: Add padding around the video */
+}
+
+
+#myVideo {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+  }
+
+
+
+
+
+.content
+{
+    padding: 0 40px;
+    border: .5px solid;
+    color: white;
+    background-color: black;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/*.content img {
+    padding: 20px;
+    bottom: 50%;
+    margin: 20px;
+    left: 15%;
+    position: relative;
+    margin-bottom: 20px;
+    float: left;
+
+} */
+
+.shirt img {
+    float: left;
+    padding: 10px;
+    max-width: 100%;
+    vertical-align: top;
+}
+
+.lyrics
+{
+    top: 0px;
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+}
+
+.sizebutton{
+    color: white;
+    padding-top: 20px;
+    padding-left: 20px;
+    border: none;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: left;
+    background-color: black;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+
+}
+
+
+button.shirt
+{
+    background-color: black;
+    cursor: pointer;
+    border: .5px solid #fff;
+    width: 100%;
+    text-align: left;
+    font-family: 'Fragment Mono',sans-serif;
+}
+
+button.closingX
+{
+    color: white;
+    padding-top: 20px;
+    padding-left: 20px;
+    border: none;
+    text-decoration: none;
+    text-align: left;
+    background-color: black;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+
+button.closingX:hover  {
+    opacity: 0%;
+}
+
+ 
+.texts h1 {
+    color: white;
+    left: 100%;
+    font-size: 30px;
+    padding-left: 30px;
+    inline-size: 550px;
+    padding-top: 5px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+
+
+span.shop-title {
+    color: white;
+    padding-left: 50px;
+    padding-top: 20px;
+    display: block;
+    inline-size: 150px;
+    font-size: 10px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+span.title {
+    color: white;
+    display: inline-block;
+    left: 100%;
+    font-size: 30px;
+    padding-left: 30px;
+    inline-size: 550px;
+    padding-top: 30px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.texts p {
+    color: white;
+    inline-size: 500px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+
+}
+
+.thingPrice {
+    color: white;
+    display: block;
+    padding-left: 30px;
+    padding-top: 10px;
+    font-size: 12px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+
+.checkout{ 
+
+
+    background-color: black;
+    display: block;
+    margin-left: 22px;
+    margin-top: 10px;
+    border: none;
+    color: white;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    
+}
+
+button.checkout:hover{
+    opacity: 10%;
+    cursor:pointer; 
+}
+
+.menu-container { 
+    position: absolute;
+    margin: 20px;
+    width: auto;
+
+}
+
+.menu-bar {
+    overflow: hidden;
+    background-color: black;
+  }
+
+  
+.bar {
+    list-style-type: none; /* Removes bullet points from the list items */
+    background-color: none; /* Sets the background color to black */
+    position: fixed; /* Fixes the bar in place */
+    left: 95%;
+    z-index: 10;
+    top: 2%;
+    height: 50%; /* Optional: Sets the height of the bar to the full height of the viewport */
+    overflow: auto; /* Ensures content doesn't overflow */
+    
+}
+
+.bar:hover {
+    opacity: 000001%;
+    cursor:pointer; 
+    background-color: black;
+}
+
+p.headtitle  {
+    color: #fff;
+    font-size: 30px;
+    padding-right: 0px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: white black;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: black;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 20px;
+    border: 3px solid white;
+  }
+
+
+.gallery {
+    padding-bottom: 20px;
+    padding-top: 20px;
+
+}
+
+.gallery img {
+    display: block;
+    padding-top: 40px;
+    height: 92px;
+    padding-left: 300px;
+    cursor: pointer;
+    opacity: .6;
+}
+
+.gallery img:hover{
+    opacity: 1;
+}
+
+.holder {
+
+    left: 10%;
+
+}
+
+.bigimage img{
+
+    height: 500px;
+    padding: 40px;
+    
+
+}
+
+span.flex {
+    display: flex;
+    margin-bottom: 20px;
+
+}
+
+.cartrow {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+}
+
+
+
+button.cart {
+    width: 50px;
+    background-color: white; 
+    color: black;
+    text-align: center;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+button.cart:hover {
+    opacity: 80%;
+    cursor:pointer; 
+}
+
+
+.list .item button{
+    background-color: #1C1F25;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+}
+
+
+
+.card{
+    position: fixed;
+    top:0;
+    left: 100%;
+    width: 500px;
+    background-color: black;
+    height: 100vh;
+    transition: 0.5s;
+    overflow: auto;
+    z-index: 12;
+}
+.active .card{
+    left: calc(100% - 500px);
+}
+.active .container{
+   transform: translateX(-200px);
+}
+
+.card .checkOut{
+    position: absolute;
+    background-color: black;
+    border: none;
+    bottom: 1;
+    font-size: 20px;
+    width: 50%;
+    padding-left: 220px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card .checkOut div{
+    background-color: black;
+    color: white;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+#checkout-form {
+    background-color: black;
+    margin: 0; 
+    padding: 0; 
+    font-size: 20px;
+    border: none;
+    height: 100%;
+    width: 100%;
+    
+
+
+}
+
+.checkOut input[type="submit"] {
+    color: white;
+    padding: 0; /* Ensure no padding */
+    margin: 0; /* Ensure no margin */
+    border: none;
+    text-decoration: none;
+    text-align: center; /* Center text */
+    background-color: black;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    font-style: normal;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    cursor: pointer; /* Pointer cursor */
+    display: flex; /* Flex display */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.checkOut input[type="submit"]:hover {
+    opacity: 10%;
+    cursor:pointer; 
+}
+
+button.remove {
+    color: white;
+    padding-top: 60px;
+    padding-left: 50px;
+    border: none;
+    text-decoration: none;
+    text-align: right;
+    background-color: black;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+button.remove:hover{
+    opacity: 10%;
+    cursor:pointer; 
+}
+
+.totalTitle {
+    color: white;
+    position: static;
+    padding-left: 80px;
+    padding-top: 60px;
+    font-size: 14px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.totalCART {
+    display: flex;
+
+}
+
+.totalPrice {
+    color: white;
+    position: static;
+    padding-top: 60px;
+    padding-left: 150px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.total p {
+    color:white;
+    padding-left: 250px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+.card .checkOut div:nth-child(2){
+    background-color: black;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+    
+}
+
+.closeShopping p{
+    margin-bottom: 1550px;
+    margin-left: 150px;
+}
+
+
+
+.cart-item
+{
+    padding-left: 50px;
+    padding-top: 100px;
+    display: flex;
+}
+
+
+.priceboi { 
+    color: white;
+    padding-top: 120px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #fff;
+
+}
+
+.itemsInCart {
+    display: block;
+
+}
+
+
+.cartInput {
+    margin-top: 120px;
+    margin-left: 50px;
+    height: 20px;
+    width: 30px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #eee;
+    color: #333;
+    text-align: center;
+    font-size: 10px;
+}
+
+.contact {
+    color: white;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    text-align: center;
+    
+}
+
+.contacttitle{
+    color: white;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    font-style: normal;
+    text-align: center;
+
+}
+
+.video-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 50px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.video-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 5px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: "chandler-42-regular", sans-serif;
+    font-weight: 300;
+}
+
+.video-menu a:hover {
+    background-color: black;
+}
+
+.video-container:hover .video-menu {
+    opacity: 1;
+}
+
+.serect
+{
+
+    font-size: 10px;
+
+}

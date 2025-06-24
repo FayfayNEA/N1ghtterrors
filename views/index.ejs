@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>front Page</title>
+        <link href="/css/styles.css" rel="stylesheet" type="text/css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Kumbh+Sans:wght@300&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
+    </head>
+    <body>
+        <div class="top">
+            <div class="bar">
+                <div class="shopping">
+                    <button class="cart"> 
+                        <img src="/images/basket-cart-icon-27.png" alt="cart" width="20" height="20"/>
+                    </button>
+                </div>
+            </div>
+            <div class="card"> 
+                <div class="closeShopping">
+                    <button class="closingX"> back to clothes. </button>
+                </div>
+                <div class="cartItems">
+                </div>
+                <div class="totalCART">
+                    <p class="totalTitle"> total price: </p>
+                    <span class="totalPrice"> $0 </span>
+                </div>
+                <button class="checkOut" type="button">
+                    checkout
+                </button>
+            </div>
+
+            <div class="video-container">
+                <video autoplay muted loop id="myVideo">
+                    <div class="menu-container">
+                        <div class="menu-bar">
+                        </div>
+                    </div>
+                    <source src="/images/shirts.mp4" type="video/mp4">
+                </video>
+                <div class="video-menu">
+                    <a href="contactMe.html">contact ME</a>
+                    <a href="whosthisfreak.html">Who am I?</a>
+                    <a href="portfolio.html">Portfolio</a>
+                </div>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/buckingbronc.png" alt="shirt" width="30" height="30"/>
+                <p class="lyrics"> STARE INTO THE VOID UNTIL THE VOID STARES BACK. </p>
+            </button>
+            <div class="content">  
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/buckingbronc.png" onclick="myFunction(this)"/>
+                            <img src="/images/shirt1.png" onclick="myFunction(this)"/>
+                            <img src="/images/post.jpg" onclick="myFunction(this)"/>
+                            <img src="/images/shirt4.w.jpg" onclick="myFunction(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox" src="/images/shirt1.png" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/douvlepeople.png" hidden/>
+                        <span class="title">White collared baby. *wah wah* I know your daddy is in jail.</span>
+                        <p> this shirt will make you cry. die. all the amazing feelings YOU need. Why??? cause its cute and goes with everything. Duah. style it with a skirt, jeans, maybe a tankie? you'll thank me later.</p>
+                        <p class="size"> made for XL MEN. but gender isn't real so do with that as you will.</p>
+                        <span class="thingPrice"> 35 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/sumbmial man.png" alt="shirt" width="30" height="40"/>
+                <p class="lyrics"> I'M SACRED OF WHAT HAPPENS WHEN IDEAS CONSUME YOU.</p>
+            </button>
+            <div class="content">  
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/sumbmial man.png" onclick="myFunction1(this)"/>
+                            <img src="/images/Black3.jpg" onclick="myFunction1(this)"/>
+                            <img src="/images/black2.jpg" onclick="myFunction1(this)"/>
+                            <img src="/images/black4.jpg" onclick="myFunction1(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox1" src="/images/Black3.jpg" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/fatcat.png" hidden/>
+                        <span class="title">omg Mr.Rorschach please, PLEASE psychoanalyze me.</span>
+                        <p> now UK u want a shirt with mustache legend Mr.Rorschach on the front. Now on the back? Well you tell me what YOU see, maybe you're insane, crazy or just like sooo quirky...</p>
+                        <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
+                        <span class="thingPrice"> 25 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/virginmary.png" alt="shirt" width="30" height="40"/>
+                <p class="lyrics">  WHEN I'M AFRAID I LOOSE MY MIND.</p>
+            </button>
+            <div class="content">  
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/virginmary.png" onclick="myFunction2(this)"/>
+                            <img src="/images/nary1.jpg" onclick="myFunction2(this)"/>
+                            <img src="/images/mary2.jpg" onclick="myFunction2(this)"/>
+                            <img src="/images/mary11.jpg" onclick="myFunction2(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox2" src="/images/nary1.jpg" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/fatcat.png" hidden/>
+                        <span class="title">Classical art? Classical Architecure? the VIRGIN MARY WITH JESUS!?!?!?</span>
+                        <p> don't sit here and pretend classical art wasn't steamy and SOOOO sexi. This shirt will make you as hot and bothers are St. Teresa sculpture. <br>
+                            [bonus peom on back, a kissy from God if you can read it. DM and ill tell them of ur virtuous deed...]
+                        </p>
+                        <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
+                        <span class="thingPrice"> 25 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/fatcat.png" alt="shirt" width="40" height="40"/>
+                <p class="lyrics"> ITS FINE IT HAPPENS ALL THE TIME. </p>
+            </button>
+            <div class="content">
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/fatcat.png" onclick="myFunction3(this)"/>
+                            <img src="/images/inside3.jpg" onclick="myFunction3(this)"/>
+                            <img src="/images/inside2.jpg" onclick="myFunction3(this)"/>
+                            <img src="/images/inside4.jpg" onclick="myFunction3(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox3" src="/images/inside4.jpg" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/douvlepeople.png" hidden/>
+                        <span class="title">now, tell me you DON'T want to have a capitalistic pig on ur back. omg jk! hes already there.</span>
+                        <p> the front of this shirt is where the sublimal messages TRULY started. Somewhere on it, is trump, biden, the devil, angels and etc. 
+                            <br> well maybe none of them are there and ur just crazy!!!!! [the back is those big piggy capitalistics...]
+                        </p>
+                        <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
+                        <span class="thingPrice"> 25 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/douvlepeople.png" alt="shirt" width="30" height="30"/>
+                <p class="lyrics"> YOU MAKE COMES CRAWLING BACK TO YOU. </p> 
+            </button>
+            <div class="content">  
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/douvlepeople.png" onclick="myFunction4(this)"/>
+                            <img src="/images/bbyt1.jpg" onclick="myFunction4(this)"/>
+                            <img src="/images/bbytee3.jpg" onclick="myFunction4(this)"/>
+                            <img src="/images/bbyt2.jpg" onclick="myFunction4(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox4" src="/images/bbyt1.jpg" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/douvlepeople.png" hidden/>
+                        <span class="title">the nightterrors logo showing off ur SEXI bod. jk only with it on are u sexi.</span>
+                        <p> now this ribbed t is ur Y2K, brat summer, kamla harris kissing trump day DREAM. it comes in two sizes cause im not better then brandy mellvive. <br>
+                            [jk im just broke and cant be out here printing up an army without committment!]
+                        <br> the youth large, i'm 5'3, 130. the large should fit up to 6'2, 190 <br> if you need another size email me. im not trying to exclude.</p>
+                        <select id="sizes" name="sizes" class="sizebutton">
+                            <option value="small">YOUTH LARGE</option>
+                            <option value="medium">ADULT LARGE</option>
+                        </select>
+                        <span class="thingPrice"> 15 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <button class="shirt"> 
+                <img src="/images/buckingbronc.png" alt="shirt" width="30" height="30"/>
+                <p class="lyrics"> AND I HOPE THAT IT ALL SWALLOWS YOU. </p>
+            </button>
+            <div class="content">  
+                <span class="flex">
+                    <div class="holder">  
+                        <div class="gallery">
+                            <img src="/images/buckingbronc.png" onclick="myFunction5(this)"/>
+                            <img src="/images/graycolared1.jpg" onclick="myFunction5(this)"/>
+                            <img src="/images/graycollar3.jpg" onclick="myFunction5(this)"/>
+                            <img src="/images/graycollared2.jpg" onclick="myFunction5(this)"/>
+                        </div>
+                    </div>
+                    <div class="bigimage">
+                        <img id="imageBox5" src="/images/graycolared1.jpg" />
+                    </div>
+                    <div class="texts">
+                        <img class="random" src="/images/douvlepeople.png" hidden/>
+                        <span class="title">this one is open, white space, lets the images BREATHE</span>
+                        <p> are you a minimalist babe? you are!?!??!?! well this shirt is for YOU. it is minimal grpahics, left open to BREATHEEEEEEEEE. you will stun all the swed and danish humans with this SHIRT.</p>
+                        <p class="size"> made for XL MEN. but gender isn't real so do with that as you will.</p>
+                        <span class="thingPrice"> 30 </span>
+                        <button class="checkout"> ADD TO BAG </button>
+                    </div>
+                </span>
+            </div>
+
+            <div class="contact">
+                <p class="contacttitle"> Contact </p>  
+                <p>     email - failennaselta@gmail.com <br>
+                        instagram - n1ghtterrors
+                    <br> hit my line if you have any questions, concerns or fears. 
+                <br> </p>
+                <p class="serect"> ill hold your hand and tell you what mom could never. (im proud of you.) </p>  
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', ready);
+
+        function ready() {
+            var removeCartItemButtons = document.getElementsByClassName('remove');
+            for (var i = 0; i < removeCartItemButtons.length; i++) {
+                var button = removeCartItemButtons[i];
+                button.addEventListener('click', removeCartItem);
+            }
+
+            var quantityInputs = document.getElementsByClassName('cartInput');
+            for (var i = 0; i < quantityInputs.length; i++) {
+                var input = quantityInputs[i];
+                input.addEventListener('change', quantityChanged);
+            }
+
+            var addToCartButtons = document.getElementsByClassName('checkout');
+            for (var i = 0; i < addToCartButtons.length; i++) {
+                var button = addToCartButtons[i];
+                button.addEventListener('click', addToCartClicked);
+            }
+
+            var checkoutButton = document.getElementsByClassName('checkOut')[0];
+            if (checkoutButton) {
+                checkoutButton.addEventListener('click', processCheckout);
+            }
+        }
+
+        // Collapsible shirt sections
+        var coll = document.getElementsByClassName("shirt");
+        var i;
+
+        const adjustContentHeight = (content) => {
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null; 
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+
+        for (i = 0; i < coll.length; i++) {
+            adjustContentHeight(coll[i].nextElementSibling);
+
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                adjustContentHeight(this.nextElementSibling);
+            }); 
+        }
+
+        // Image gallery functions
+        function myFunction(smallImg) {
+            var fullImg = document.getElementById("imageBox");
+            fullImg.src = smallImg.src;
+        }
+
+        function myFunction1(smallImg) {
+            var fullImg = document.getElementById("imageBox1");
+            fullImg.src = smallImg.src;
+        }
+
+        function myFunction2(smallImg) {
+            var fullImg = document.getElementById("imageBox2");
+            fullImg.src = smallImg.src;
+        }
+
+        function myFunction3(smallImg) {
+            var fullImg = document.getElementById("imageBox3");
+            fullImg.src = smallImg.src;
+        }
+
+        function myFunction4(smallImg) {
+            var fullImg = document.getElementById("imageBox4");
+            fullImg.src = smallImg.src;
+        }
+
+        function myFunction5(smallImg) {
+            var fullImg = document.getElementById("imageBox5");
+            fullImg.src = smallImg.src;
+        }
+
+        // Cart functionality
+        let openShopping = document.querySelector('.shopping');
+        let closeShopping = document.querySelector('.closeShopping');
+        let body = document.querySelector('body');
+
+        openShopping.addEventListener('click', () => {
+            body.classList.add('active');
+        });
+
+        closeShopping.addEventListener('click', () => {
+            body.classList.remove('active');
+        });
+
+        function removeCartItem(event) {
+            var buttonClicked = event.target;
+            buttonClicked.parentElement.parentElement.remove();
+            updateCartTotal();
+        }
+
+        function quantityChanged(event) {
+            var input = event.target;
+            if (isNaN(input.value) || input.value <= 0) {
+                input.value = 1;
+            }
+            validateQuantity(input);
+            updateCartTotal();
+        } 
+
+        function validateQuantity(input) {
+            var cartItem = input.closest('.cartrow');
+            var title = cartItem.querySelector('.shop-title').innerText.trim();
+            var quantity = parseInt(input.value);
+
+            console.log('Validating quantity for title:', title); // Debug log
+
+            fetch(`/check-inventory?title=${encodeURIComponent(title)}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Inventory response:', data); // Debug log
+                    var maxQuantity = data.inStock || 0;
+                    if (quantity > maxQuantity) {
+                        alert(`Sorry, only ${maxQuantity} of this item is available.`);
+                        input.value = maxQuantity;
+                        updateCartTotal();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking inventory:', error);
+                });
+        }
+
+        function addToCartClicked(event) {
+            var button = event.target;
+            var shopItem = button.parentElement;
+            var title = shopItem.getElementsByClassName('title')[0].innerText.trim();
+            var price = shopItem.getElementsByClassName('thingPrice')[0].innerText;
+            var imageSrc = shopItem.getElementsByClassName('random')[0].src;
+
+            console.log('Adding to cart - Title:', title); // Debug log
+            console.log('Adding to cart - Price:', price); // Debug log
+
+            // Check inventory before adding to cart
+            fetch(`/check-inventory?title=${encodeURIComponent(title)}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Inventory check response:', data); // Debug log
+                    if (data.inStock > 0) {
+                        addItemToCart(title, price, imageSrc, 1);
+                        updateCartTotal();
+                    } else {
+                        alert('Sorry, this item is sold out.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking inventory:', error);
+                    alert('Error checking inventory. Please try again.');
+                });
+        }
+        function addItemToCart(title, price, imageSrc, quantity) {
+        var cartItems = document.getElementsByClassName('cartItems')[0];
+        var cartItemNames = cartItems.getElementsByClassName('shop-title');
+        
+        // Check if item already exists in cart
+        for (var i = 0; i < cartItemNames.length; i++) {
+            if (cartItemNames[i].innerText.trim() === title) {
+                // Item exists, check inventory before increasing quantity
+                var existingRow = cartItemNames[i].closest('.cartrow');
+                var quantityInput = existingRow.querySelector('.cartInput');
+                var currentQuantity = parseInt(quantityInput.value);
+                var newQuantity = currentQuantity + quantity;
+                
+                // Check inventory for the new total quantity
+                fetch(`/check-inventory?title=${encodeURIComponent(title)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Inventory check response for existing item:', data);
+                        if (newQuantity <= data.inStock) {
+                            quantityInput.value = newQuantity;
+                            updateCartTotal();
+                        } else {
+                            alert(`Sorry, only ${data.inStock} of "${title}" is available. You already have ${currentQuantity} in your cart.`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking inventory:', error);
+                        alert('Error checking inventory. Please try again.');
+                    });
+                return;
+            }
+        }
+
+        // Add new item to cart (this part stays the same)
+        var cartRow = document.createElement('div');
+        cartRow.classList.add('cartrow');
+        var cartRowContents = `
+            <div class="itemsInCart">
+                <img class="cart-item" src="${imageSrc}" width="100" height="100">
+                <span class="shop-title">${title}</span>
+            </div>
+            <span class="priceboi">$${price}</span>
+            <div class="cart-quanity">
+                <input class="cartInput" type="number" value="${quantity}" min="1">
+                <button class="remove">remove</button>
+            </div>
+        `;
+        cartRow.innerHTML = cartRowContents;
+        cartItems.append(cartRow);
+        
+        cartRow.getElementsByClassName("remove")[0].addEventListener('click', removeCartItem);
+        cartRow.getElementsByClassName('cartInput')[0].addEventListener('change', quantityChanged);
+    }
+
+        function processCheckout(event) {
+            event.preventDefault();
+            
+            var cartRows = document.querySelectorAll('.cartItems .cartrow');
+            if (cartRows.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            var items = [];
+            
+            cartRows.forEach(cartRow => {
+                var title_wa = cartRow.querySelector('.shop-title').innerText.trim();
+                var priceText = cartRow.querySelector('.priceboi').innerText.replace('$', '').trim();
+                var price_wa = parseFloat(priceText);
+                var quantity_wa = parseInt(cartRow.querySelector('.cartInput').value);
+                var imageUrl = cartRow.querySelector('.cart-item').src;
+                
+                items.push({
+                    title_wa: title_wa,
+                    price_wa: price_wa,
+                    quantity_wa: quantity_wa,
+                    imageUrl: imageUrl
+                });
+            });
+
+            console.log('Processing checkout with items:', items);
+            
+            fetch('/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ items: items })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('No checkout URL received');
+                }
+            })
+            .catch(error => {
+                console.error('Checkout Error:', error);
+                alert(error.error || 'Checkout failed. Please try again.');
+            });
+        }
+
+        function updateCartTotal() {
+            var cartItemContainer = document.getElementsByClassName('cartItems')[0];
+            var cartRows = cartItemContainer.getElementsByClassName('cartrow');
+            var total = 0;
+
+            for (var i = 0; i < cartRows.length; i++) {
+                var cartRow = cartRows[i];
+                var priceElement = cartRow.getElementsByClassName('priceboi')[0];
+                var quantityElement = cartRow.getElementsByClassName('cartInput')[0];
+
+                var price = parseFloat(priceElement.innerText.replace('$', ''));
+                var quantity = parseInt(quantityElement.value) || 1;
+
+                var subtotal = price * quantity;
+                total += subtotal;
+            }
+
+            total = Math.round(total * 100) / 100;
+            document.getElementsByClassName('totalPrice')[0].innerText = '$' + total;
+        }
+
+        if (document.readyState == 'loading') {
+            document.addEventListener('DOMContentLoaded', ready);
+        } else {
+            ready();
+        }
+        </script>
+    </body>
+</html>
