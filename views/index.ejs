@@ -659,6 +659,30 @@
         } else {
             video.play().catch(() => {});
         }
+
+        const videoContainer = document.querySelector('.video-container');
+        const video2= document.getElementById('myVideo');
+        let hasPlayed = false;
+
+        videoContainer.addEventListener('touchstart', function(e) {
+            if (!hasPlayed) {
+                e.preventDefault();
+                video2.play();
+                hasPlayed = true;
+                y
+                const playBtn = document.getElementById('customPlayBtn');
+                if (playBtn) playBtn.classList.add('hidden');
+            }
+        });
+
+        videoContainer.addEventListener('click', function(e) {
+            if (!hasPlayed) {
+                video2.play();
+                hasPlayed = true;
+                const playBtn = document.getElementById('customPlayBtn');
+                if (playBtn) playBtn.classList.add('hidden');
+            }
+        });
         </script>
     </body>
 </html>
