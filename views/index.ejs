@@ -43,7 +43,7 @@
                 </div>
             
             <div class="video-container">
-                <video autoplay muted loop playsinline id="myVideo">
+                <video autoplay muted loop playsinline webkit-playsinline id="myVideo">
                     <div class="menu-container">
                         <div class="menu-bar">
                         </div>
@@ -642,6 +642,13 @@
             if (!e.target.closest('.diagonal-menu')) {
                 document.getElementById('diagonalMenu').classList.remove('centered');
             }
+        });
+
+        window.addEventListener('load', function() {
+            const video = document.getElementById('myVideo');
+            video.play().catch(e => {
+                console.log('Autoplay failed:', e);
+            });
         });
         </script>
     </body>
