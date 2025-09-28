@@ -1,160 +1,366 @@
+
 require('dotenv').config();
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.error('STRIPE_SECRET_KEY is missing from environment variables');
+  process.exit(1);
+}
+
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
+  console.error('Supabase environment variables are missing');
+  process.exit(1);
+}
 const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const bodyParser = require('body-parser');
-
 const app = express();
+const port = 3000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/webhook/stripe', express.raw({type: 'application/json'}));
+app.use(express.json());
+app.use(express.static('public')); 
+
+
 app.set('view engine', 'ejs');
-app.use(express.static("public"));
+app.set('views', './views');
 
-// Inventory tracking - EXACT titles as they appear in frontend
-const inventory = {
-    "White collared baby. *wah wah* I know your daddy is in jail.": 5,
-    "omg Mr.Rorschach please, PLEASE psychoanalyze me.": 3,
-    "Classical art? Classical Architecure? the VIRGIN MARY WITH JESUS!?!?!?": 4,
-    "now, tell me you DON'T want to have a capitalistic pig on ur back. omg jk! hes already there.": 2,
-    "the nightterrors logo showing off ur SEXI bod. jk only with it on are u sexi.": 6,
-    "this one is open, white space, lets the images BREATHE": 3
-};
 
 app.get('/', (req, res) => {
-    res.render('index.ejs');
+  res.render('index'); 
 });
 
-app.get('/check-inventory', (req, res) => {
-    const title = req.query.title;
-    
-    // Debug logging
-    console.log('Inventory check request for:', title);
-    console.log('Available inventory keys:', Object.keys(inventory));
-    
-    // Trim whitespace and check inventory
-    const cleanTitle = title ? title.trim() : '';
-    const quantity = inventory[cleanTitle] || 0;
-    
-    console.log('Clean title:', cleanTitle);
-    console.log('Found quantity:', quantity);
-    
-    res.json({ inStock: quantity });
+app.get('/frontpage', (req, res) => {
+  res.render('frontpage');
 });
+
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+
+app.get('/check-inventory', async (req, res) => {
+  try {
+    const { title } = req.query;
+    console.log('Checking inventory for:', title);
+
+    if (!title) {
+      return res.json({ inStock: 0 });
+    }
+
+    
+    const { data: product, error } = await supabaseAdmin
+      .from('inventory')
+      .select('*')
+      .eq('title', shortenTitle(title))
+      .single();
+
+    if (error || !product) {
+      console.log('Product not found:', title);
+      return res.json({ inStock: 0 });
+    }
+
+    console.log('Found product:', product.title, 'Stock:', product.quantity);
+    
+    res.json({ 
+      inStock: product.quantity || 0,
+      id: product.id 
+    });
+
+  } catch (error) {
+    console.error('Inventory check error:', error);
+    res.json({ inStock: 0 });
+  }
+});
+
 
 app.post('/checkout', async (req, res) => {
-    const items = req.body.items;
+  try {
+    console.log('=== CHECKOUT STARTED ===');
+    console.log('Cart items:', req.body.items);
+
+    const { items } = req.body;
     
-    console.log('Checkout request received with items:', items);
-    
-    if (!Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ error: 'No items provided' });
+    if (!items || items.length === 0) {
+      return res.status(400).json({ error: 'Cart is empty' });
     }
 
-    // Validate all items exist and have required properties
+    
+    const orderItems = [];
+    const lineItems = [];
+
     for (const item of items) {
-        if (!item.title_wa || !item.price_wa || !item.quantity_wa) {
-            console.log('Invalid item data:', item);
-            return res.status(400).json({ error: 'Invalid item data' });
-        }
-        
-        // Clean the title and check inventory availability
-        const cleanTitle = item.title_wa.trim();
-        const availableStock = inventory[cleanTitle] || 0;
-        
-        console.log(`Checking stock for "${cleanTitle}": ${availableStock} available, ${item.quantity_wa} requested`);
-        
-        if (item.quantity_wa > availableStock) {
-            return res.status(400).json({ 
-                error: `Not enough stock for ${cleanTitle}. Available: ${availableStock}` 
-            });
-        }
-    }
+      const { title_wa, quantity_wa, price_wa } = item;
+      
+      
+      const { data: product, error } = await supabaseAdmin
+        .from('inventory')
+        .select('*')
+        .eq('title', title_wa)
+        .single();
 
-    // Create line items for Stripe
-    const lineItems = items.map(item => ({
-        price_data: {
-            currency: 'usd',
-            product_data: {
-                name: item.title_wa.trim(),
-                images: item.imageUrl ? [item.imageUrl] : [],
-            },
-            unit_amount: Math.round(item.price_wa * 100), // Convert to cents
-        },
-        quantity: item.quantity_wa,
-    }));
-
-    try {
-        const session = await stripe.checkout.sessions.create({
-            line_items: lineItems,
-            mode: 'payment',
-            shipping_address_collection: {
-                allowed_countries: ['US', 'BR']
-            },
-            success_url: `${process.env.BASE_URL}/complete?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.BASE_URL}/cancel`,
-            metadata: {
-                items: JSON.stringify(items.map(item => ({
-                    title: item.title_wa.trim(),
-                    quantity: item.quantity_wa
-                })))
-            }
+      if (error || !product) {
+        return res.status(400).json({ 
+          error: `Product "${title_wa}" not found` 
         });
+      }
 
-        res.json({ url: session.url });
-    } catch (error) {
-        console.error('Stripe Error:', error);
-        res.status(500).json({ error: 'Payment processing failed' });
+      if (product.quantity < quantity_wa) {
+        return res.status(400).json({ 
+          error: `Only ${product.quantity} of "${title_wa}" available` 
+        });
+      }
+
+      lineItems.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: title_wa,
+          },
+          unit_amount: Math.round(price_wa * 100), 
+        },
+        quantity: quantity_wa,
+      });
+
+      
+      orderItems.push({
+        title: title_wa,
+        quantity: quantity_wa,
+        price: price_wa,
+        productId: product.id,
+        currentStock: product.quantity
+      });
     }
-});
 
-app.get('/complete', async (req, res) => {
-    try {
-        const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-        
-        if (session.payment_status === 'paid') {
-            // Parse items from metadata and update inventory
-            const items = JSON.parse(session.metadata.items);
-            
-            console.log('Payment completed, updating inventory for:', items);
-            
-            items.forEach(item => {
-                const cleanTitle = item.title.trim();
-                if (inventory[cleanTitle] !== undefined) {
-                    const oldQuantity = inventory[cleanTitle];
-                    inventory[cleanTitle] = Math.max(0, inventory[cleanTitle] - item.quantity);
-                    console.log(`Updated inventory for "${cleanTitle}": ${oldQuantity} -> ${inventory[cleanTitle]}`);
-                }
-            });
-            
-            console.log('Updated inventory:', inventory);
-        }
+    
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['US', 'CA', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'IE', 'PT', 'DK', 'SE', 'NO', 'FI'],
+      },
 
-        res.send(`
-            <html>
-                <head><title>Payment Successful</title></head>
-                <body>
-                    <h1>Payment Successful!</h1>
-                    <p>Thank you for your purchase. Your order has been confirmed.</p>
-                    <a href="/">Return to Shop</a>
-                </body>
-            </html>
-        `);
-    } catch (error) {
-        console.error('Error retrieving session:', error);
-        res.status(500).send('Error completing payment');
-    }
-});
-
-app.get('/cancel', (req, res) => {
-    res.redirect('/');
-});
-
-// Debug route to check inventory
-app.get('/debug-inventory', (req, res) => {
-    res.json({
-        inventory: inventory,
-        keys: Object.keys(inventory)
+      shipping_options: [
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: {
+            amount: 500, // in cents ($5.00)
+            currency: 'usd',
+          },
+          display_name: 'Standard Shipping',
+          delivery_estimate: {
+            minimum: { unit: 'business_day', value: 3 },
+            maximum: { unit: 'business_day', value: 5 },
+          },
+        },
+      },
+      {
+        shipping_rate_data: {
+          type: 'fixed_amount',
+          fixed_amount: {
+            amount: 2500, // $25.00
+            currency: 'usd',
+          },
+          display_name: 'UK/Europe International Shipping',
+          delivery_estimate: {
+            minimum: { unit: 'business_day', value: 7 },
+            maximum: { unit: 'business_day', value: 14 },
+          },
+        },
+      },
+    ],
+      success_url: `${req.protocol}://${req.get('host')}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.protocol}://${req.get('host')}/`,
+      metadata: {
+        orderData: JSON.stringify(orderItems)
+      }
     });
+
+    console.log('Stripe session created:', session.id);
+    
+    res.json({ url: session.url });
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    res.status(500).json({ 
+      error: 'Checkout failed: ' + error.message 
+    });
+  }
 });
 
-app.listen(3000, () => console.log('Server started on port 3000'));
+app.post('/webhook/stripe', async (req, res) => {
+  let event;
+  
+  try {
+    const sig = req.headers['stripe-signature'];
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.log('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('Payment successful! Processing order...');
+
+    try {
+      const orderItems = JSON.parse(session.metadata.orderData);
+      
+      // Reduce inventory for each item
+      for (const item of orderItems) {
+        const newStock = item.currentStock - item.quantity;
+        
+        await supabaseAdmin
+          .from('inventory')
+          .update({ quantity: Math.max(0, newStock) })
+          .eq('id', item.productId);
+          
+        console.log(`Reduced ${item.title}: ${item.currentStock} → ${newStock}`);
+      }
+      
+      console.log('Order completed successfully');
+      
+    } catch (error) {
+      console.error('Error processing order:', error);
+    }
+  }
+
+  res.json({received: true});
+});
+
+
+app.get('/success', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>you bought it bby</title>
+        <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
+        <style>
+          body { 
+            font-family: "chandler-42-regular", sans-serif;
+            text-align: center; 
+            padding: 50px; 
+            background: #111; 
+            color: white; 
+          }
+          .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 40px; 
+            font-family: "chandler-42-regular", sans-serif;
+          }
+          h1 { 
+          color: #ffffffff; 
+          font-family: "chandler-42-regular", sans-serif;
+          }
+          a { 
+          color: #ffffffff;
+           text-decoration: none; 
+           font-size: 18px; 
+           font-family: "chandler-42-regular", sans-serif;
+           }
+          a:hover { text-decoration: underline; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>🖤 COMPLETE 🖤</h1>
+          <p>you won't regret this....</p>
+          <p>can't wait to see you sexi ass in these CLOTHES</p>
+          <br><br>
+          <a href="/">buy more!?!?</a>
+        </div>
+      </body>
+    </html>
+  `);
+});
+
+
+app.get('/debug', async (req, res) => {
+  try {
+    const { data: inventory } = await supabaseAdmin.from('inventory').select('*');
+    
+    res.json({
+      inventory: inventory,
+      stripeConfigured: !!process.env.STRIPE_SECRET_KEY,
+      environment: {
+        supabase: !!process.env.SUPABASE_URL,
+        stripeSecret: !!process.env.STRIPE_SECRET_KEY,
+        webhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.get('/inventory-status', async (req, res) => {
+  try {
+    const { data: inventory, error } = await supabaseAdmin
+      .from('inventory')
+      .select('*')
+      .order('title');
+    
+    if (error) throw error;
+    
+    res.json({
+      timestamp: new Date().toISOString(),
+      inventory: inventory
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+function shortenTitle(displayTitle, maxLength = 15) {
+    if (!displayTitle) return '';
+    
+    if (displayTitle.length <= maxLength) {
+        return displayTitle;
+    }
+    
+    const truncated = displayTitle.substring(0, maxLength);
+    const lastSpaceIndex = truncated.lastIndexOf(' ');
+    
+    if (lastSpaceIndex > maxLength * 0.7) {
+        return truncated.substring(0, lastSpaceIndex).trim();
+    }
+    
+    return truncated.trim();
+}
+
+app.get('/test-shortened-titles', async (req, res) => {
+    try {
+        const { data: inventory } = await supabaseAdmin.from('inventory').select('*');
+        
+        if (!inventory) {
+            return res.json({ message: 'No inventory found' });
+        }
+        
+        const results = inventory.map(item => ({
+            id: item.id,
+            original: item.title,
+            shortened: shortenTitle(item.title),
+            length_before: item.title ? item.title.length : 0,
+            length_after: shortenTitle(item.title).length
+        }));
+        
+        res.json(results);
+    } catch (error) {
+        console.error('Test endpoint error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
+
+app.listen(port, () => {
+  console.log(`🚀 N1GHTTERRORS shop running on http://localhost:${port}`);
+  console.log(`💳 Stripe checkout: ${process.env.STRIPE_SECRET_KEY ? 'CONFIGURED' : 'NOT CONFIGURED'}`);
+  console.log(`📦 Inventory: Connected to Supabase`);
+});

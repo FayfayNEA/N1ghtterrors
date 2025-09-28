@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
+        <title>slide to open me</title>
         <link href="/css/styles.css" rel="stylesheet" type="text/css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Kumbh+Sans:wght@300&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
+        <link rel="icon" type="image/png" href="/images/buckingbronc.png">
     </head>
-    <body>
+    <body class = "no-scrollbar">
         <div class = "container"> 
             <div class = "screaming">
                 <div class="video-container">
                     <div class = "screaming">
-                                <video autoplay muted id="myVideo">
+                                <video autoplay muted loop id="myVideo">
                                     <source src="/images/ezgif.com-gif-to-mp4-converter.mp4" type="video/mp4">
                                 </video>
                     </div>
                 </div> 
 
                 <li class = "intro "> 
-                    <a href="http://localhost:3000" class="button"> I admit you need one thing above all in order to understand my works
+                    <a href="/" class="button"> I admit you need one thing above all in order to understand my works
                         -- and so it will be some time before my creations are 'understood' --, 
                         you almost need to be a cow for this one thing and certianly not a 'modern man':
                         it is rumination...  </a>
@@ -31,6 +33,30 @@
         </div>
         <script src = "app.js" async></script>
         <script src = "server.js" async></script>
+        <script>
+            document.querySelector('.intro').addEventListener('wheel', function(e) {
+                // Let the scroll event bubble up to the window
+                window.scrollBy(0, e.deltaY);
+            }, { passive: false });
+
+            window.addEventListener('scroll', function() {
+                const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+                const video = document.getElementById('myVideo');
+                const intro = document.querySelector('.intro');
+                const instructionText = document.querySelector('.instruction-text');
+                
+                if (scrollPercent > 0.2) {
+                    video.classList.add('fade');
+                    intro.classList.add('active');
+                    instructionText.classList.add('active');
+                } else {
+                    video.classList.remove('fade');
+                    intro.classList.remove('active');
+                    instructionText.classList.remove('active');
+                }
+            });
+        </script>
+</body>
     </body>
 </html>
 
