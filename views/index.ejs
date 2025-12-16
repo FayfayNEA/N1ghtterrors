@@ -44,12 +44,13 @@
             
             <div class="video-container">
                 <video autoplay muted loop playsinline webkit-playsinline poster="/images/videc.png" id="myVideo">
-                    <div class="menu-container">
-                        <div class="menu-bar">
-                        </div>
-                    </div>
-                    <source src="/images/vid4web.mp4" type="video/mp4">
+                    <source src="/images/shirts.mp4" type="video/mp4">
                 </video>
+                <div class="menu-container">
+                    <div class="menu-bar">
+
+                    </div>
+                </div>
             </div>
 
             
@@ -643,46 +644,29 @@
                 document.getElementById('diagonalMenu').classList.remove('centered');
             }
         });
+        document.addEventListener("DOMContentLoaded", () => {
+        const video = document.getElementById("myVideo");
 
-        window.addEventListener('load', function() {
-            const video = document.getElementById('myVideo');
-            video.play().catch(e => {
-                console.log('Autoplay failed:', e);
-            });
+        // try autoplay
+        video.play().catch(() => {
+            // if blocked, start on first user gesture
+            const start = () => {
+            video.play().catch(()=>{});
+            window.removeEventListener("touchstart", start);
+            window.removeEventListener("click", start);
+            };
+            window.addEventListener("touchstart", start, { once: true });
+            window.addEventListener("click", start, { once: true });
+        });
         });
 
         const video = document.getElementById('myVideo');
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-        if (isMobile) {
-            video.removeAttribute('autoplay');
-        } else {
-            video.play().catch(() => {});
-        }
-
         const videoContainer = document.querySelector('.video-container');
         const video2= document.getElementById('myVideo');
         let hasPlayed = false;
 
-        videoContainer.addEventListener('touchstart', function(e) {
-            if (!hasPlayed) {
-                e.preventDefault();
-                video2.play();
-                hasPlayed = true;
-                y
-                const playBtn = document.getElementById('customPlayBtn');
-                if (playBtn) playBtn.classList.add('hidden');
-            }
-        });
-
-        videoContainer.addEventListener('click', function(e) {
-            if (!hasPlayed) {
-                video2.play();
-                hasPlayed = true;
-                const playBtn = document.getElementById('customPlayBtn');
-                if (playBtn) playBtn.classList.add('hidden');
-            }
-        });
         </script>
     </body>
 </html>
