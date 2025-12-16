@@ -377,7 +377,8 @@ button.checkout:hover{
     background-color: none; 
     position: fixed; 
     z-index: 103;
-    right: clamp(.0001px, 1vw, 20px);
+    /*right: clamp(.0001px, 1vw, 20px); */
+    right: 0;
 
 
 }
