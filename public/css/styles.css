@@ -1124,6 +1124,7 @@ p.word4cart {
 button.cart {
 
     background-color: black;
+    border: none;
     width: 50px;
     height: 25px;
 
