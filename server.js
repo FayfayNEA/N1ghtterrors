@@ -121,6 +121,7 @@ app.post('/checkout', async (req, res) => {
           currency: 'usd',
           product_data: {
             name: title_wa,
+            unit_amount: unitAmount,
           }, 
         },
         quantity: quantity_wa,
@@ -132,7 +133,7 @@ app.post('/checkout', async (req, res) => {
       orderItems.push({
         title: title_wa,
         quantity: quantity_wa,
-        price: price_wa,
+        price: unitAmount,
         productId: product.id,
         currentStock: product.quantity
       });
