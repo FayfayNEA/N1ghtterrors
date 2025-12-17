@@ -64,7 +64,8 @@ app.get('/check-inventory', async (req, res) => {
     
     res.json({ 
       inStock: product.quantity || 0,
-      id: product.id 
+      id: product.id,
+      price_cents: product.price_cents
     });
 
   } catch (error) {
@@ -134,8 +135,7 @@ app.post('/checkout', async (req, res) => {
         title: title_wa,
         quantity: quantity_wa,
         price: unitAmount,
-        productId: product.id,
-        currentStock: product.quantity
+        productId: product.id
       });
     }
 
@@ -216,17 +216,21 @@ app.post('/webhook/stripe', async (req, res) => {
     try {
       const orderItems = JSON.parse(session.metadata.orderData);
       
-      // Reduce inventory for each item
       for (const item of orderItems) {
-        const newStock = item.currentStock - item.quantity;
-        
-        await supabaseAdmin
-          .from('inventory')
-          .update({ quantity: Math.max(0, newStock) })
-          .eq('id', item.productId);
-          
-        console.log(`Reduced ${item.title}: ${item.currentStock} → ${newStock}`);
+      const { data, error } = await supabaseAdmin.rpc('decrement_inventory', {
+        p_id: item.productId,
+        p_qty: item.quantity,
+      });
+
+      if (error) {
+        console.error('decrement_inventory failed:', item, error);
+        continue;
       }
+
+      // data is an array because it returns TABLE(...)
+      const row = Array.isArray(data) ? data[0] : data;
+      console.log(`Decremented inventory id=${row?.id}, new_quantity=${row?.new_quantity}`);
+    }
       
       console.log('Order completed successfully');
       
