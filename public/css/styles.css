@@ -220,6 +220,8 @@ button.shirt:first-of-type {
 
 .sizebutton{
     color: white;
+    appearance: none;
+    -webkit-appearance: none;
     padding-top: 20px;
     padding-left: 20px;
     border: none;
