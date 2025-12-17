@@ -1317,3 +1317,15 @@ button.cart {
         margin-top: 60%;
     }
 }
+
+#titleElement .titleText,
+#diagonalMenu .menu-text {
+  color: #000;
+}
+
+/* when title/menu are over the black shop blocks */
+.over-shop #titleElement .titleText,
+.over-shop #diagonalMenu .menu-text,
+.over-shop #diagonalMenu .video-menu a {
+  color: #fff;
+}
