@@ -1138,6 +1138,11 @@ p.word4cart {
 }
 
 
+button.checkout:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 
 button.cart {
 

@@ -385,7 +385,7 @@
             var title = cartItem.querySelector('.shop-title').innerText.trim();
             var quantity = parseInt(input.value);
 
-
+            const lookupTitle = shortenTitle(title);
             fetch(`/check-inventory?title=${encodeURIComponent(title)}`)
                 .then(response => response.json())
                 .then(data => {
