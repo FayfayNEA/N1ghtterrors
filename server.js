@@ -14,9 +14,53 @@ const { createClient } = require('@supabase/supabase-js');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 const port = 3000;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
+app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  let event;
 
-app.use('/webhook/stripe', express.raw({type: 'application/json'}));
+  try {
+    const sig = req.headers['stripe-signature'];
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.log('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('Payment successful! Processing order...');
+
+    try {
+      const orderItems = JSON.parse(session.metadata.orderData);
+      
+      for (const item of orderItems) {
+      const { data, error } = await supabaseAdmin.rpc('decrement_inventory', {
+        p_id: item.productId,
+        p_qty: item.quantity,
+      });
+
+      if (error) {
+        console.error('decrement_inventory failed:', item, error);
+        continue;
+      }
+
+      // data is an array because it returns TABLE(...)
+      const row = Array.isArray(data) ? data[0] : data;
+      console.log(`Decremented inventory id=${row?.id}, new_quantity=${row?.new_quantity}`);
+    }
+      
+      console.log('Order completed successfully');
+      
+    } catch (error) {
+      console.error('Error processing order:', error);
+    }
+  }
+
+  res.json({ received: true });
+});
 app.use(express.json());
 app.use(express.static('public')); 
 
@@ -34,9 +78,6 @@ app.get('/frontpage', (req, res) => {
 });
 
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
 
 app.get('/check-inventory', async (req, res) => {
@@ -197,52 +238,6 @@ app.post('/checkout', async (req, res) => {
     });
   }
 });
-
-app.post('/webhook/stripe', async (req, res) => {
-  let event;
-  
-  try {
-    const sig = req.headers['stripe-signature'];
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    console.log('Webhook signature verification failed:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log('Payment successful! Processing order...');
-
-    try {
-      const orderItems = JSON.parse(session.metadata.orderData);
-      
-      for (const item of orderItems) {
-      const { data, error } = await supabaseAdmin.rpc('decrement_inventory', {
-        p_id: item.productId,
-        p_qty: item.quantity,
-      });
-
-      if (error) {
-        console.error('decrement_inventory failed:', item, error);
-        continue;
-      }
-
-      // data is an array because it returns TABLE(...)
-      const row = Array.isArray(data) ? data[0] : data;
-      console.log(`Decremented inventory id=${row?.id}, new_quantity=${row?.new_quantity}`);
-    }
-      
-      console.log('Order completed successfully');
-      
-    } catch (error) {
-      console.error('Error processing order:', error);
-    }
-  }
-
-  res.json({received: true});
-});
-
-
 app.get('/success', (req, res) => {
   res.send(`
     <html>
