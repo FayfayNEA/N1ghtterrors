@@ -111,16 +111,22 @@ app.post('/checkout', async (req, res) => {
         });
       }
 
+      const unitAmount = Number(product.price_cents);
+      if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
+        return res.status(400).json({ error: `Invalid price for "${product.title}"` });
+      }
+
       lineItems.push({
         price_data: {
           currency: 'usd',
           product_data: {
             name: title_wa,
-          },
-          unit_amount: Math.round(price_wa * 100), 
+          }, 
         },
         quantity: quantity_wa,
       });
+
+      
 
       
       orderItems.push({
