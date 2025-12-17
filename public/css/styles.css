@@ -341,7 +341,8 @@ span.title {
 
 .checkout{ 
 
-
+    appearance: none;
+    -webkit-appearance: none;
     background-color: black;
     display: block;
     padding: 0;
