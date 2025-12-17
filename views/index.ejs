@@ -57,7 +57,7 @@
 
             <div class="scroll-spacer"></div>
             <div class="titleName" id="titleElement">
-            <div class="titleText">N1GHTTERRORS</div>
+            <div class="titleText" id="titleText" data-text="N1GHTTERRORS"></div>
             </div>
             
             <div class="diagonal-menu" id="diagonalMenu">
@@ -624,6 +624,8 @@
                 titleElement.classList.add('active');
                 titleTriggered = true;
                 
+                startTypingTitle();
+
                 setTimeout(() => {
                     titleElement.classList.add('phase-3');
                 }, 6000);
@@ -723,6 +725,32 @@
 
         requestUpdate();
         })();
+
+        let titleHasTyped = false;
+
+        function startTypingTitle() {
+        if (titleHasTyped) return;
+        titleHasTyped = true;
+
+        const el = document.getElementById("titleText");
+        if (!el) return;
+
+        const full = (el.dataset.text || "N1GHTTERRORS");
+        el.textContent = "";
+
+        let i = 0;
+        const speed = 120; // tweak this
+
+        (function typeNext() {
+            if (i <= full.length) {
+            el.textContent = full.slice(0, i);
+            i++;
+            setTimeout(typeNext, speed);
+            } else {
+            el.classList.add("done");
+            }
+        })();
+        }
         </script>
     </body>
 </html>

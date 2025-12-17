@@ -1050,20 +1050,18 @@ span.flex {
 }
 
 .titleText {
+    position: relative;
+    display: inline-block;
     font-size: clamp(3rem, 10vw, 20rem);
     opacity: 0;
     font-weight: bold;
     font-weight: 800;
     color: #000;
-    overflow: hidden;
     white-space: nowrap;
-    border-right: 3px solid #000;
-    width: 0;
     animation: none;
 }
 
 .titleName.active .titleText {
-    animation: typewriter 5s steps(12) forwards;
     opacity: 1;
     
 }
@@ -1073,6 +1071,22 @@ span.flex {
     width: max-content;
     overflow: visible;
     letter-spacing: clamp(-1.5rem, calc(4rem - 3.8vw), 3rem);
+}
+
+#titleText::after {
+  content: "";
+  position: absolute;
+  top: 0.08em;
+  right: -0.08em;         /* tiny offset so it hugs the letter edge */
+  width: 3px;
+  height: 0.9em;
+  background: currentColor;
+  animation: caretBlink 0.8s steps(1, end) infinite;
+}
+
+#titleText.done::after {
+  opacity: 0;             /* optional: hide caret when done */
+  animation: none;
 }
 
 @keyframes typewriter {
