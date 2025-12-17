@@ -228,14 +228,12 @@ button.shirt:first-of-type {
     text-decoration: none;
     font-family: "chandler-42-regular", sans-serif;
     font-weight: 300;
+    display: inline-block;
     font-style: normal;
 
     text-align: left;
     margin: 0;
-    padding-right: 30px !important; 
-    padding-left: 0;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 3px 75px 3px 0;
     line-height: 1.2;
 
     background-color: black;
