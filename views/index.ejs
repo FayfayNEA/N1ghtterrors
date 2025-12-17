@@ -668,64 +668,59 @@
         let hasPlayed = false;
 
 
-       (function () {
-        const titleEl = document.getElementById("titleElement");
-        const menuEl  = document.getElementById("diagonalMenu");
+        (() => {
+        const titleWrap  = document.getElementById("titleElement");
+        const menuWrap   = document.getElementById("diagonalMenu");
 
-        if (!titleEl || !menuEl) return;
+        const titleText  = document.querySelector("#titleElement .titleText");
+        const menuText   = document.querySelector("#diagonalMenu .menu-text");
 
-        function isOverShirt(el) {
-            const r = el.getBoundingClientRect();
-            if (r.width === 0 || r.height === 0) return false;
+        // anything black you want to trigger the white text
+        const DARK_SELECTOR = ".shirt, .content, .contact";
 
-            // sample a few points inside the element
-            const pts = [
-            [r.left + r.width * 0.5, r.top + r.height * 0.5],
-            [r.left + r.width * 0.5, r.top + r.height * 0.2],
-            [r.left + r.width * 0.5, r.top + r.height * 0.8],
-            ];
+        if (!titleWrap || !menuWrap || !titleText || !menuText) return;
 
-            const prevPE = el.style.pointerEvents;
-            el.style.pointerEvents = "none"; // so elementFromPoint can see underneath
+        function overDark(targetEl) {
+            const r = targetEl.getBoundingClientRect();
 
-            let hit = false;
-            for (const [x, y] of pts) {
-            const under = document.elementFromPoint(x, y);
-            if (under && under.closest(".shirt")) {  // "shirt class and all its sub classes"
-                hit = true;
-                break;
-            }
-            // If you ALSO want the expanded black section to count, use:
-            // if (under && under.closest(".shirt, .content")) { hit = true; break; }
-            }
+            // center point, with fallback if width/height are 0 during animations
+            let x = r.left + (r.width ? r.width / 2 : 1);
+            let y = r.top  + (r.height ? r.height / 2 : 1);
 
-            el.style.pointerEvents = prevPE;
-            return hit;
+            // clamp into viewport
+            x = Math.max(0, Math.min(window.innerWidth  - 1, x));
+            y = Math.max(0, Math.min(window.innerHeight - 1, y));
+
+            // temporarily ignore the overlay itself so we can "see" what's under it
+            const prev = targetEl.style.pointerEvents;
+            targetEl.style.pointerEvents = "none";
+
+            const stack = document.elementsFromPoint(x, y);
+
+            targetEl.style.pointerEvents = prev;
+
+            return stack.some(el => el && el.closest && el.closest(DARK_SELECTOR));
         }
 
-        let ticking = false;
+        let raf = 0;
         function update() {
-            ticking = false;
-
-            titleEl.classList.toggle("on-shirts", isOverShirt(titleEl));
-            menuEl.classList.toggle("on-shirts",  isOverShirt(menuEl));
+            raf = 0;
+            titleWrap.classList.toggle("on-shirts", overDark(titleText));
+            menuWrap.classList.toggle("on-shirts", overDark(menuText));
         }
-
         function requestUpdate() {
-            if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(update);
-            }
+            if (!raf) raf = requestAnimationFrame(update);
         }
 
         window.addEventListener("scroll", requestUpdate, { passive: true });
         window.addEventListener("resize", requestUpdate);
+        window.addEventListener("load", requestUpdate);
 
-        // catch your transitions/animations changing position too
-        titleEl.addEventListener("transitionend", requestUpdate);
-        menuEl.addEventListener("transitionend", requestUpdate);
+        // your title/menu change position via class changes, so re-check when that happens
+        const mo = new MutationObserver(requestUpdate);
+        mo.observe(titleWrap, { attributes: true, attributeFilter: ["class", "style"] });
+        mo.observe(menuWrap,  { attributes: true, attributeFilter: ["class", "style"] });
 
-        // initial pass
         requestUpdate();
         })();
         </script>

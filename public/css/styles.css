@@ -72,7 +72,7 @@ a.button {
     font-family: "chandler-42-regular", sans-serif;
     cursor: pointer;
     font-size: 1.6em;
-    font-weight: 100;
+    font-weight: 200;
     font-style: normal;
     pointer-events: auto;
 }
@@ -101,7 +101,7 @@ a.button {
     color: rgba(255, 255, 255, 0.9);
     font-family: "chandler-42-regular", sans-serif;
     font-size: 2em;
-    font-weight: 100;
+    font-weight: 300;
     text-align: center;
     opacity: 0%;
     transition: all 1s ease 0.2s;
@@ -854,7 +854,7 @@ button.remove:hover{
 .contact {
     color: white;
     font-family: "chandler-42-regular", sans-serif;
-    font-weight: 200;
+    font-weight: 300;
     font-style: normal;
     text-align: center;
     
@@ -1016,7 +1016,7 @@ span.flex {
     color: white;
     text-decoration: none;
     font-size: clamp(5px, calc(3vw + 0.5px), 16px);
-    font-weight: 100;
+    font-weight: 200;
     transition: all 0.3s ease;
     letter-spacing: 8px;
     font-family: "chandler-42-regular", sans-serif;
@@ -1318,12 +1318,12 @@ button.cart {
     }
 }
 
+/* default (over video) = black */
 #titleElement .titleText { color: #000 !important; }
-#diagonalMenu .menu-text,
+#diagonalMenu .menu-text { color: #000 !important; }
 #diagonalMenu .video-menu a { color: #000 !important; }
 
-/* when overlapping a .shirt (or its descendants) */
+/* when overlapping black shop area */
 #titleElement.on-shirts .titleText { color: #fff !important; }
-
 #diagonalMenu.on-shirts .menu-text,
 #diagonalMenu.on-shirts .video-menu a { color: #fff !important; }
