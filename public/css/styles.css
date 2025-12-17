@@ -1318,14 +1318,12 @@ button.cart {
     }
 }
 
-#titleElement .titleText,
-#diagonalMenu .menu-text {
-  color: #000;
-}
+#titleElement .titleText { color: #000 !important; }
+#diagonalMenu .menu-text,
+#diagonalMenu .video-menu a { color: #000 !important; }
 
-/* when title/menu are over the black shop blocks */
-.over-shop #titleElement .titleText,
-.over-shop #diagonalMenu .menu-text,
-.over-shop #diagonalMenu .video-menu a {
-  color: #fff;
-}
+/* when overlapping a .shirt (or its descendants) */
+#titleElement.on-shirts .titleText { color: #fff !important; }
+
+#diagonalMenu.on-shirts .menu-text,
+#diagonalMenu.on-shirts .video-menu a { color: #fff !important; }
