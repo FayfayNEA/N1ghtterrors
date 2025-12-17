@@ -222,8 +222,6 @@ button.shirt:first-of-type {
     color: white;
     appearance: none;
     -webkit-appearance: none;
-    padding-top: 20px;
-    padding-left: 20px;
     border: none;
     font-size: 14px;
     text-decoration: none;
