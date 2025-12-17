@@ -90,7 +90,7 @@ app.post('/checkout', async (req, res) => {
     const lineItems = [];
 
     for (const item of items) {
-      const { title_wa, quantity_wa, price_wa } = item;
+      const { title_wa, quantity_wa} = item;
       
       
       const { data: product, error } = await supabaseAdmin
