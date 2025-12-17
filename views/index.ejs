@@ -93,6 +93,7 @@
                         <p class="size"> made for XL MEN. but gender isn't real so do with that as you will.</p>
                         <span class="thingPrice"> 35 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -121,6 +122,7 @@
                         <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
                         <span class="thingPrice"> 25 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -151,6 +153,7 @@
                         <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
                         <span class="thingPrice"> 25 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -181,6 +184,7 @@
                         <p class="size"> made for L MEN. but gender isn't real so do with that as you will.</p>
                         <span class="thingPrice"> 25 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -213,6 +217,7 @@
                         </select>
                         <span class="thingPrice"> 15 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -241,6 +246,7 @@
                         <p class="size"> made for XL MEN. but gender isn't real so do with that as you will.</p>
                         <span class="thingPrice"> 30 </span>
                         <button class="checkout"> ADD TO BAG </button>
+                        <div class="soldout" hidden>SOLD OUT</div>
                     </div>
                 </span>
             </div>
@@ -256,7 +262,6 @@
         </div>
 
         <script>
-        document.addEventListener('DOMContentLoaded', ready);
 
         function ready() {
             var removeCartItemButtons = document.getElementsByClassName('remove');
@@ -279,8 +284,10 @@
 
             var checkoutButton = document.getElementsByClassName('checkOut')[0];
             if (checkoutButton) {
-                checkoutButton.addEventListener('click', processCheckout);
+            checkoutButton.addEventListener('click', processCheckout);
             }
+
+            initOutOfStockButtons();
         }
 
        
@@ -571,8 +578,7 @@
         if (displayTitle.length <= maxLength) {
             return displayTitle;
         }
-        
-        
+
         const truncated = displayTitle.substring(0, maxLength);
         const lastSpaceIndex = truncated.lastIndexOf(' ');
         
@@ -583,7 +589,56 @@
         
        
         return truncated.trim();
-}
+    }
+
+    function initOutOfStockButtons() {
+        // each product block is: .content -> .texts
+        const productTextBlocks = document.querySelectorAll(".content .texts");
+
+        productTextBlocks.forEach(block => {
+            const titleEl = block.querySelector(".title");
+            const addBtn = block.querySelector("button.checkout"); // "ADD TO BAG" button
+            const soldOutEl = block.querySelector(".soldout");
+            const sizeSelect = block.querySelector("select"); // only exists on the ribbed tee
+
+            if (!titleEl || !addBtn || !soldOutEl) return;
+
+            const baseTitle = titleEl.innerText.trim();
+
+            async function checkStockForCurrentSelection() {
+            // match your cart logic: if a size exists, it becomes "SIZE - title"
+            const displayTitle = sizeSelect ? `${sizeSelect.value} - ${baseTitle}` : baseTitle;
+            const lookupTitle = shortenTitle(displayTitle);
+
+            try {
+                const res = await fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle)}`);
+                const data = await res.json();
+                const inStock = Number(data.inStock || 0);
+
+                if (inStock > 0) {
+                addBtn.disabled = false;
+                soldOutEl.hidden = true;
+                } else {
+                addBtn.disabled = true;
+                soldOutEl.hidden = false;
+                }
+            } catch (e) {
+                // if inventory check fails, don't hard-block sales (optional choice)
+                addBtn.disabled = false;
+                soldOutEl.hidden = true;
+                console.error("Stock check failed:", e);
+            }
+            }
+
+            // run once on load
+            checkStockForCurrentSelection();
+
+            // if there’s a size dropdown, re-check when they change size
+            if (sizeSelect) {
+            sizeSelect.addEventListener("change", checkStockForCurrentSelection);
+            }
+        });
+        }
 
         function updateCartCounter() {
         var cartRows = document.querySelectorAll('.cartItems .cartrow');
