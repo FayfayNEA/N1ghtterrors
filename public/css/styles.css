@@ -344,6 +344,7 @@ span.title {
 
     background-color: black;
     display: block;
+    padding: 0;
     width: auto;
     left: 0;
     margin-top: 1%;
