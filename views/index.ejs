@@ -386,7 +386,7 @@
             var quantity = parseInt(input.value);
 
             const lookupTitle = shortenTitle(title);
-            fetch(`/check-inventory?title=${encodeURIComponent(title)}`)
+            fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle)}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Inventory response:', data); 
