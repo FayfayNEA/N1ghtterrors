@@ -30,12 +30,22 @@ app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (re
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log('Payment successful! Processing order...');
 
     try {
+      const session = event.data.object;
       const orderItems = JSON.parse(session.metadata.orderData);
       
+      if (session.payment_status !== 'paid')
+      {
+        return res.json({received:true});
+      }
+
+      if (!session.metadata?.orderData){
+        console.error('Missing orderData in metadata');
+        return res.status(500).send('Missing orderData')
+      }
+
+
       for (const item of orderItems) {
       const { data, error } = await supabaseAdmin.rpc('decrement_inventory', {
         p_id: item.productId,
@@ -44,20 +54,15 @@ app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (re
 
       if (error) {
         console.error('decrement_inventory failed:', item, error);
-        continue;
+        return res.status(500).send('Inventory decrement failed');
       }
-
-      // data is an array because it returns TABLE(...)
-      const row = Array.isArray(data) ? data[0] : data;
-      console.log(`Decremented inventory id=${row?.id}, new_quantity=${row?.new_quantity}`);
     }
-      
-      console.log('Order completed successfully');
-      
-    } catch (error) {
-      console.error('Error processing order:', error);
-    }
+  
+  } catch (error) {
+    console.error('Error processing order:', error);
+    return res.status(500).send('Webhook processing failed');
   }
+}
 
   res.json({ received: true });
 });
@@ -132,24 +137,24 @@ app.post('/checkout', async (req, res) => {
     const lineItems = [];
 
     for (const item of items) {
-      const { title_wa, quantity_wa} = item;
+      const { inventoryId, quantity_wa} = item;
       
       
       const { data: product, error } = await supabaseAdmin
         .from('inventory')
         .select('*')
-        .eq('title', title_wa)
+        .eq('id', inventoryId)
         .single();
 
       if (error || !product) {
         return res.status(400).json({ 
-          error: `Product "${title_wa}" not found` 
+          error: `Product "${product.title}" not found` 
         });
       }
 
       if (product.quantity < quantity_wa) {
         return res.status(400).json({ 
-          error: `Only ${product.quantity} of "${title_wa}" available` 
+          error: `Only ${product.quantity} of "${product.title}" available` 
         });
       }
 
@@ -162,7 +167,7 @@ app.post('/checkout', async (req, res) => {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: title_wa,
+            name: product.title,
           }, 
           unit_amount: unitAmount,
         },
@@ -173,9 +178,7 @@ app.post('/checkout', async (req, res) => {
 
       
       orderItems.push({
-        title: title_wa,
         quantity: quantity_wa,
-        price: unitAmount,
         productId: product.id
       });
     }
