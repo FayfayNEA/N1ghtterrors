@@ -131,7 +131,6 @@ app.post('/checkout', async (req, res) => {
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }
-
     
     const orderItems = [];
     const lineItems = [];
@@ -145,53 +144,51 @@ app.post('/checkout', async (req, res) => {
         .select('*')
         .eq('id', inventoryId)
         .single();
+        
+        if (error || !product) {
+          return res.status(400).json({
+            error: `Product not found (id=${inventoryId})`,
+            details: error?.message || null,
+          });
+        }
+        
+        if (product.quantity < quantity_wa) {
+          return res.status(400).json({ 
+            error: `Only ${product.quantity} of "${product.title}" available` 
+          });
+        }
+        
+        const unitAmount = Number(product.price_cents);
+        if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
+          return res.status(400).json({ error: `Invalid price for "${product.title}"` });
+        }
 
-      if (error || !product) {
-        return res.status(400).json({ 
-          error: `Product "${product.title}" not found` 
+        const imageUrl = product.image_url;
+        lineItems.push({
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: product.title,
+              images: imageUrl ? [imageUrl] : [], 
+            }, 
+            unit_amount: unitAmount,
+          },
+          quantity: quantity_wa,
+        });
+        
+        orderItems.push({
+          quantity: quantity_wa,
+          productId: product.id
         });
       }
-
-      if (product.quantity < quantity_wa) {
-        return res.status(400).json({ 
-          error: `Only ${product.quantity} of "${product.title}" available` 
-        });
-      }
-
-      const unitAmount = Number(product.price_cents);
-      if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
-        return res.status(400).json({ error: `Invalid price for "${product.title}"` });
-      }
-
-      lineItems.push({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: product.title,
-          }, 
-          unit_amount: unitAmount,
-        },
-        quantity: quantity_wa,
-      });
-
       
-
-      
-      orderItems.push({
-        quantity: quantity_wa,
-        productId: product.id
-      });
-    }
-
-    
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: lineItems,
-      mode: 'payment',
-      billing_address_collection: 'required',
-      shipping_address_collection: {
-        allowed_countries: ['US', 'CA', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'IE', 'PT', 'DK', 'SE', 'NO', 'FI'],
-      },
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: lineItems,
+        mode: 'payment',
+        billing_address_collection: 'required',
+        shipping_address_collection: {
+          allowed_countries: ['US', 'CA', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'IE', 'PT', 'DK', 'SE', 'NO', 'FI'],},
 
       shipping_options: [
       {
