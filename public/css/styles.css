@@ -129,6 +129,10 @@ a.button {
     opacity: 0%;
 }
 
+.top { 
+    position: relative; z-index: 1; 
+}
+
 .WIP {
     list-style-type:none;
     width: 100%;           /* Set the width of the box */
