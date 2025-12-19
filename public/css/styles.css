@@ -1067,8 +1067,7 @@ span.flex {
     transform: translateX(-50%) translateY(-50%);
     font-family: "banshee-std", sans-serif;
     font-weight: 100;
-    -webkit-text-stroke: 0.5px #000; 
-    transform: scaleX(0.82);
+    -webkit-text-stroke: 0.1px #000; 
     font-style: normal;
     z-index: 101;
     transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1101,7 +1100,7 @@ span.flex {
     border-right: none; 
     width: max-content;
     overflow: visible;
-    letter-spacing: clamp(-1.5rem, calc(4rem - 3.8vw), 3rem);
+    letter-spacing: clamp(-4rem, calc(4rem - 3.8vw), 3rem);
 }
 
 
