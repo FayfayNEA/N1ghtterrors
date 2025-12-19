@@ -86,7 +86,7 @@
                     <div class="bigimage">
                         <img id="imageBox" src="/images/shirt1.png" />
                     </div>
-                    <div class="texts">
+                    <div class="texts" data-inventory-id="1">
                         <img class="random" src="/images/buckingbronc.png" hidden/>
                         <span class="title">White collared baby. *wah wah* I know your daddy is in jail.</span>
                         <p> this shirt will make you cry. die. all the amazing feelings YOU need. Why??? cause its cute and goes with everything. Duah. style it with a skirt, jeans, maybe a tankie? you'll thank me later.</p>
@@ -115,7 +115,7 @@
                     <div class="bigimage">
                         <img id="imageBox1" src="/images/Black3.jpg" />
                     </div>
-                    <div class="texts">
+                    <div class="texts" data-inventory-id="2">
                         <img class="random" src="/images/sumbmial man.png" hidden/>
                         <span class="title">omg Mr.Rorschach please, PLEASE psychoanalyze me.</span>
                         <p> now UK u want a shirt with mustache legend Mr.Rorschach on the front. Now on the back? Well you tell me what YOU see, maybe you're insane, crazy or just like sooo quirky...</p>
@@ -144,7 +144,7 @@
                     <div class="bigimage">
                         <img id="imageBox2" src="/images/nary1.jpg" />
                     </div>
-                    <div class="texts">
+                    <div class="texts" data-inventory-id="3">
                         <img class="random" src="/images/virginmary.png" hidden/>
                         <span class="title">Classical art? Classical Architecure? the VIRGIN MARY WITH JESUS!?!?!?</span>
                         <p> don't sit here and pretend classical art wasn't steamy and SOOOO sexi. This shirt will make you as hot and bothered as St. Teresa sculpture. <br>
@@ -175,7 +175,7 @@
                     <div class="bigimage">
                         <img id="imageBox3" src="/images/inside4.jpg" />
                     </div>
-                    <div class="texts">
+                    <div class="texts" data-inventory-id="4">
                         <img class="random" src="/images/fatcat.png" hidden/>
                         <span class="title">now, tell me you DON'T want to have a capitalistic pig on ur back. omg jk! hes already there.</span>
                         <p> the front of this shirt is where the sublimal messages TRULY started. Somewhere on it, is trump, biden, the devil, angels and etc. 
@@ -212,8 +212,8 @@
                         <p> now this ribbed t is ur Y2K, brat summer, kamla harris kissing trump day DREAM. it comes in two sizes cause im not better then brandy mellvive. <br>
                         <br> the youth large, i'm 5'3, 130. the large should fit up to 6'2, 190 <br> if you need another size email me. im not trying to exclude.</p>
                         <select id="sizes" name="sizes" class="sizebutton">
-                            <option value="YOUTH LARGE">YOUTH LARGE</option>
-                            <option value="ADULT LARGE">ADULT LARGE</option>
+                            <option value="5">YOUTH LARGE</option>
+                            <option value="6">ADULT LARGE</option>
                         </select>
                         <span class="thingPrice"> 15 </span>
                         <button class="checkout"> ADD TO BAG </button>
@@ -239,7 +239,7 @@
                     <div class="bigimage">
                         <img id="imageBox5" src="/images/graycolared1.jpg" />
                     </div>
-                    <div class="texts">
+                    <div class="texts" data-inventory-id="7">
                         <img class="random" src="/images/horserearing.png" hidden/>
                         <span class="title">this one is open, white space, lets the images BREATHE</span>
                         <p> are you a minimalist babe? you are!?!??!?! well this shirt is for YOU. it is minimal grpahics, left open to BREATHEEEEEEEEE. you will stun all the swed and danish humans with this SHIRT.</p>
@@ -381,60 +381,70 @@
         } 
 
         function validateQuantity(input) {
-            var cartItem = input.closest('.cartrow');
-            var title = cartItem.querySelector('.shop-title').innerText.trim();
-            var quantity = parseInt(input.value);
+            var cartRow = input.closest('.cartrow');
+            var quantity = parseInt(input.value, 10) || 1;
 
-            const lookupTitle = shortenTitle(title);
-            fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle)}`)
-                .then(response => response.json())
+            var inventoryId = Number(cartRow.dataset.inventoryId);
+            if (!Number.isFinite(inventoryId)) return;
+
+            fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
+                .then(r => r.json())
                 .then(data => {
-                    console.log('Inventory response:', data); 
-                    var maxQuantity = data.inStock || 0;
-                    if (quantity > maxQuantity) {
-                        alert(`Sorry, only ${maxQuantity} of this item is available.`);
-                        input.value = maxQuantity;
-                        updateCartTotal();
-                    }
+                var maxQuantity = Number(data.inStock || 0);
+                if (quantity > maxQuantity) {
+                    alert(`Sorry, only ${maxQuantity} of this item is available.`);
+                    input.value = maxQuantity;
+                    updateCartTotal();
+                    updateCartCounter();
+                }
                 })
-                .catch(error => {
-                    console.error('Error checking inventory:', error);
-                });
+                .catch(err => console.error('Error checking inventory:', err));
         }
+
 
         function addToCartClicked(event) {
             var button = event.target;
             var shopItem = button.parentElement;
+
             var title = shopItem.getElementsByClassName('title')[0].innerText.trim();
             var price = shopItem.getElementsByClassName('thingPrice')[0].innerText;
             var imageSrc = shopItem.getElementsByClassName('random')[0].src;
 
             var sizeDropdown = shopItem.querySelector('select');
-            var selectedSize = sizeDropdown ? sizeDropdown.value : '';
 
-            var displayTitle = selectedSize ? selectedSize + " - " + title : title;
-            var lookupTitle = shortenTitle(displayTitle);
+            // inventoryId comes from dropdown value (for size items)
+            // OR from data-inventory-id attribute (for non-size items)
+            var inventoryId = sizeDropdown
+                ? Number(sizeDropdown.value)
+                : Number(shopItem.dataset.inventoryId);
 
-            console.log('Adding to cart - Display Title:', displayTitle); 
-            console.log('Adding to cart - Lookup Title:', lookupTitle);
-           
-            fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle)}`)
-                .then(response => response.json())
+            // label shown in cart (keep the nice “ADULT LARGE - ...” text)
+            var sizeLabel = sizeDropdown ? sizeDropdown.options[sizeDropdown.selectedIndex].text : '';
+            var displayTitle = sizeLabel ? `${sizeLabel} - ${title}` : title;
+
+            if (!Number.isFinite(inventoryId)) {
+                console.error("Missing inventoryId for item:", shopItem);
+                alert("This item is missing an inventory id.");
+                return;
+            }
+
+            fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
+                .then(r => r.json())
                 .then(data => {
-                    console.log('Inventory check response:', data); 
-                    if (data.inStock > 0) {
-                        addItemToCart(displayTitle, price, imageSrc, 1, lookupTitle, data.id);
-                        updateCartTotal();
-                        updateCartCounter();
-                    } else {
-                        alert('Sorry, this item is sold out.');
-                    }
+                if ((data.inStock || 0) > 0) {
+                    addItemToCart(displayTitle, price, imageSrc, 1, null, inventoryId);
+                    updateCartTotal();
+                    updateCartCounter();
+                } else {
+                    alert('Sorry, this item is sold out.');
+                }
                 })
-                .catch(error => {
-                    console.error('Error checking inventory:', error);
-                    alert('Error checking inventory. Please try again.');
+                .catch(err => {
+                console.error('Error checking inventory:', err);
+                alert('Error checking inventory. Please try again.');
                 });
-        }
+            }
+
         function addItemToCart(title, price, imageSrc, quantity, lookupTitle = null, inventoryId = null) {
         var cartItems = document.getElementsByClassName('cartItems')[0];
         var cartItemNames = cartItems.getElementsByClassName('shop-title');
@@ -449,23 +459,35 @@
                 var newQuantity = currentQuantity + quantity;
                 
                 
-                fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle || shortenTitle(title))}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Inventory check response for existing item:', data);
-                        if (newQuantity <= data.inStock) {
-                            quantityInput.value = newQuantity;
-                            updateCartTotal();
-                            updateCartCounter();
-                        } else {
-                            alert(`Sorry, only ${data.inStock} of "${title}" is available. You already have ${currentQuantity} in your cart.`);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error checking inventory:', error);
-                        alert('Error checking inventory. Please try again.');
-                    });
+                var existingRow = cartItemNames[i].closest('.cartrow');
+                var quantityInput = existingRow.querySelector('.cartInput');
+                var currentQuantity = parseInt(quantityInput.value, 10) || 0;
+                var newQuantity = currentQuantity + quantity;
+
+                var existingInventoryId = Number(existingRow.dataset.inventoryId);
+                if (!Number.isFinite(existingInventoryId)) {
+                alert('Inventory id missing for this cart item.');
                 return;
+                }
+
+                fetch(`/check-inventory?id=${encodeURIComponent(existingInventoryId)}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (newQuantity <= (data.inStock || 0)) {
+                    quantityInput.value = newQuantity;
+                    updateCartTotal();
+                    updateCartCounter();
+                    } else {
+                    alert(`Sorry, only ${data.inStock} of "${title}" is available. You already have ${currentQuantity} in your cart.`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking inventory:', error);
+                    alert('Error checking inventory. Please try again.');
+                });
+
+                return;
+
             }
         }
 
@@ -588,53 +610,60 @@
     }
 
     function initOutOfStockButtons() {
-        // each product block is: .content -> .texts
-        const productTextBlocks = document.querySelectorAll(".content .texts");
+    // each product block is: .content -> .texts
+    const productTextBlocks = document.querySelectorAll(".content .texts");
 
-        productTextBlocks.forEach(block => {
-            const titleEl = block.querySelector(".title");
-            const addBtn = block.querySelector("button.checkout"); // "ADD TO BAG" button
-            const soldOutEl = block.querySelector(".soldout");
-            const sizeSelect = block.querySelector("select"); // only exists on the ribbed tee
+    productTextBlocks.forEach(block => {
+        const addBtn = block.querySelector("button.checkout");
+        const soldOutEl = block.querySelector(".soldout");
+        const sizeSelect = block.querySelector("select"); // only exists on the ribbed tee
 
-            if (!titleEl || !addBtn || !soldOutEl) return;
+        if (!addBtn || !soldOutEl) return;
 
-            const baseTitle = titleEl.innerText.trim();
+        async function checkStockForCurrentSelection() {
+        try {
+            // If there’s a size dropdown, its VALUE is the inventoryId
+            // Otherwise use data-inventory-id on the block
+            const inventoryId = sizeSelect
+            ? Number(sizeSelect.value)
+            : Number(block.dataset.inventoryId);
 
-            async function checkStockForCurrentSelection() {
-            // match your cart logic: if a size exists, it becomes "SIZE - title"
-            const displayTitle = sizeSelect ? `${sizeSelect.value} - ${baseTitle}` : baseTitle;
-            const lookupTitle = shortenTitle(displayTitle);
-
-            try {
-                const res = await fetch(`/check-inventory?title=${encodeURIComponent(lookupTitle)}`);
-                const data = await res.json();
-                const inStock = Number(data.inStock || 0);
-
-                if (inStock > 0) {
-                addBtn.disabled = false;
-                soldOutEl.hidden = true;
-                } else {
-                addBtn.disabled = true;
-                soldOutEl.hidden = false;
-                }
-            } catch (e) {
-                // if inventory check fails, don't hard-block sales (optional choice)
-                addBtn.disabled = false;
-                soldOutEl.hidden = true;
-                console.error("Stock check failed:", e);
-            }
+            if (!Number.isFinite(inventoryId)) {
+            console.warn("Missing/invalid inventory id for block:", block);
+            // don’t block sales if misconfigured (optional)
+            addBtn.disabled = false;
+            soldOutEl.hidden = true;
+            return;
             }
 
-            // run once on load
-            checkStockForCurrentSelection();
+            const res = await fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`);
+            const data = await res.json();
+            const inStock = Number(data.inStock || 0);
 
-            // if there’s a size dropdown, re-check when they change size
-            if (sizeSelect) {
-            sizeSelect.addEventListener("change", checkStockForCurrentSelection);
+            if (inStock > 0) {
+            addBtn.disabled = false;
+            soldOutEl.hidden = true;
+            } else {
+            addBtn.disabled = true;
+            soldOutEl.hidden = false;
             }
-        });
+        } catch (e) {
+            // If inventory check fails, don’t hard-block sales (your original behavior)
+            addBtn.disabled = false;
+            soldOutEl.hidden = true;
+            console.error("Stock check failed:", e);
         }
+        }
+
+        // run once on load
+        checkStockForCurrentSelection();
+
+        // if there’s a size dropdown, re-check when they change size
+        if (sizeSelect) {
+        sizeSelect.addEventListener("change", checkStockForCurrentSelection);
+        }
+    });
+    }
 
         function updateCartCounter() {
         var cartRows = document.querySelectorAll('.cartItems .cartrow');

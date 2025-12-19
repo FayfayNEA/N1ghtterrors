@@ -87,38 +87,35 @@ app.get('/frontpage', (req, res) => {
 
 app.get('/check-inventory', async (req, res) => {
   try {
-    const { title } = req.query;
-    console.log('Checking inventory for:', title);
+    const { id, title } = req.query;
 
-    if (!title) {
-      return res.json({ inStock: 0 });
-    }
-
-    
-    const { data: product, error } = await supabaseAdmin
+    let query = supabaseAdmin
       .from('inventory')
-      .select('*')
-      .eq('title', shortenTitle(title))
-      .single();
+      .select('id, title, quantity, price_cents');
 
-    if (error || !product) {
-      console.log('Product not found:', title);
+    if (id) {
+      query = query.eq('id', Number(id));
+    } else if (title) {
+      query = query.eq('title', title.trim());
+    } else {
       return res.json({ inStock: 0 });
     }
 
-    console.log('Found product:', product.title, 'Stock:', product.quantity);
-    
-    res.json({ 
+    const { data: product, error } = await query.single();
+
+    if (error || !product) return res.json({ inStock: 0 });
+
+    res.json({
       inStock: product.quantity || 0,
       id: product.id,
       price_cents: product.price_cents
     });
-
   } catch (error) {
     console.error('Inventory check error:', error);
     res.json({ inStock: 0 });
   }
 });
+
 
 
 app.post('/checkout', async (req, res) => {
