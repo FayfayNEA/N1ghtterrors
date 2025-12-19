@@ -77,10 +77,10 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/buckingbronc.png" onclick="myFunction(this)"/>
+                            <img loading= "lazy" src="/images/buckingbronc.png" onclick="myFunction(this)"/>
                             <img src="/images/shirt1.png" onclick="myFunction(this)"/>
-                            <img src="/images/post.jpg" onclick="myFunction(this)"/>
-                            <img src="/images/shirt4.w.jpg" onclick="myFunction(this)"/>
+                            <img loading= "lazy" src="/images/post.jpg" onclick="myFunction(this)"/>
+                            <img loading= "lazy" src="/images/shirt4.w.jpg" onclick="myFunction(this)"/>
                         </div>
                     </div>
                     <div class="bigimage">
@@ -106,10 +106,10 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/sumbmial man.png" onclick="myFunction1(this)"/>
+                            <img loading= "lazy" src="/images/sumbmial man.png" onclick="myFunction1(this)"/>
                             <img src="/images/Black3.jpg" onclick="myFunction1(this)"/>
-                            <img src="/images/black2.jpg" onclick="myFunction1(this)"/>
-                            <img src="/images/black4.jpg" onclick="myFunction1(this)"/>
+                            <img loading= "lazy" src="/images/black2.jpg" onclick="myFunction1(this)"/>
+                            <img loading= "lazy" src="/images/black4.jpg" onclick="myFunction1(this)"/>
                         </div>
                     </div>
                     <div class="bigimage">
@@ -135,10 +135,10 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/virginmary.png" onclick="myFunction2(this)"/>
+                            <img loading= "lazy" src="/images/virginmary.png" onclick="myFunction2(this)"/>
                             <img src="/images/nary1.jpg" onclick="myFunction2(this)"/>
-                            <img src="/images/mary2.jpg" onclick="myFunction2(this)"/>
-                            <img src="/images/mary11.jpg" onclick="myFunction2(this)"/>
+                            <img loading= "lazy" src="/images/mary2.jpg" onclick="myFunction2(this)"/>
+                            <img loading= "lazy" src="/images/mary11.jpg" onclick="myFunction2(this)"/>
                         </div>
                     </div>
                     <div class="bigimage">
@@ -166,9 +166,9 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/fatcat.png" onclick="myFunction3(this)" width="140" height="200"/>
-                            <img src="/images/inside3.jpg" onclick="myFunction3(this)"/>
-                            <img src="/images/inside2.jpg" onclick="myFunction3(this)"/>
+                            <img loading= "lazy" src="/images/fatcat.png" onclick="myFunction3(this)" width="140" height="200"/>
+                            <img loading= "lazy" src="/images/inside3.jpg" onclick="myFunction3(this)"/>
+                            <img loading= "lazy" src="/images/inside2.jpg" onclick="myFunction3(this)"/>
                             <img src="/images/inside4.jpg" onclick="myFunction3(this)"/>
                         </div>
                     </div>
@@ -197,10 +197,10 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/douvlepeople.png" onclick="myFunction4(this)"/>
+                            <img loading= "lazy" src="/images/douvlepeople.png" onclick="myFunction4(this)"/>
                             <img src="/images/bbyt1.jpg" onclick="myFunction4(this)"/>
-                            <img src="/images/bbytee3.jpg" onclick="myFunction4(this)"/>
-                            <img src="/images/bbyt2.jpg" onclick="myFunction4(this)"/>
+                            <img loading= "lazy" src="/images/bbytee3.jpg" onclick="myFunction4(this)"/>
+                            <img loading= "lazy" src="/images/bbyt2.jpg" onclick="myFunction4(this)"/>
                         </div>
                     </div>
                     <div class="bigimage">
@@ -230,10 +230,10 @@
                 <span class="flex">
                     <div class="holder">  
                         <div class="gallery">
-                            <img src="/images/horserearing.png" onclick="myFunction5(this)" width="180" height="2"/>
+                            <img loading= "lazy" src="/images/horserearing.png" onclick="myFunction5(this)" width="180" height="2"/>
                             <img src="/images/graycolared1.jpg" onclick="myFunction5(this)"/>
-                            <img src="/images/graycollar3.jpg" onclick="myFunction5(this)"/>
-                            <img src="/images/graycollared2.jpg" onclick="myFunction5(this)"/>
+                            <img loading= "lazy" src="/images/graycollar3.jpg" onclick="myFunction5(this)"/>
+                            <img loading= "lazy" src="/images/graycollared2.jpg" onclick="myFunction5(this)"/>
                         </div>
                     </div>
                     <div class="bigimage">
@@ -733,10 +733,10 @@
 
         const tryPlay = () => video.play().catch(() => {});
 
-        // try immediately
+        
         tryPlay();
 
-        // if blocked, start on first user gesture (anywhere)
+    
         const start = () => {
             tryPlay();
             window.removeEventListener("touchstart", start);
@@ -763,7 +763,7 @@
         const titleText  = document.querySelector("#titleElement .titleText");
         const menuText   = document.querySelector("#diagonalMenu .menu-text");
 
-        // anything black you want to trigger the white text
+        
         const DARK_SELECTOR = ".shirt, .content, .contact";
 
         if (!titleWrap || !menuWrap || !titleText || !menuText) return;
@@ -771,15 +771,15 @@
         function overDark(targetEl) {
             const r = targetEl.getBoundingClientRect();
 
-            // center point, with fallback if width/height are 0 during animations
+            
             let x = r.left + (r.width ? r.width / 2 : 1);
             let y = r.top  + (r.height ? r.height / 2 : 1);
 
-            // clamp into viewport
+            
             x = Math.max(0, Math.min(window.innerWidth  - 1, x));
             y = Math.max(0, Math.min(window.innerHeight - 1, y));
 
-            // temporarily ignore the overlay itself so we can "see" what's under it
+            
             const prev = targetEl.style.pointerEvents;
             targetEl.style.pointerEvents = "none";
 
@@ -804,7 +804,7 @@
         window.addEventListener("resize", requestUpdate);
         window.addEventListener("load", requestUpdate);
 
-        // your title/menu change position via class changes, so re-check when that happens
+        
         const mo = new MutationObserver(requestUpdate);
         mo.observe(titleWrap, { attributes: true, attributeFilter: ["class", "style"] });
         mo.observe(menuWrap,  { attributes: true, attributeFilter: ["class", "style"] });
@@ -825,7 +825,7 @@
         el.textContent = "";
 
         let i = 0;
-        const speed = 800; 
+        const speed = 400; 
 
         (function typeNext() {
             if (i <= full.length) {
