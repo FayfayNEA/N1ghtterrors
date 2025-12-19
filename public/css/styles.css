@@ -1073,6 +1073,10 @@ span.flex {
     letter-spacing: clamp(-1.5rem, calc(4rem - 3.8vw), 3rem);
 }
 
+#titleText {
+  font-family: "chandler-42-regular", sans-serif;
+}
+
 #titleText::after {
   content: "";
   position: absolute;

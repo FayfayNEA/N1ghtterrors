@@ -43,7 +43,7 @@
                 </div>
             
             <div class="video-container">
-                <video autoplay muted loop playsinline webkit-playsinline poster="/images/videc.png" id="myVideo">
+                <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="/images/videc.png" id="myVideo">
                     <source src="/images/shirts.mp4" type="video/mp4">
                 </video>
                 <div class="menu-container">
@@ -726,23 +726,29 @@
                 document.getElementById('diagonalMenu').classList.remove('centered');
             }
         });
+
         document.addEventListener("DOMContentLoaded", () => {
         const video = document.getElementById("myVideo");
+        if (!video) return;
 
-        // try autoplay
-        video.play().catch(() => {
-            // if blocked, start on first user gesture
-            const start = () => {
-            video.play().catch(()=>{});
+        const tryPlay = () => video.play().catch(() => {});
+
+        // try immediately
+        tryPlay();
+
+        // if blocked, start on first user gesture (anywhere)
+        const start = () => {
+            tryPlay();
             window.removeEventListener("touchstart", start);
             window.removeEventListener("click", start);
-            };
-            window.addEventListener("touchstart", start, { once: true });
-            window.addEventListener("click", start, { once: true });
-        });
+            window.removeEventListener("pointerdown", start);
+        };
+
+        window.addEventListener("touchstart", start, { once: true, passive: true });
+        window.addEventListener("click", start, { once: true });
+        window.addEventListener("pointerdown", start, { once: true });
         });
 
-        const video = document.getElementById('myVideo');
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         const videoContainer = document.querySelector('.video-container');
