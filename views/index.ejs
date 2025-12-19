@@ -44,7 +44,7 @@
             
             <div class="video-container">
                  <!-- <img class="video-poster" src="/images/videc.png" alt="">-->
-                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" src="/images/videc.png" id="myVideo">
+                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="/images/videc.png" id="myVideo">
                     <source src="/images/shirts-mobile.mp4" type="video/mp4" media="(max-width: 600px)">
                     <source src="/images/shirts.faststart.mp4" type="video/mp4">
                 </video>
@@ -763,21 +763,15 @@
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.querySelector(".video-container");
             const video = document.getElementById("myVideo");
-
-            ["loadeddata","playing"].forEach(evt =>
-            v.addEventListener(evt, () => vc.classList.add("video-ready"))
-        );
-            
             if (!container||!video) return;
 
-            const showVideo = () => container.classList.add("video-ready");
-            video.addEventListener("loadeddata", showVideo, { once: true });
-            video.addEventListener("canplay", showVideo, { once: true });
-            if (video.readyState >= 2) showVideo();
-            
+            ["loadeddata", "playing"].forEach((evt) => { 
+                video.addEventListener(evt, () => container.classList.add("video-ready"));
+            });
+
             const tryPlay = () => video.play().catch(() => {});
-             tryPlay();
-            
+            tryPlay();
+
             const start = () => {
                 tryPlay();
                 window.removeEventListener("touchstart", start);
@@ -788,8 +782,7 @@
             window.addEventListener("touchstart", start, { once: true, passive: true });
             window.addEventListener("click", start, { once: true });
             window.addEventListener("pointerdown", start, { once: true });
-        });
-        
+            });
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         const videoContainer = document.querySelector('.video-container');
