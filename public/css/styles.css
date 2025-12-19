@@ -1065,7 +1065,7 @@ span.flex {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    font-family: "banshee-std", sans-serif;
+    font-family: 'Ogilvie';
     font-weight: 50;
     -webkit-text-stroke: 0.01px #000; /* gives thin “spine” like chiller */
     font-style: normal;
