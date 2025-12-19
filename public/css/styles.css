@@ -129,6 +129,10 @@ a.button {
     opacity: 0%;
 }
 
+.top { 
+    position: relative; z-index: 1; 
+}
+
 .WIP {
     list-style-type:none;
     width: 100%;           /* Set the width of the box */
@@ -159,7 +163,8 @@ a.button:hover {
     justify-content: center;
     align-items: center;
     padding: 0;
-    z-index: -1;
+    z-index: 0;
+    background: url("/images/videc.png") center/cover no-repeat;
 }
 
 #myVideo {
@@ -167,6 +172,8 @@ a.button:hover {
     height: 100%;
     object-fit: cover;
     object-position: center;
+
+    transform: translateZ(0); 
 }
 
 .scroll-spacer {
