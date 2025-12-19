@@ -1066,6 +1066,8 @@ span.flex {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     font-family: "banshee-std", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     z-index: 101;
     transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
