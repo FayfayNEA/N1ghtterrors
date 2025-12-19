@@ -1074,8 +1074,7 @@ span.flex {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    font-family: 'Ogilvie';
-    font-weight: 50;
+    font-family: "Ogilvie";
     -webkit-text-stroke: 0.01px #000; /* gives thin “spine” like chiller */
     font-style: normal;
     letter-spacing: clamp(-1.5rem, calc(0.6867rem - 0.1170vw), 0.1rem);
