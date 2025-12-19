@@ -34,7 +34,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-.foreground{
+.foregroundb{
   position: relative;
   z-index: 5;
 }
