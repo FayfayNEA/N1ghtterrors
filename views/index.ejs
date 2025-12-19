@@ -43,7 +43,8 @@
                 </div>
             
             <div class="video-container">
-                <video autoplay muted loop playsinline webkit-playsinline preload="auto" poster="/images/videc.png" id="myVideo">
+                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="/images/videc.png" id="myVideo">
+                    <source src="/images/shirts-mobile.mp4" type="video/mp4" media="(max-width: 600px)">
                     <source src="/images/shirts.mp4" type="video/mp4">
                 </video>
                 <div class="menu-container">
@@ -291,7 +292,6 @@
             initOutOfStockButtons();
         }
 
-       
         var coll = document.getElementsByClassName("shirt");
         var i;
 
@@ -406,20 +406,13 @@
         function addToCartClicked(event) {
             var button = event.target;
             var shopItem = button.parentElement;
-
             var title = shopItem.getElementsByClassName('title')[0].innerText.trim();
             var price = shopItem.getElementsByClassName('thingPrice')[0].innerText;
             var imageSrc = shopItem.getElementsByClassName('random')[0].src;
-
             var sizeDropdown = shopItem.querySelector('select');
-
-            // inventoryId comes from dropdown value (for size items)
-            // OR from data-inventory-id attribute (for non-size items)
             var inventoryId = sizeDropdown
                 ? Number(sizeDropdown.value)
                 : Number(shopItem.dataset.inventoryId);
-
-            // label shown in cart (keep the nice “ADULT LARGE - ...” text)
             var sizeLabel = sizeDropdown ? sizeDropdown.options[sizeDropdown.selectedIndex].text : '';
             var displayTitle = sizeLabel ? `${sizeLabel} - ${title}` : title;
 
@@ -611,7 +604,7 @@
     }
 
     function initOutOfStockButtons() {
-    // each product block is: .content -> .texts
+    
     const productTextBlocks = document.querySelectorAll(".content .texts");
 
     productTextBlocks.forEach(block => {
@@ -623,15 +616,14 @@
 
         async function checkStockForCurrentSelection() {
         try {
-            // If there’s a size dropdown, its VALUE is the inventoryId
-            // Otherwise use data-inventory-id on the block
+            
             const inventoryId = sizeSelect
             ? Number(sizeSelect.value)
             : Number(block.dataset.inventoryId);
 
             if (!Number.isFinite(inventoryId)) {
             console.warn("Missing/invalid inventory id for block:", block);
-            // don’t block sales if misconfigured (optional)
+            
             addBtn.disabled = false;
             soldOutEl.hidden = true;
             return;
@@ -649,17 +641,17 @@
             soldOutEl.hidden = false;
             }
         } catch (e) {
-            // If inventory check fails, don’t hard-block sales (your original behavior)
+            
             addBtn.disabled = false;
             soldOutEl.hidden = true;
             console.error("Stock check failed:", e);
         }
         }
 
-        // run once on load
+        
         checkStockForCurrentSelection();
 
-        // if there’s a size dropdown, re-check when they change size
+        
         if (sizeSelect) {
         sizeSelect.addEventListener("change", checkStockForCurrentSelection);
         }
@@ -768,27 +760,31 @@
 
 
         document.addEventListener("DOMContentLoaded", () => {
-        const video = document.getElementById("myVideo");
-        if (!video) return;
+            const container = document.querySelector(".video-container");
+            const video = document.getElementById("myVideo");
+            
+            if (!container||!video) return;
 
-        const tryPlay = () => video.play().catch(() => {});
-
-        
-        tryPlay();
-
-    
-        const start = () => {
-            tryPlay();
-            window.removeEventListener("touchstart", start);
-            window.removeEventListener("click", start);
-            window.removeEventListener("pointerdown", start);
-        };
-
-        window.addEventListener("touchstart", start, { once: true, passive: true });
-        window.addEventListener("click", start, { once: true });
-        window.addEventListener("pointerdown", start, { once: true });
+            const showVideo = () => container.classList.add("video-ready");
+            video.addEventListener("loadeddata", showVideo, { once: true });
+            video.addEventListener("canplay", showVideo, { once: true });
+            if (video.readyState >= 2) showVideo();
+            
+            const tryPlay = () => video.play().catch(() => {});
+             tryPlay();
+            
+            const start = () => {
+                tryPlay();
+                window.removeEventListener("touchstart", start);
+                window.removeEventListener("click", start);
+                window.removeEventListener("pointerdown", start);
+            };
+            
+            window.addEventListener("touchstart", start, { once: true, passive: true });
+            window.addEventListener("click", start, { once: true });
+            window.addEventListener("pointerdown", start, { once: true });
         });
-
+        
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         const videoContainer = document.querySelector('.video-container');

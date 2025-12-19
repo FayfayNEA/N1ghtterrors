@@ -164,15 +164,23 @@ a.button:hover {
     align-items: center;
     padding: 0;
     z-index: 0;
+    background: url("/images/videc.png") center/cover no-repeat;
     pointer-events: none; 
 }
 
 #myVideo {
     width: 100%;
     height: 100%;
+    opacity: 0;
     object-fit: cover;
+    transition: opacity .35s ease;
     object-position: center;
+    background: url("/images/videc.png") center/cover no-repeat;
     pointer-events: none;
+}
+
+.video-container.video-ready #myVideo{
+  opacity: 1;
 }
 
 .scroll-spacer {
