@@ -1069,7 +1069,7 @@ span.flex {
     font-weight: 50;
     -webkit-text-stroke: 0.05px #000; /* gives thin “spine” like chiller */
     font-style: normal;
-    letter-spacing: clamp(-5rem, calc(2.543rem - 8.381vw), 0.5rem);
+    letter-spacing: clamp(-3rem, calc(1.389rem - 4.876vw), 0.2rem);
     z-index: 101;
     transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -1388,4 +1388,10 @@ button.cart {
 #diagonalMenu.on-shirts .menu-text,
 #diagonalMenu.on-shirts .video-menu a { 
     color: #fff !important; 
+}
+
+#diagonalMenu.centered .menu-text,
+#diagonalMenu.centered .video-menu a
+{
+  color: #fff !important;
 }
