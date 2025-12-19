@@ -1073,9 +1073,7 @@ span.flex {
     letter-spacing: clamp(-1.5rem, calc(4rem - 3.8vw), 3rem);
 }
 
-#titleText {
-    font-family: "Chiller";
-}
+
 
 #titleText::after {
   content: "";
