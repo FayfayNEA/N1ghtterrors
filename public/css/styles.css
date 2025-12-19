@@ -1085,8 +1085,6 @@ span.flex {
     display: inline-block;
     font-size: clamp(3rem, 10vw, 20rem);
     opacity: 0;
-    font-weight: bold;
-    font-weight: 800;
     color: #000;
     white-space: nowrap;
     animation: none;
