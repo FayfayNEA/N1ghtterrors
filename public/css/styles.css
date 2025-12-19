@@ -1060,6 +1060,15 @@ span.flex {
     opacity: 0;
 }
 
+@font-face {
+  font-family: "Ogilvie";
+  src: url("/fonts/Ogilvie.woff2") format("woff2"),
+       url("/fonts/Ogilvie.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 .titleName {
     position: fixed;
     top: 50%;
