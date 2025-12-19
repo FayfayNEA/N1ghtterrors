@@ -1067,7 +1067,7 @@ span.flex {
     transform: translateX(-50%) translateY(-50%);
     font-family: "banshee-std", sans-serif;
     font-weight: 50;
-    -webkit-text-stroke: 0.1px #000; /* gives thin “spine” like chiller */
+    -webkit-text-stroke: 0.05px #000; /* gives thin “spine” like chiller */
     transform: scaleX(0.82);
     font-style: normal;
     z-index: 101;
@@ -1101,7 +1101,7 @@ span.flex {
     border-right: none; 
     width: max-content;
     overflow: visible;
-    letter-spacing: clamp(-1.5rem, calc(4rem - 3.8vw), 3rem);
+    letter-spacing: clamp(-8rem, calc(4rem - 3.8vw), 3rem);
 }
 
 
