@@ -716,16 +716,57 @@
         
         window.addEventListener('scroll', handleScroll);
 
-        document.getElementById('diagonalMenu').addEventListener('click', function() {
-            this.classList.toggle('centered');
-        });
-
         
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.diagonal-menu')) {
                 document.getElementById('diagonalMenu').classList.remove('centered');
             }
         });
+        
+        
+        (() => {
+            const menu = document.getElementById("diagonalMenu");
+            
+            if (!menu) return;
+            
+            let scrolling = false;
+            let scrollTimer = null;
+            
+            
+            const setScrolling = () => {
+                scrolling = true;
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                scrolling = false;
+                }, 180); 
+            };
+            
+            
+            window.addEventListener("scroll", setScrolling, { passive: true });
+            window.addEventListener("touchmove", setScrolling, { passive: true });
+            
+            
+            menu.addEventListener("click", (e) => {
+                if (scrolling) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+                }
+                
+                menu.classList.toggle("centered");
+            }, true);
+            
+            let lastTouchMove = 0;
+            window.addEventListener("touchmove", () => { lastTouchMove = Date.now(); }, { passive: true });
+
+            menu.addEventListener("touchend", (e) => {
+                if (Date.now() - lastTouchMove < 200) {
+                e.preventDefault();
+                e.stopPropagation();
+                }
+            }, { passive: false, capture: true });
+            })();
+
 
         document.addEventListener("DOMContentLoaded", () => {
         const video = document.getElementById("myVideo");
