@@ -167,6 +167,16 @@ a.button:hover {
     background: url("/images/videc.png") center/cover no-repeat;
     pointer-events: none; 
 }
+.video-poster{
+  position:fixed;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+  opacity:1;
+  transition:opacity .35s ease;
+  pointer-events:none;
+}
 
 #myVideo {
     width: 100%;
@@ -181,6 +191,11 @@ a.button:hover {
 
 .video-container.video-ready #myVideo{
   opacity: 1;
+}
+
+
+.video-container.video-ready .video-poster{ 
+    opacity:0; 
 }
 
 .scroll-spacer {

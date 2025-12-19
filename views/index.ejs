@@ -43,8 +43,9 @@
                 </div>
             
             <div class="video-container">
-                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="/images/videc.png" id="myVideo">
-                    <source src="/images/shirts-mobile.faststart.mp4" type="video/mp4" media="(max-width: 600px)">
+                <img class="video-poster" src="/images/videc.png" alt="">
+                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" id="myVideo">
+                    <source src="/images/shirts-mobile.mp4" type="video/mp4" media="(max-width: 600px)">
                     <source src="/images/shirts.faststart.mp4" type="video/mp4">
                 </video>
                 <div class="menu-container">
@@ -762,6 +763,10 @@
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.querySelector(".video-container");
             const video = document.getElementById("myVideo");
+
+            ["loadeddata","playing"].forEach(evt =>
+            v.addEventListener(evt, () => vc.classList.add("video-ready"))
+        );
             
             if (!container||!video) return;
 
@@ -861,7 +866,7 @@
         el.textContent = "";
 
         let i = 0;
-        const speed = 400; 
+        const speed = 200; 
 
         (function typeNext() {
             if (i <= full.length) {
