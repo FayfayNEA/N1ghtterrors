@@ -1069,7 +1069,7 @@ span.flex {
     font-weight: 50;
     -webkit-text-stroke: 0.05px #000; /* gives thin “spine” like chiller */
     font-style: normal;
-    letter-spacing: clamp(-2rem, calc(0.186rem - 3.048vw), 0.1rem);
+    letter-spacing: clamp(-1.5rem, calc(0.492rem - 2.381vw), 0.2rem);
     z-index: 101;
     transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
