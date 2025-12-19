@@ -945,7 +945,7 @@ span.flex {
     transform: translateX(-50%) translateY(-50%) rotate(-10deg);
     transform-origin: center;
     z-index: 150;
-    transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -982,7 +982,7 @@ span.flex {
     font-family: "chandler-42-regular", sans-serif;
     opacity: 1;
     z-index: 5;
-    transition: all 7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     letter-spacing: clamp(6rem, calc(10rem - 1.75vw), 10rem);
     
 }
@@ -1005,7 +1005,7 @@ span.flex {
     height: min(80vh, 450px);
     background: black;
     border: .25px solid white;
-    transition: all 4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 }
 
@@ -1065,9 +1065,9 @@ span.flex {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    font-family: "Dokdo", cursive;
+    font-family: "Reenie Beanie", cursive;
     z-index: 101;
-    transition: all 6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 
