@@ -1086,11 +1086,11 @@ span.flex {
 
 .titleName.phase-3 {
     top: auto;
-    right: -12px;
+    right: -15px;
     
     bottom: calc(830px + env(safe-area-inset-bottom));
-    transform-origin: 100% 100%;   
-    transform: rotate(-90deg);     
+    transform-origin: 100%;  
+    transform: translateY(-100%) rotate(-90deg);  
 
 }
 
