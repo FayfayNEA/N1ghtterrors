@@ -1085,7 +1085,7 @@ span.flex {
 
 .titleName.phase-3 {
     top: auto;
-    left: 60%; 
+    left: 55%; 
     
     bottom: calc(830px + env(safe-area-inset-bottom));
     transform-origin: 100% 100%;   
