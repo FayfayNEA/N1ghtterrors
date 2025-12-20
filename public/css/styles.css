@@ -1088,9 +1088,9 @@ span.flex {
     top: auto;
     bottom: clamp(
         200px,
-        calc(500px - 0.27 * (100vw - 340px)),
-        500px
-    );
+        calc(138.18px + 18.18vw),
+        400px
+        );
 
     right: clamp(-17px, calc(6vw - 33px), 67px);
     transform-origin: 100%;  
