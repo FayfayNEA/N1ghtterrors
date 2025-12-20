@@ -1088,7 +1088,7 @@ span.flex {
     left: auto; 
     
     right: calc(12px + env(safe-area-inset-right));
-    bottom: calc(7% + env(safe-area-inset-bottom));
+    bottom: calc(700px + env(safe-area-inset-bottom));
     transform-origin: 100% 100%;   
     transform: rotate(-90deg);     
 
