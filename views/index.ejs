@@ -4,6 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BUY BUY BUY... its the only WAY</title>
+        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+        <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192">
+        <link rel="apple-touch-icon" href="/favicon-192.png">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Kumbh+Sans:wght@300&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -319,9 +323,15 @@
             var coll = document.getElementsByClassName("shirt");
             for (var i = 0; i < coll.length; i++) {
                 var content = coll[i].nextElementSibling;
-                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.maxHeight = (content.scrollHeight + 40) + "px"; 
             }
         });
+
+        function recalcOpenContent(content, extra = 40) {
+            if (!content) return;
+            if (!content.style.maxHeight || content.style.maxHeight === "0px") return;
+            content.style.maxHeight = (content.scrollHeight + extra) + "px";
+        }
 
   
         function myFunction(smallImg) {
@@ -631,7 +641,8 @@
             soldOutEl.hidden = true;
             return;
             }
-
+            const content = block.closest(".content");
+            recalcOpenContent(content, 40);
             const res = await fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`);
             const data = await res.json();
             const inStock = Number(data.inStock || 0);
