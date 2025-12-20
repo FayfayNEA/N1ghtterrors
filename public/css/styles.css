@@ -1084,10 +1084,14 @@ span.flex {
 
 
 .titleName.phase-3 {
-    right: 20px; 
-    left: clamp(76%, calc(100% - 4.5vw), 99%);
-    top: clamp(40dvh, calc(99dvh - 12vw), 93dvh);
-    transform: translateY(40%) rotate(-90deg);
+    top: auto;
+    left: auto; 
+    
+    right: calc(12px + env(safe-area-inset-right));
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    transform-origin: 100% 100%;   
+    transform: rotate(-90deg);     
+
 }
 
 .titleText {
