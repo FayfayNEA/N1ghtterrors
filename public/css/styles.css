@@ -1088,9 +1088,9 @@ span.flex {
     top: auto;
     right: -15px;
     
-    bottom: 0;
-    transform-origin: right bottom;
-    transform: translateY(-100%) rotate(-90deg) translateY(-50px);  
+    bottom: calc(830px + env(safe-area-inset-bottom));
+    transform-origin: 100%;  
+    transform: translateY(-100%) rotate(-90deg);  
 
 }
 
