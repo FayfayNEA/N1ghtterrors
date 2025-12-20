@@ -1090,7 +1090,7 @@ span.flex {
     
     bottom: 0;
     transform-origin: right bottom;
-    transform: translateY(-100%) rotate(-90deg);  
+    transform: translateY(-100%) rotate(-90deg) translateY(-50px);  
 
 }
 
