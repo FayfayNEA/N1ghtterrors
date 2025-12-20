@@ -1109,7 +1109,7 @@ span.flex {
     border-right: none; 
     width: max-content;
     overflow: visible;
-    letter-spacing: clamp(-1.5rem, calc(3.2429rem - 3.0476vw), 2rem);
+    letter-spacing: clamp(-3rem, calc(3.8571rem - 4.7619vw), 2rem);
 }
 
 
