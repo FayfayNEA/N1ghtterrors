@@ -1086,7 +1086,12 @@ span.flex {
 
 .titleName.phase-3 {
     top: auto;
-    bottom: clamp(324px, calc(12vh + 300px), 500px);
+    bottom: clamp(
+        200px,
+        calc(500px - 0.27 * (100vw - 340px)),
+        500px
+    );
+
     right: clamp(-17px, calc(6vw - 33px), 67px);
     transform-origin: 100%;  
     transform: translateY(-100%) rotate(-90deg);  
