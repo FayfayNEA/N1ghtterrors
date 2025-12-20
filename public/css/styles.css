@@ -1,8 +1,9 @@
 
 
 html, body {
-    overflow-x: hidden;
-    max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 
@@ -1085,7 +1086,7 @@ span.flex {
 
 .titleName.phase-3 {
     top: auto;
-    right: 0;
+    right: -12px;
     
     bottom: calc(830px + env(safe-area-inset-bottom));
     transform-origin: 100% 100%;   
