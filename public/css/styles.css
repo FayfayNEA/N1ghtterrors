@@ -1093,9 +1093,9 @@ span.flex {
         );
 
     right: clamp(
-        -17px,
-        calc(1.45vw + 32.45px),
-        117px
+        -21px,
+        calc(1.8136vw + 27.0864px),
+        113px
         );
     transform-origin: 100%;  
     transform: translateY(-100%) rotate(-90deg);  
