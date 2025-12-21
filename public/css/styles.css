@@ -1093,8 +1093,8 @@ span.flex {
         );
 
     right: clamp(
-        -51px,
-        calc(4.5409vw - 16.2764px),
+        -251px,
+        calc(22.7218vw - 278.0954px),
         113px
         );
     transform-origin: 100%;  
