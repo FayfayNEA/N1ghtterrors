@@ -164,6 +164,21 @@ a.button:hover {
     color: rgba(255, 255, 255, 0.5);
 }
 
+.video-containerfp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 0;
+    background: black;
+    pointer-events: none; 
+} 
 .video-container {
     position: fixed;
     top: 0;
