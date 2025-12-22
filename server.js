@@ -1,4 +1,5 @@
 const path = require('path');
+app.set('trust proxy', 1);
 require('dotenv').config();
 if (!process.env.STRIPE_SECRET_KEY) {
   console.error('STRIPE_SECRET_KEY is missing from environment variables');
@@ -67,7 +68,6 @@ app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (re
   res.json({ received: true });
 });
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.set('view engine', 'ejs');
