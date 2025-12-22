@@ -64,10 +64,6 @@ body::-webkit-scrollbar {
     z-index: -1;
 }
 
-.screaming:hover video {
-    opacity: 0%;
-}
-
 .screaming {
     position: relative;
     text-align: center;
