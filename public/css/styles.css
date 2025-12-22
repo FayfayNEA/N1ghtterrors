@@ -206,13 +206,15 @@ a.button:hover {
 }
 
 #fmyVideo {
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    object-fit: cover;
-    transition: opacity .35s ease;
-    object-position: center;
-    pointer-events: none;
+  width: 100%;
+  height: 100%;
+  opacity: 1;                 
+  object-fit: cover;
+  transition: opacity .35s ease;
+  object-position: center;
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
 }
 
 #myVideo {
@@ -224,6 +226,20 @@ a.button:hover {
     object-position: center;
     background: url("/images/videc.png") center/cover no-repeat;
     pointer-events: none;
+}
+
+.video-containerfp::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#000;
+  opacity:0;
+  transition: opacity .35s ease;
+  z-index:1;
+}
+
+.screaming:has(.intro.active) .video-containerfp::after{
+  opacity:1;
 }
 
 .video-containerfp.video-ready #fmyVideo{
