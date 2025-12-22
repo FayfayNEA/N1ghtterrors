@@ -147,9 +147,9 @@ a.button {
 
 .WIP {
     list-style-type:none;
-    width: 100%;           /* Set the width of the box */
-    height: 50%;          /* Set the height of the box */
-    padding: 20%;          /* Add padding inside the box */
+    width: 100%;           
+    height: 50%;          
+    padding: 20%;          
     overflow: auto;   
     position: absolute;
     top: 50%;
@@ -205,6 +205,16 @@ a.button:hover {
   pointer-events:none;
 }
 
+#fmyVideo {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    object-fit: cover;
+    transition: opacity .35s ease;
+    object-position: center;
+    pointer-events: none;
+}
+
 #myVideo {
     width: 100%;
     height: 100%;
@@ -216,12 +226,12 @@ a.button:hover {
     pointer-events: none;
 }
 
-.video-container.video-ready #myVideo{
+.video-containerfp.video-ready #fmyVideo{
   opacity: 1;
 }
 
 
-.video-container.video-ready .video-poster{ 
+.video-containerfp.video-ready .video-poster{ 
     opacity:0; 
 }
 
