@@ -2,12 +2,14 @@
   "version": 2,
   "builds": [{ "src": "server.js", "use": "@vercel/node" }],
   "routes": [
+    { "src": "/webhook/stripe", "dest": "/server.js" },
+    { "src": "/check-inventory", "dest": "/server.js" },
+    { "src": "/checkout", "dest": "/server.js" },
+    { "src": "/shop", "dest": "/server.js" },
+    { "src": "/success", "dest": "/server.js" },
+
     { "handle": "filesystem" },
+
     { "src": "/(.*)", "dest": "/server.js" }
-  ],
-  "functions": {
-    "server.js": {
-      "excludeFiles": "public/**"
-    }
-  }
+  ]
 }
