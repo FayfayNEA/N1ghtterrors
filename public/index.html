@@ -5,26 +5,41 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>slide to open me</title>
+        <link rel="icon" href="/favicon.ico">
+        <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+        <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192">
+        <link rel="apple-touch-icon" href="/favicon-192.png">
         <link href="/css/styles.css" rel="stylesheet" type="text/css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Kumbh+Sans:wght@300&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
-        <link rel="icon" type="image/png" href="/images/buckingbronc.png">
+        <meta property="og:title" content="N1GHTTERRORS">
+        <meta property="og:description" content="BUY BUY BUY... its the only WAY">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://n1ghtterrors.com/shop">
+        <meta property="og:image" content="https://n1ghtterrors.com/titlepageforphoen.jpg">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="N1GHTTERRORS">
+        <meta name="twitter:description" content="BUY BUY BUY... its the only WAY">
+        <meta name="twitter:image" content="https://n1ghtterrors.com/titlepageforphoen.jpg">
     </head>
     <body class = "no-scrollbar">
-        <div class = "container"> 
+        <div class = "fp-container"> 
             <div class = "screaming">
                 <div class="video-container">
                     <div class = "screaming">
-                                <video autoplay muted loop id="myVideo">
+                                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" id="fmyVideo">
                                     <source src="/images/ezgif.com-gif-to-mp4-converter.mp4" type="video/mp4">
                                 </video>
                     </div>
                 </div> 
 
                 <li class = "intro "> 
-                    <a href="/" class="button"> I admit you need one thing above all in order to understand my works
+                    <a href="/shop" class="button"> I admit you need one thing above all in order to understand my works
                         -- and so it will be some time before my creations are 'understood' --, 
                         you almost need to be a cow for this one thing and certianly not a 'modern man':
                         it is rumination...  </a>
@@ -32,7 +47,6 @@
             </div>    
         </div>
         <script src = "app.js" async></script>
-        <script src = "server.js" async></script>
         <script>
             document.querySelector('.intro').addEventListener('wheel', function(e) {
                 // Let the scroll event bubble up to the window
@@ -41,7 +55,7 @@
 
             window.addEventListener('scroll', function() {
                 const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-                const video = document.getElementById('myVideo');
+                const video = document.getElementById('fmyVideo');
                 const intro = document.querySelector('.intro');
                 const instructionText = document.querySelector('.instruction-text');
                 
@@ -56,7 +70,6 @@
                 }
             });
         </script>
-</body>
     </body>
 </html>
 

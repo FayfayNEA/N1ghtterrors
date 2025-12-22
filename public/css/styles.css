@@ -40,6 +40,17 @@ body::-webkit-scrollbar {
   z-index: 5;
 }
 
+.fpcontainer video {
+    opacity: 100%;
+    transition: all 1s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
 
 .container video {
     opacity: 100%;
@@ -1086,11 +1097,7 @@ span.flex {
 
 .titleName.phase-3 {
     top: auto;
-    bottom: clamp(
-        200px,
-        calc(138.18px + 18.18vw),
-        400px
-        );
+    bottom: 100px;
 
     right: clamp(
         -251px,
@@ -1179,7 +1186,7 @@ span.flex {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
    
 
 p.word4cart {
@@ -1204,8 +1211,6 @@ button.cart {
     width: 50px;
     height: 25px;
 
-
-
 }
 .cartcounter {
     color: white;
@@ -1216,7 +1221,7 @@ button.cart {
 }
 
 }
-@media (max-width: 430px){
+@media (max-width: 450px){
 
     
     .content.active {
@@ -1274,8 +1279,6 @@ button.cart {
         margin: 0 auto;
         justify-items: center;
     }
-    
-
     .holder {
         margin: 0 auto;
         display: flex;
@@ -1310,8 +1313,6 @@ button.cart {
         box-sizing: border-box;
     }
 
-
-    
     .cartItems {
         display: flex;
         flex-direction: column;
@@ -1346,6 +1347,9 @@ button.cart {
     .card .checkOut {
         margin: 20px auto;
     }
+    
+    
+    
 }
 
 @media screen and (max-height: 500px) and (orientation: landscape) {
@@ -1379,6 +1383,7 @@ button.cart {
     .titleName.phase-3 .titleText {
         letter-spacing: 2px;
     }
+
 }
 
 @media screen and (max-height: 330px) and (orientation: landscape) {
@@ -1414,4 +1419,66 @@ button.cart {
 #diagonalMenu.centered .video-menu a
 {
   color: #fff !important;
+}
+
+@media (min-width: 430px){
+  .titleName.phase-3{
+    bottom: clamp(250px, calc(134.18px + 26.94vw), 410px);
+  }
+}
+
+
+@media (min-width: 1024px){
+  .titleName.phase-3{
+    bottom: clamp(350px, calc(557.70px - 14.42vw), 410px);
+  }
+}
+
+@media (min-width: 1480px){
+ .titleName.phase-3 .titleText{
+    letter-spacing: calc(
+      clamp(-3rem, calc(3.8571rem - 4.7619vw), 2rem) + 0.09em
+    );
+ } 
+    .titleName.phase-3{
+    bottom: clamp(350px, calc(-81.46px + 29.96vw), 430px);
+  }
+}
+
+@media (min-width: 1707px){
+  .titleName.phase-3{
+    bottom: 430px;
+  }
+}
+
+@media (max-width: 600px) {
+  button.cart{
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    align-items: center;
+    height: 65px;              
+    width: 50px;                
+    padding: 0;
+    background: #000;           
+    border: none;
+    line-height: 1;
+  }
+
+  
+  button.cart .word4cart{
+    font-size: 16px;            
+    margin-top: 0p;
+    margin-right: 4px;
+    padding: 0;
+    color: #fff;
+  }
+
+  .cartcounter{
+    font-size: 16px;            
+    margin-top: 10px;
+    padding: 0;
+    line-height: 1;
+    color: #fff;
+  }
 }

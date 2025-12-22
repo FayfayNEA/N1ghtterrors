@@ -1,4 +1,4 @@
-
+const path = require('path');
 require('dotenv').config();
 if (!process.env.STRIPE_SECRET_KEY) {
   console.error('STRIPE_SECRET_KEY is missing from environment variables');
@@ -67,19 +67,19 @@ app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (re
   res.json({ received: true });
 });
 app.use(express.json());
-app.use(express.static('public')); 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
-
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
-  res.render('index'); 
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/frontpage', (req, res) => {
-  res.render('frontpage');
+
+app.get('/shop', (req, res) => {
+  res.render('shopping');
 });
 
 
