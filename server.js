@@ -1,369 +1,170 @@
 const path = require('path');
-app.set('trust proxy', 1);
 require('dotenv').config();
+
+const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const app = express();
+app.set('trust proxy', 1);
+
+const port = process.env.PORT || 3000;
+
+// ENV checks
 if (!process.env.STRIPE_SECRET_KEY) {
-  console.error('STRIPE_SECRET_KEY is missing from environment variables');
+  console.error('STRIPE_SECRET_KEY is missing');
   process.exit(1);
 }
-
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
   console.error('Supabase environment variables are missing');
   process.exit(1);
 }
-const express = require('express');
-const { createClient } = require('@supabase/supabase-js');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const app = express();
-const port = 3000;
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
+// Supabase
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
+
+// Stripe webhook (RAW body first)
 app.post('/webhook/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
   let event;
 
   try {
     const sig = req.headers['stripe-signature'];
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
-    console.log('Webhook signature verification failed:', err.message);
+    console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   if (event.type === 'checkout.session.completed') {
-
     try {
       const session = event.data.object;
+
+      if (session.payment_status !== 'paid') {
+        return res.json({ received: true });
+      }
+
+      if (!session.metadata?.orderData) {
+        return res.status(500).send('Missing orderData');
+      }
+
       const orderItems = JSON.parse(session.metadata.orderData);
-      
-      if (session.payment_status !== 'paid')
-      {
-        return res.json({received:true});
-      }
-
-      if (!session.metadata?.orderData){
-        console.error('Missing orderData in metadata');
-        return res.status(500).send('Missing orderData')
-      }
-
 
       for (const item of orderItems) {
-      const { data, error } = await supabaseAdmin.rpc('decrement_inventory', {
-        p_id: item.productId,
-        p_qty: item.quantity,
-      });
+        const { error } = await supabaseAdmin.rpc('decrement_inventory', {
+          p_id: item.productId,
+          p_qty: item.quantity,
+        });
 
-      if (error) {
-        console.error('decrement_inventory failed:', item, error);
-        return res.status(500).send('Inventory decrement failed');
+        if (error) {
+          console.error('decrement_inventory failed:', error);
+          return res.status(500).send('Inventory decrement failed');
+        }
       }
+    } catch (error) {
+      console.error('Error processing order:', error);
+      return res.status(500).send('Webhook processing failed');
     }
-  
-  } catch (error) {
-    console.error('Error processing order:', error);
-    return res.status(500).send('Webhook processing failed');
   }
-}
 
   res.json({ received: true });
 });
+
+// JSON for everything else
 app.use(express.json());
 
-
+// Views
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 
 app.get('/shop', (req, res) => {
   res.render('shopping');
 });
 
-
-
-
+// Inventory check
 app.get('/check-inventory', async (req, res) => {
-  try {
-    const { id, title } = req.query;
+  const { id, title } = req.query;
 
-    let query = supabaseAdmin
-      .from('inventory')
-      .select('id, title, quantity, price_cents');
+  let query = supabaseAdmin
+    .from('inventory')
+    .select('id, title, quantity, price_cents');
 
-    if (id) {
-      query = query.eq('id', Number(id));
-    } else if (title) {
-      query = query.eq('title', title.trim());
-    } else {
-      return res.json({ inStock: 0 });
-    }
+  if (id) query = query.eq('id', Number(id));
+  else if (title) query = query.eq('title', title.trim());
+  else return res.json({ inStock: 0 });
 
-    const { data: product, error } = await query.single();
+  const { data, error } = await query.single();
+  if (error || !data) return res.json({ inStock: 0 });
 
-    if (error || !product) return res.json({ inStock: 0 });
-
-    res.json({
-      inStock: product.quantity || 0,
-      id: product.id,
-      price_cents: product.price_cents
-    });
-  } catch (error) {
-    console.error('Inventory check error:', error);
-    res.json({ inStock: 0 });
-  }
+  res.json({
+    inStock: data.quantity,
+    id: data.id,
+    price_cents: data.price_cents
+  });
 });
 
-
-
+// Checkout
 app.post('/checkout', async (req, res) => {
   try {
-    console.log('=== CHECKOUT STARTED ===');
-    console.log('Cart items:', req.body.items);
-
     const { items } = req.body;
-    
-    if (!items || items.length === 0) {
-      return res.status(400).json({ error: 'Cart is empty' });
-    }
-    
-    const orderItems = [];
+    if (!items?.length) return res.status(400).json({ error: 'Cart is empty' });
+
     const lineItems = [];
+    const orderItems = [];
 
     for (const item of items) {
-      const { inventoryId, quantity_wa} = item;
-      
-      
-      const { data: product, error } = await supabaseAdmin
+      const { data: product } = await supabaseAdmin
         .from('inventory')
         .select('*')
-        .eq('id', inventoryId)
+        .eq('id', item.inventoryId)
         .single();
-        
-        if (error || !product) {
-          return res.status(400).json({
-            error: `Product not found (id=${inventoryId})`,
-            details: error?.message || null,
-          });
-        }
-        
-        if (product.quantity < quantity_wa) {
-          return res.status(400).json({ 
-            error: `Only ${product.quantity} of "${product.title}" available` 
-          });
-        }
-        
-        const unitAmount = Number(product.price_cents);
-        if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
-          return res.status(400).json({ error: `Invalid price for "${product.title}"` });
-        }
 
-        const imageUrl = product.image_url;
-        lineItems.push({
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: product.title,
-              images: imageUrl ? [imageUrl] : [], 
-            }, 
-            unit_amount: unitAmount,
-          },
-          quantity: quantity_wa,
-        });
-        
-        orderItems.push({
-          quantity: quantity_wa,
-          productId: product.id
-        });
+      if (!product || product.quantity < item.quantity_wa) {
+        return res.status(400).json({ error: 'Not enough inventory' });
       }
-      
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: lineItems,
-        mode: 'payment',
-        billing_address_collection: 'required',
-        shipping_address_collection: {
-          allowed_countries: ['US', 'CA', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'AT', 'IE', 'PT', 'DK', 'SE', 'NO', 'FI'],},
 
-      shipping_options: [
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {
-            amount: 500, // in cents ($5.00)
-            currency: 'usd',
+      lineItems.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: product.title,
+            images: product.image_url ? [product.image_url] : []
           },
-          display_name: 'Standard Shipping',
-          delivery_estimate: {
-            minimum: { unit: 'business_day', value: 3 },
-            maximum: { unit: 'business_day', value: 5 },
-          },
+          unit_amount: product.price_cents
         },
-      },
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {
-            amount: 2500, // $25.00
-            currency: 'usd',
-          },
-          display_name: 'UK/Europe International Shipping',
-          delivery_estimate: {
-            minimum: { unit: 'business_day', value: 7 },
-            maximum: { unit: 'business_day', value: 14 },
-          },
-        },
-      },
-    ],
-      success_url: `${req.protocol}://${req.get('host')}/success?session_id={CHECKOUT_SESSION_ID}`,
+        quantity: item.quantity_wa
+      });
+
+      orderItems.push({ productId: product.id, quantity: item.quantity_wa });
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      line_items: lineItems,
+      billing_address_collection: 'required',
+      success_url: `${req.protocol}://${req.get('host')}/success`,
       cancel_url: `${req.protocol}://${req.get('host')}/`,
-      metadata: {
-        orderData: JSON.stringify(orderItems)
-      }
+      metadata: { orderData: JSON.stringify(orderItems) }
     });
 
-    console.log('Stripe session created:', session.id);
-    
     res.json({ url: session.url });
-
-  } catch (error) {
-    console.error('Checkout error:', error);
-    res.status(500).json({ 
-      error: 'Checkout failed: ' + error.message 
-    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Checkout failed' });
   }
 });
+
+// Success
 app.get('/success', (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <title>you bought it bby</title>
-        <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
-        <style>
-          body { 
-            font-family: "chandler-42-regular", sans-serif;
-            text-align: center; 
-            padding: 50px; 
-            background: #111; 
-            color: white; 
-          }
-          .container { 
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 40px; 
-            font-family: "chandler-42-regular", sans-serif;
-          }
-          h1 { 
-          color: #ffffffff; 
-          font-family: "chandler-42-regular", sans-serif;
-          }
-          a { 
-          color: #ffffffff;
-           text-decoration: none; 
-           font-size: 18px; 
-           font-family: "chandler-42-regular", sans-serif;
-           }
-          a:hover { text-decoration: underline; }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <h1>🖤 COMPLETE 🖤</h1>
-          <p>you won't regret this....</p>
-          <p>can't wait to see you sexi ass in these CLOTHES</p>
-          <br><br>
-          <a href="/">buy more!?!?</a>
-        </div>
-      </body>
-    </html>
-  `);
+  res.send('<h1>🖤 COMPLETE 🖤</h1>');
 });
-
-
-app.get('/debug', async (req, res) => {
-  try {
-    const { data: inventory } = await supabaseAdmin.from('inventory').select('*');
-    
-    res.json({
-      inventory: inventory,
-      stripeConfigured: !!process.env.STRIPE_SECRET_KEY,
-      environment: {
-        supabase: !!process.env.SUPABASE_URL,
-        stripeSecret: !!process.env.STRIPE_SECRET_KEY,
-        webhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
-app.get('/inventory-status', async (req, res) => {
-  try {
-    const { data: inventory, error } = await supabaseAdmin
-      .from('inventory')
-      .select('*')
-      .order('title');
-    
-    if (error) throw error;
-    
-    res.json({
-      timestamp: new Date().toISOString(),
-      inventory: inventory
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-function shortenTitle(displayTitle, maxLength = 15) {
-    if (!displayTitle) return '';
-    
-    if (displayTitle.length <= maxLength) {
-        return displayTitle;
-    }
-    
-    const truncated = displayTitle.substring(0, maxLength);
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
-    
-    if (lastSpaceIndex > maxLength * 0.7) {
-        return truncated.substring(0, lastSpaceIndex).trim();
-    }
-    
-    return truncated.trim();
-}
-
-app.get('/test-shortened-titles', async (req, res) => {
-    try {
-        const { data: inventory } = await supabaseAdmin.from('inventory').select('*');
-        
-        if (!inventory) {
-            return res.json({ message: 'No inventory found' });
-        }
-        
-        const results = inventory.map(item => ({
-            id: item.id,
-            original: item.title,
-            shortened: shortenTitle(item.title),
-            length_before: item.title ? item.title.length : 0,
-            length_after: shortenTitle(item.title).length
-        }));
-        
-        res.json(results);
-    } catch (error) {
-        console.error('Test endpoint error:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-
 
 app.listen(port, () => {
-  console.log(`🚀 N1GHTTERRORS shop running on http://localhost:${port}`);
-  console.log(`💳 Stripe checkout: ${process.env.STRIPE_SECRET_KEY ? 'CONFIGURED' : 'NOT CONFIGURED'}`);
-  console.log(`📦 Inventory: Connected to Supabase`);
+  console.log(`🚀 Running on port ${port}`);
 });
