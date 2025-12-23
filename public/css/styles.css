@@ -1418,11 +1418,11 @@ span.flex {
     transform-origin: center center;
 
     /* POSITION UPDATE:
-       Mobile: -20px (Keeps it tight to the edge)
-       Desktop: -150px (Pushed WAY left because the font is now 50vh huge)
+       Mobile: -20px (Tight to edge)
+       Desktop: -100px (Pushed left enough for 30vh text)
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
-        clamp(-150px, 18px - 8.75vw, -20px)
+        clamp(-100px, 2.3px - 5.3vw, -20px)
     );
 }
 .titleText {
@@ -1445,12 +1445,11 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* DRASTIC FONT SIZE CHANGE:
-       Mobile: 2.5vh (Tiny, as requested)
-       Desktop: 50vh (Massive, half the screen height)
-       Middle: 30vw ensures it grows aggressively as screen widens.
+    /* NEW FONT SIZE:
+       Mobile: 4vh (Small & clean)
+       Desktop: 30vh (Large & impactful)
     */
-    font-size: clamp(2.5vh, 30vw, 50vh);
+    font-size: clamp(4vh, 12vw, 30vh);
 
     /* LETTER SPACING:
        Mobile: 12px (Wide)
