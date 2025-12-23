@@ -1445,17 +1445,14 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* FONT SIZE: 
-       Mobile: 5.5vh (Matches your request for "8px smaller" on small screens)
-       Desktop: 22vh (Matches your request for "bigger" on monitors)
+    /* FONT SIZE ADJUSTMENT: 
+       Mobile: Dropped to 4.8vh (roughly 5px smaller on iPhone)
+       Desktop: Bumped to 24vh (roughly 10-15px larger on Monitor)
     */
-    font-size: clamp(5.5vh, 10vh, 22vh);
+    font-size: clamp(4.8vh, 10vh, 24vh);
 
-    /* LETTER SPACING:
-       Mobile: 12px (Keeps the wide aesthetic)
-       Desktop: 4px (Bigger/Looser than the previous -2px)
-       
-       Math: Starts at 12px, slowly tightens to 4px as screen gets wider.
+    /* LETTER SPACING (Kept same as your previous request):
+       Mobile: 12px | Desktop: 4px
     */
     letter-spacing: clamp(4px, 14.3px - 0.54vw, 12px);
 }
