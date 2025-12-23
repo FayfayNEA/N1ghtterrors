@@ -1419,7 +1419,7 @@ span.flex {
 
     /* POSITION UPDATE:
        Mobile: -20px (Unchanged)
-       Desktop: -82px (Adjusted for 24vh font)
+       Desktop: -82px (Perfect for 24vh font)
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
         clamp(-82px, -2px - 4.16vw, -20px)
@@ -1446,18 +1446,18 @@ span.flex {
     border: none;
     
     /* FONT SIZE: 
-       Mobile: 4vh (Perfect)
-       Desktop: 24vh (Reduced slightly)
+       Mobile: 4vh
+       Desktop: 24vh
     */
     font-size: clamp(4vh, 10vw, 24vh);
 
-    /* LETTER SPACING:
+    /* LETTER SPACING UPDATE:
        Mobile: 22px (Wide)
-       Desktop: -4px (Very Tight)
+       Desktop: -6px (Super Tight/Overlapping)
        
-       Logic: Starts at 22px, shrinks rapidly as screen widens.
+       Logic: Starts wide at 22px, shrinks aggressively to -6px.
     */
-    letter-spacing: clamp(-4px, 29.5px - 1.74vw, 22px);
+    letter-spacing: clamp(-6px, 30px - 1.88vw, 22px);
 }
 #titleText::after {
   content: "";
