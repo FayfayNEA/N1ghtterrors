@@ -1134,7 +1134,7 @@ span.flex {
 
 .titleName.phase-3 {
     top: 50%;
-    bottom: auto;
+    bottom: 100px;
 
     right: clamp(
         -251px,
