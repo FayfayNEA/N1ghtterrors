@@ -1417,12 +1417,12 @@ span.flex {
     transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: center center;
 
-    /* POSITION:
-       Mobile (430px): -20px 
-       Desktop (1920px): -80px (Pushed deeper left to accommodate the giant new font)
+    /* POSITION UPDATE:
+       Mobile: -20px (Keeps it tight to the edge)
+       Desktop: -150px (Pushed WAY left because the font is now 50vh huge)
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
-        clamp(-80px, 1.6px - 4.2vw, -20px)
+        clamp(-150px, 18px - 8.75vw, -20px)
     );
 }
 .titleText {
@@ -1445,14 +1445,16 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* FONT SIZE ADJUSTMENT: 
-       Mobile: Dropped to 4.8vh (roughly 5px smaller on iPhone)
-       Desktop: Bumped to 24vh (roughly 10-15px larger on Monitor)
+    /* DRASTIC FONT SIZE CHANGE:
+       Mobile: 2.5vh (Tiny, as requested)
+       Desktop: 50vh (Massive, half the screen height)
+       Middle: 30vw ensures it grows aggressively as screen widens.
     */
-    font-size: clamp(4.8vh, 10vh, 24vh);
+    font-size: clamp(2.5vh, 30vw, 50vh);
 
-    /* LETTER SPACING (Kept same as your previous request):
-       Mobile: 12px | Desktop: 4px
+    /* LETTER SPACING:
+       Mobile: 12px (Wide)
+       Desktop: 4px (Tight)
     */
     letter-spacing: clamp(4px, 14.3px - 0.54vw, 12px);
 }
