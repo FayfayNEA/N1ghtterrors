@@ -1165,7 +1165,7 @@ span.flex {
     border-right: none; 
     width: max-content;
     overflow: visible;
-    letter-spacing: clamp(-3rem, calc(3.8571rem - 4.7619vw), 2rem);
+    letter-spacing: clamp(-3.3rem, 0rem, 1.7rem);
 }
 
 
@@ -1418,7 +1418,7 @@ button.cart {
     }
     
     .titleName.phase-3 .titleText {
-        letter-spacing: 2px;
+        letter-spacing: 1px;
     }
 
 }
@@ -1474,8 +1474,8 @@ button.cart {
 @media (min-width: 1480px){
  .titleName.phase-3 .titleText{
     letter-spacing: calc(
-      clamp(-3rem, calc(3.8571rem - 4.7619vw), 2rem) + 0.09em
-    );
+    clamp(-3rem, 3.8571rem - 4.7619vw, 2rem) - 0.2rem
+  );
  } 
     .titleName.phase-3{
     bottom: clamp(350px, calc(-81.46px + 29.96vw), 430px);
@@ -1518,4 +1518,51 @@ button.cart {
     line-height: 1;
     color: #fff;
   }
+}
+
+@media screen and (max-width: 600px) {
+  .video-containerfp {
+    overflow: hidden; 
+  }
+
+  #fmyVideo {
+    transform: scale(1.25); 
+    transform-origin: center center;
+  }
+}
+
+.click-words-hint {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  padding: 8px 16px;
+  font-family: "chandler-42-regular", sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  border: 1px solid #fff;
+  background: black;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.intro.active .click-words-hint {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -5px); 
+}
+
+
+@keyframes clickWordsPulse {
+  0%, 100% { transform: translate(-50%, -5px) scale(1); }
+  50% { transform: translate(-50%, -5px) scale(1.05); }
+}
+
+.intro.active .click-words-hint {
+  animation: clickWordsPulse 1.6s ease-in-out infinite;
 }
