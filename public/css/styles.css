@@ -1453,11 +1453,11 @@ span.flex {
 
     /* LETTER SPACING UPDATE:
        Mobile: 22px (Wide)
-       Desktop: -35px (Heavy Overlap)
+       Desktop: -32px (Tightened specific to request)
        
-       Logic: Starts at 22px, drastically shrinks to -35px.
+       Logic: Starts at 22px, shrinks to -32px.
     */
-    letter-spacing: clamp(-35px, 38.5px - 3.83vw, 22px);
+    letter-spacing: clamp(-32px, 37.6px - 3.62vw, 22px);
 }
 #titleText::after {
   content: "";
