@@ -1405,28 +1405,30 @@ span.flex {
 } 
 
 .titleName.phase-3 {
-    /* 1. Reset the erratic positioning */
+    /* 1. Reset the conflicting positions */
     bottom: auto !important;
     left: auto !important;
 
-    /* 2. Anchor exactly to the vertical middle and right edge */
+    /* 2. Lock to the vertical center and Right Edge */
     position: fixed;
     top: 50%;
     right: 0;
 
-    /* 3. The Magic Alignment */
+    /* 3. The Geometry Fix */
     transform-origin: center center;
-    /* Step A: translate(50%, -50%) -> Moves the element's center point to the very edge of the screen.
-       Step B: rotate(-90deg) -> Spins it vertical.
-       Step C: translateY(-30px) -> Since axis is rotated, Y controls horizontal now. 
-               Adjust '-30px' to push it deeper into the page or pull it closer to the edge.
+    /* A. translate(50%, -50%): Centers the element exactly on the right edge of the screen.
+       B. rotate(-90deg): Spins it vertical.
+       C. translateY(-50px): Moves it LEFT into the page. 
+          (Because it is rotated, Y acts as X. Increase 50px to move it further left).
     */
-    transform: translate(50%, -50%) rotate(-90deg) translateY(-30px);
+    transform: translate(50%, -50%) rotate(-90deg) translateY(-50px);
 
-    /* 4. Formatting */
+    /* 4. Ensure it doesn't wrap */
     width: max-content;
     height: auto;
-    transition: all 1s ease; /* Matches your scroll vibe */
+    
+    /* 5. Matches your JS timing */
+    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 101;
 }
 .titleText {
@@ -1446,7 +1448,7 @@ span.flex {
 
 .titleName.phase-3 .titleText {
     /* Uses VH (viewport height) so it never gets too long for the screen */
-    font-size: clamp(20px, 10vh, 80px); 
+    font-size: clamp(20px, 10vh, 60px); 
     letter-spacing: clamp(1px, 1vh, 15px);
     
     /* Reset margins so they don't throw off center */
