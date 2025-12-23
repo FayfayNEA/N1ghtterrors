@@ -1461,21 +1461,8 @@ button.cart {
 @media (min-width: 430px){
   .titleName.phase-3{
     bottom: clamp(250px, calc(134.18px + 26.94vw), 410px);
-    
-    letter-spacing: calc(
-      clamp(-3.3rem, 0rem, 1.7rem) + 0.3rem
-    );
-
-  }
-
-}
-
-@media (min-width: 370px) and (max-width: 500px) {
-  .titleName.phase-3 {
-    bottom: 110px; 
   }
 }
-
 
 
 @media (min-width: 1024px){
@@ -1498,12 +1485,6 @@ button.cart {
 @media (min-width: 1707px){
   .titleName.phase-3{
     bottom: 430px;
-  }
-}
-
-@media (min-width: 1900px) {
-  .titleName.phase-3 {
-    bottom: 40px;  
   }
 }
 
@@ -1545,7 +1526,7 @@ button.cart {
   }
 
   #fmyVideo {
-    transform: scale(1.5); 
+    transform: scale(1.3); 
     transform-origin: center center;
   }
 }
