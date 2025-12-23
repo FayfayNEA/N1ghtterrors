@@ -1133,8 +1133,8 @@ span.flex {
 
 
 .titleName.phase-3 {
-    top: auto;
-    bottom: 100px;
+    top: 50%;
+    bottom: auto;
 
     right: clamp(
         -251px,
@@ -1503,7 +1503,7 @@ button.cart {
 
 @media (min-width: 1900px) {
   .titleName.phase-3 {
-    bottom: 450px;  
+    bottom: 460px;  
   }
 }
 
