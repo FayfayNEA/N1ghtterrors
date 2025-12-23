@@ -1418,11 +1418,11 @@ span.flex {
     transform-origin: center center;
 
     /* POSITION UPDATE:
-       Mobile (430px): -20px 
-       Desktop (1920px): -90px (Reduced depth slightly for 26vh font)
+       Mobile: -20px (Unchanged)
+       Desktop: -85px (Slightly adjusted for the 25vh font size)
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
-        clamp(-90px, 0.2px - 4.7vw, -20px)
+        clamp(-85px, -1.3px - 4.36vw, -20px)
     );
 }
 .titleText {
@@ -1446,18 +1446,18 @@ span.flex {
     border: none;
     
     /* FONT SIZE: 
-       Mobile: 4vh (Kept as "perfect")
-       Desktop: 26vh (Reduced from 30vh)
+       Mobile: 4vh (Perfect)
+       Desktop: 25vh (Reduced slightly)
     */
-    font-size: clamp(4vh, 10vw, 26vh);
+    font-size: clamp(4vh, 10vw, 25vh);
 
-    /* LETTER SPACING UPDATE:
-       Mobile: 22px (Increased by 10px as requested)
-       Desktop: 4px (Tight)
+    /* LETTER SPACING:
+       Mobile: 22px (Wide & airy)
+       Desktop: -2px (Tight & compact)
        
-       Logic: Starts at 22px on mobile, shrinks to 4px on desktop.
+       Logic: Starts wide (22px) and gets tighter as the screen gets wider.
     */
-    letter-spacing: clamp(4px, 27px - 1.2vw, 22px);
+    letter-spacing: clamp(-2px, 29px - 1.61vw, 22px);
 }
 #titleText::after {
   content: "";
@@ -1477,8 +1477,8 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  top: 80%;
-  left: 80%;
+  top: 85%;
+  left: 95%;
   transform: translate(-50%, 20px);
   padding: 8px 16px;
   font-family: "chandler-42-regular", sans-serif;
