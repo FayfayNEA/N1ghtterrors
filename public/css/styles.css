@@ -6,7 +6,6 @@ html, body {
   overflow-x: hidden;
 }
 
-
 body {
     padding: 0;
     margin: 0;
@@ -24,7 +23,6 @@ body::-webkit-scrollbar {
     display: block;
     width: 12px;
 }
-
 
 .no-scrollbar {
     -ms-overflow-style: none;
@@ -77,7 +75,6 @@ body::-webkit-scrollbar {
     top: 50%;
 }
 
-
 a.button {
     color: rgba(255, 255, 255, 0.7);  /* Background color of the box */
     text-decoration: none;
@@ -88,7 +85,6 @@ a.button {
     font-style: normal;
     pointer-events: auto;
 }
-
 
 .intro {
     text-align: center;
@@ -175,6 +171,7 @@ a.button:hover {
     background: black;
     pointer-events: none; 
 } 
+
 .video-container {
     position: fixed;
     top: 0;
@@ -190,6 +187,7 @@ a.button:hover {
     background: url("/images/videc.png") center/cover no-repeat;
     pointer-events: none; 
 }
+
 .video-poster{
   position:fixed;
   width:100%;
@@ -242,7 +240,6 @@ a.button:hover {
   opacity: 1;
 }
 
-
 .video-containerfp.video-ready .video-poster{ 
     opacity:0; 
 }
@@ -269,17 +266,6 @@ button.shirt:first-of-type {
     box-sizing: border-box;
 
 }
-
-/*.content img {
-    padding: 20px;
-    bottom: 50%;
-    margin: 20px;
-    left: 15%;
-    position: relative;
-    margin-bottom: 20px;
-    float: left;
-
-} */
 
 .shirt img {
     float: left;
@@ -466,7 +452,6 @@ button.checkout:hover{
     background-color: black;
   }
 
-  
 .bar {
     list-style-type: none; 
     background-color: none; 
@@ -477,10 +462,6 @@ button.checkout:hover{
 
 
 }
-
-
-
-
 
 p.word4cart {
     color: black;
@@ -505,7 +486,7 @@ p.headtitle  {
     font-style: normal;
 }
 
-/* Works on Firefox */
+
 * {
     scrollbar-width: thin;
     scrollbar-color: white black;
@@ -566,7 +547,6 @@ p.headtitle  {
     object-fit: contain;
 }
 
-
 span.flex {
     display: flex;
     width: 100%;
@@ -581,8 +561,6 @@ span.flex {
     gap: 0;
 }
 
-
-
 button.cart {
 
     color: black;
@@ -593,6 +571,7 @@ button.cart {
     cursor: pointer;
 
 }
+
 .cartcounter {
     color: black;
     font-size: clamp(5px, 2vw, 40px);
@@ -615,7 +594,6 @@ button.cart:hover {
     cursor:pointer; 
 }
 
-
 .list .item button{
     background-color: #1C1F25;
     color: #fff;
@@ -634,12 +612,15 @@ button.cart:hover {
     overflow: auto;
     z-index: 12;
 }
+
 .active .card{
     left: calc(100% - min(90vw, 500px));
 }
+
 .active .container{
    transform: translateX(-200px);
 }
+
 .card .checkOut {
   position: relative;
   display: block;
@@ -679,13 +660,12 @@ button.cart:hover {
   stroke-linecap: square;
   vector-effect: non-scaling-stroke;
 }
-/* optional: style the SVG lines */
+
 .square-outline line {
   stroke: white;
   stroke-width: .5;
 }
 
-/* Stripe Elements styling */
 .stripe-checkout-container {
     padding: 20px;
     margin-top: 20px;
@@ -799,22 +779,22 @@ button.cart:hover {
 
 .checkOut input[type="submit"] {
     color: white;
-    padding: 0; /* Ensure no padding */
-    margin: 0; /* Ensure no margin */
+    padding: 0; 
+    margin: 0; 
     border: none;
     text-decoration: none;
-    text-align: center; /* Center text */
+    text-align: center; 
     background-color: black;
     font-family: "chandler-42-regular", sans-serif;
     font-weight: 400;
     font-size: 18px;
     font-style: normal;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    cursor: pointer; /* Pointer cursor */
-    display: flex; /* Flex display */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    width: 100%; 
+    height: 100%; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .checkOut input[type="submit"]:hover {
@@ -890,15 +870,12 @@ button.remove:hover{
     margin-left: 150px;
 }
 
-
-
 .cart-item
 {
     padding-left: 50px;
     padding-top: 100px;
     display: flex;
 }
-
 
 .priceboi { 
     color: white;
@@ -914,7 +891,6 @@ button.remove:hover{
     display: block;
 
 }
-
 
 .cartInput {
     margin-top: 120px;
@@ -945,10 +921,7 @@ button.remove:hover{
     font-size: 20px;
     font-style: normal;
     text-align: center;
-
 }
-
-
 
 span.flex {
     display: flex;
@@ -956,7 +929,6 @@ span.flex {
     flex-wrap: wrap;
     gap: 2%;
 }
-
 
 .bigimage {
     flex: 2;
@@ -973,11 +945,9 @@ span.flex {
 
 }
 
-/* Remove problematic positioning */
 .holder {
-    left: auto; /* Remove fixed left positioning */
+    left: auto; 
 }
-
 
 .serect {
     font-size: 10px;
@@ -1118,79 +1088,6 @@ span.flex {
   font-display: swap;
 }
 
-.titleName {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    font-family: "Ogilvie";
-    -webkit-text-stroke: 0.01px #000; /* gives thin “spine” like chiller */
-    font-style: normal;
-    letter-spacing: clamp(-1.5rem, calc(0.6867rem - 0.1170vw), 0.1rem);
-    z-index: 101;
-    transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-
-.titleName.phase-3 {
-    top: auto;
-    bottom: 100px;
-
-    right: clamp(
-        -251px,
-        calc(3.6318vw - 3.1854px),
-        323px
-        );
-    transform-origin: 100%;  
-    transform: translateY(-100%) rotate(-90deg);  
-
-}
-
-.titleText {
-    position: relative;
-    display: inline-block;
-    font-size: clamp(3rem, 10vw, 20rem);
-    opacity: 0;
-    color: #000;
-    white-space: nowrap;
-    animation: none;
-}
-
-.titleName.active .titleText {
-    opacity: 1;
-    
-}
-
-.titleName.phase-3 .titleText {
-    border-right: none; 
-    width: max-content;
-    overflow: visible;
-    letter-spacing: clamp(-3.3rem, 0rem, 1.7rem);
-}
-
-
-
-#titleText::after {
-  content: "";
-  position: absolute;
-  top: 0.08em;
-  right: -0.08em;         /* tiny offset so it hugs the letter edge */
-  width: 3px;
-  height: 0.9em;
-  background: currentColor;
-  animation: caretBlink 0.8s steps(1, end) infinite;
-}
-
-#titleText.done::after {
-  opacity: 0;             /* optional: hide caret when done */
-  animation: none;
-}
-
-@keyframes typewriter {
-    0% { width: 0; }
-    100% { width: 100%; } 
-}
-
 .custom-play-button {
     position: absolute;
     top: 50%;
@@ -1212,58 +1109,26 @@ span.flex {
     -webkit-tap-highlight-color: transparent; /* Remove iOS tap highlight */
 }
 
-
-@media (max-width: 1020px) {
-    .diagonal-menu.centered.centered {
-        left: 50%; 
-    }
-
-    .diagonal-menu.centered.centered .menu-text {
-        left: 55%;
+/* @media screen and (max-height: 330px) and (orientation: landscape) {
+ 
+    .titleName.phase-3 .titleText {
+        letter-spacing: -3px;
+        margin-top: 60%;
     }
 }
 
-@media (max-width: 500px) {
-   
+@media (min-width: 430px){
+  .titleName.phase-3{
+    bottom: clamp(250px, calc(134.18px + 26.94vw), 410px);
+  }
+}*/
 
-p.word4cart {
-    color: white;
-    text-align: center;
-    margin-top: 8%;
-    margin-left: 10%;
-    
-}
-
-
-button.checkout:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-
-button.cart {
-
-    background-color: black;
-    border: none;
-    width: 50px;
-    height: 25px;
-
-}
-.cartcounter {
-    color: white;
-    margin-top: 12%;
-    margin-left: 9%;
-    
-
-}
-
-}
 @media (max-width: 450px){
 
-    
     .content.active {
         max-height: none; 
     }
+
     .texts {
         width: 90%;
         padding-left: 5px;
@@ -1316,18 +1181,19 @@ button.cart {
         margin: 0 auto;
         justify-items: center;
     }
+
     .holder {
         margin: 0 auto;
         display: flex;
         justify-content: center;
         width: 100%;
     }
+
     .gallery img {
         padding: 0;
         width: 100%;
         height: auto;
         display: block;
-        
     }
 
     .texts p.size {
@@ -1384,9 +1250,35 @@ button.cart {
     .card .checkOut {
         margin: 20px auto;
     }
-    
-    
-    
+}
+
+@media (max-width: 500px) {
+
+    p.word4cart {
+        color: white;
+        text-align: center;
+        margin-top: 8%;
+        margin-left: 10%;
+    }
+
+    button.checkout:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    }
+
+    button.cart {
+
+        background-color: black;
+        border: none;
+        width: 50px;
+        height: 25px;
+    }
+    .cartcounter {
+        color: white;
+        margin-top: 12%;
+        margin-left: 9%;
+    }
+
 }
 
 @media screen and (max-height: 500px) and (orientation: landscape) {
@@ -1413,82 +1305,17 @@ button.cart {
         letter-spacing: 4px;
     }
     
-    .titleText {
+    /*.titleText {
         font-size: clamp(2rem, 8vw, 12rem);
     }
     
     .titleName.phase-3 .titleText {
         letter-spacing: 1px;
-    }
+    }*/
 
 }
 
-@media screen and (max-height: 330px) and (orientation: landscape) {
-
-    
-    .titleName.phase-3 .titleText {
-        letter-spacing: -3px;
-        margin-top: 60%;
-    }
-}
-
-/* default (over video) = black */
-#titleElement .titleText { 
-    color: #000 !important; 
-}
-#diagonalMenu .menu-text { 
-    color: #000 !important; 
-}
-#diagonalMenu .video-menu a { 
-    color: #fff !important; 
-}
-
-/* when overlapping black shop area */
-#titleElement.on-shirts .titleText { 
-    color: #fff !important;
- }
-#diagonalMenu.on-shirts .menu-text,
-#diagonalMenu.on-shirts .video-menu a { 
-    color: #fff !important; 
-}
-
-#diagonalMenu.centered .menu-text,
-#diagonalMenu.centered .video-menu a
-{
-  color: #fff !important;
-}
-
-@media (min-width: 430px){
-  .titleName.phase-3{
-    bottom: clamp(250px, calc(134.18px + 26.94vw), 410px);
-  }
-}
-
-
-@media (min-width: 1024px){
-  .titleName.phase-3{
-    bottom: clamp(350px, calc(557.70px - 14.42vw), 410px);
-  }
-}
-
-@media (min-width: 1480px){
- .titleName.phase-3 .titleText{
-    letter-spacing: calc(
-    clamp(-3rem, 3.8571rem - 4.7619vw, 2rem) - 0.2rem
-  );
- } 
-    .titleName.phase-3{
-    bottom: clamp(350px, calc(-81.46px + 29.96vw), 430px);
-  }
-}
-
-@media (min-width: 1707px){
-  .titleName.phase-3{
-    bottom: 430px;
-  }
-}
-
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
   button.cart{
     display: flex;
     flex-direction: column;    
@@ -1518,9 +1345,7 @@ button.cart {
     line-height: 1;
     color: #fff;
   }
-}
 
-@media screen and (max-width: 600px) {
   .video-containerfp {
     overflow: hidden; 
   }
@@ -1529,6 +1354,120 @@ button.cart {
     transform: scale(1.3); 
     transform-origin: center center;
   }
+}
+
+@media (max-width: 1020px) {
+    .diagonal-menu.centered.centered {
+        left: 50%; 
+    }
+    .diagonal-menu.centered.centered .menu-text {
+        left: 55%;
+    }
+     /*.titleName.phase-3{
+    bottom: clamp(350px, calc(557.70px - 14.42vw), 410px);
+  }*/
+}
+
+/* @media (min-width: 1480px){
+ .titleName.phase-3 .titleText{
+    letter-spacing: calc(
+    clamp(-3rem, 3.8571rem - 4.7619vw, 2rem) - 0.2rem
+  );
+ } 
+    .titleName.phase-3{
+    bottom: clamp(350px, calc(-81.46px + 29.96vw), 430px);
+  }
+}
+
+@media (min-width: 1707px){
+  .titleName.phase-3{
+    bottom: 430px;
+  }
+}
+
+@media (min-width: 1900px){
+  .titleName.phase-3{
+    bottom: clamp(350px, calc(-81.46px + 29.96vw), 500px);
+  } 
+} */
+
+.titleName {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-family: "Ogilvie";
+    -webkit-text-stroke: 0.01px #000; /* gives thin “spine” like chiller */
+    font-style: normal;
+    letter-spacing: clamp(-1.5rem, calc(0.6867rem - 0.1170vw), 0.1rem);
+    z-index: 101;
+    transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+} 
+
+.titleName.phase-3 {
+    /* 1. Reset the erratic positioning */
+    bottom: auto !important;
+    left: auto !important;
+
+    /* 2. Anchor exactly to the vertical middle and right edge */
+    position: fixed;
+    top: 50%;
+    right: 0;
+
+    /* 3. The Magic Alignment */
+    transform-origin: center center;
+    /* Step A: translate(50%, -50%) -> Moves the element's center point to the very edge of the screen.
+       Step B: rotate(-90deg) -> Spins it vertical.
+       Step C: translateY(-30px) -> Since axis is rotated, Y controls horizontal now. 
+               Adjust '-30px' to push it deeper into the page or pull it closer to the edge.
+    */
+    transform: translate(50%, -50%) rotate(-90deg) translateY(-30px);
+
+    /* 4. Formatting */
+    width: max-content;
+    height: auto;
+    transition: all 1s ease; /* Matches your scroll vibe */
+    z-index: 101;
+}
+.titleText {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(3rem, 10vw, 20rem);
+    opacity: 0;
+    color: #000;
+    white-space: nowrap;
+    animation: none;
+}
+
+.titleName.active .titleText {
+    opacity: 1;
+    
+}
+
+.titleName.phase-3 .titleText {
+    /* Uses VH (viewport height) so it never gets too long for the screen */
+    font-size: clamp(20px, 10vh, 80px); 
+    letter-spacing: clamp(1px, 1vh, 15px);
+    
+    /* Reset margins so they don't throw off center */
+    margin: 0;
+    border: none;
+}
+
+#titleText::after {
+  content: "";
+  position: absolute;
+  top: 0.08em;
+  right: -0.08em;         
+  width: 3px;
+  height: 0.9em;
+  background: currentColor;
+  animation: caretBlink 0.8s steps(1, end) infinite;
+}
+
+#titleText.done::after {
+  opacity: 0;             
+  animation: none;
 }
 
 .click-words-hint {
@@ -1557,7 +1496,6 @@ button.cart {
   transform: translate(-50%, -5px); 
 }
 
-
 @keyframes clickWordsPulse {
   0%, 100% { transform: translate(-50%, -5px) scale(1); }
   50% { transform: translate(-50%, -5px) scale(1.05); }
@@ -1565,4 +1503,36 @@ button.cart {
 
 .intro.active .click-words-hint {
   animation: clickWordsPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes typewriter {
+    0% { width: 0; }
+    100% { width: 100%; } 
+}
+
+#titleElement .titleText { 
+    color: #000 !important; 
+}
+
+#diagonalMenu .menu-text { 
+    color: #000 !important; 
+}
+
+#diagonalMenu .video-menu a { 
+    color: #fff !important; 
+}
+
+#titleElement.on-shirts .titleText { 
+    color: #fff !important;
+ }
+
+#diagonalMenu.on-shirts .menu-text,
+#diagonalMenu.on-shirts .video-menu a { 
+    color: #fff !important; 
+}
+
+#diagonalMenu.centered .menu-text,
+#diagonalMenu.centered .video-menu a
+{
+  color: #fff !important;
 }
