@@ -1418,8 +1418,8 @@ span.flex {
     transform-origin: center center;
 
     /* POSITION UPDATE:
-       Mobile: -20px (Unchanged)
-       Desktop: -82px (Perfect for 24vh font)
+       Mobile: -20px 
+       Desktop: -82px 
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
         clamp(-82px, -2px - 4.16vw, -20px)
@@ -1453,11 +1453,11 @@ span.flex {
 
     /* LETTER SPACING UPDATE:
        Mobile: 22px (Wide)
-       Desktop: -6px (Super Tight/Overlapping)
+       Desktop: -8px (Max Tightness)
        
-       Logic: Starts wide at 22px, shrinks aggressively to -6px.
+       Logic: Starts at 22px, shrinks aggressively to -8px.
     */
-    letter-spacing: clamp(-6px, 30px - 1.88vw, 22px);
+    letter-spacing: clamp(-8px, 30.6px - 2vw, 22px);
 }
 #titleText::after {
   content: "";
@@ -1540,4 +1540,11 @@ span.flex {
 #diagonalMenu.centered .video-menu a
 {
   color: #fff !important;
+}
+
+.RETURNSHIT
+{
+    font-weight: 400;
+    font-family: "chandler-42-regular", sans-serif;
+    font-size: 13px;
 }
