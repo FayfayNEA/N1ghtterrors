@@ -1418,11 +1418,11 @@ span.flex {
     transform-origin: center center;
 
     /* POSITION UPDATE:
-       Mobile: -20px (Tight to edge)
-       Desktop: -100px (Pushed left enough for 30vh text)
+       Mobile (430px): -20px 
+       Desktop (1920px): -90px (Reduced depth slightly for 26vh font)
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
-        clamp(-100px, 2.3px - 5.3vw, -20px)
+        clamp(-90px, 0.2px - 4.7vw, -20px)
     );
 }
 .titleText {
@@ -1445,17 +1445,19 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* NEW FONT SIZE:
-       Mobile: 4vh (Small & clean)
-       Desktop: 30vh (Large & impactful)
+    /* FONT SIZE: 
+       Mobile: 4vh (Kept as "perfect")
+       Desktop: 26vh (Reduced from 30vh)
     */
-    font-size: clamp(4vh, 12vw, 30vh);
+    font-size: clamp(4vh, 10vw, 26vh);
 
-    /* LETTER SPACING:
-       Mobile: 12px (Wide)
+    /* LETTER SPACING UPDATE:
+       Mobile: 22px (Increased by 10px as requested)
        Desktop: 4px (Tight)
+       
+       Logic: Starts at 22px on mobile, shrinks to 4px on desktop.
     */
-    letter-spacing: clamp(4px, 14.3px - 0.54vw, 12px);
+    letter-spacing: clamp(4px, 27px - 1.2vw, 22px);
 }
 #titleText::after {
   content: "";
@@ -1475,8 +1477,8 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  top: 60%;
-  left: 50%;
+  top: 80%;
+  left: 80%;
   transform: translate(-50%, 20px);
   padding: 8px 16px;
   font-family: "chandler-42-regular", sans-serif;
