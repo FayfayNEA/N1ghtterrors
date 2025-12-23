@@ -1417,13 +1417,9 @@ span.flex {
     transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: center center;
 
-    /* THE CALCULATED CLAMP (Linear Regression)
-       math: calc( Intercept + Slope * 100vw )
-       
-       Logic:
-       - At 430px wide (Mobile), this equals -20px.
-       - At 1920px wide (Desktop), this equals -60px.
-       - In between, it slides perfectly.
+    /* POSITION REGRESSION (Same as before)
+       Mobile: -20px | Desktop: -60px
+       Slides smoothly between them.
     */
     transform: translate(50%, -50%) rotate(-90deg) translateY(
         clamp(-60px, -8.5px - 2.68vw, -20px)
@@ -1449,15 +1445,14 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* FLUID FONT SIZE
-       Scales smoothly from 8vh (mobile) to 15vh (desktop) based on screen height.
+    /* FONT SIZE TWEAK
+       Mobile: 7.5vh (Slightly smaller than before)
+       Desktop: 17vh (Larger, more punchy)
     */
-    font-size: clamp(8vh, 12vh, 15vh);
+    font-size: clamp(7.5vh, 12vh, 17vh);
 
-    /* FLUID LETTER SPACING
-       Logic:
-       - At 430px wide, this equals 12px (Wide).
-       - At 1920px wide, this equals -2px (Tight).
+    /* SPACING REGRESSION (Same as before)
+       Mobile: 12px (Wide) | Desktop: -2px (Tight)
     */
     letter-spacing: clamp(-2px, 16px - 0.94vw, 12px);
 }
