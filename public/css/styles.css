@@ -1409,12 +1409,16 @@ span.flex {
     bottom: auto !important;
     left: auto !important;
     
-    /* VERTICAL POSITION:
-       Mobile: 50% (Dead Center)
-       Desktop: 50% + 10px (Sits slightly lower)
-       Logic: Adds 0px on mobile, scales up to 10px on desktop.
+    /* VERTICAL POSITION UPDATE:
+       Mobile: 50% (Centered)
+       Desktop (1900px): 50% + 30px (Sits much lower)
+       
+       Logic: 
+       - Starts at 0px offset on small screens.
+       - Slides down to hitting ~20px offset at 1700px.
+       - Maxes out at 30px offset at 1900px.
     */
-    top: calc(50% + clamp(0px, -2.9px + 0.67vw, 10px));
+    top: calc(50% + clamp(0px, -8.8px + 2.04vw, 30px));
     
     right: 0;
     
@@ -1424,7 +1428,7 @@ span.flex {
     transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-origin: center center;
 
-    /* HORIZONTAL POSITION (Depth):
+    /* HORIZONTAL DEPTH (Unchanged):
        Mobile: -20px 
        Desktop: -82px 
     */
@@ -1452,15 +1456,15 @@ span.flex {
     margin: 0;
     border: none;
     
-    /* FONT SIZE: 
+    /* FONT SIZE (Unchanged): 
        Mobile: 4vh
        Desktop: 24vh
     */
     font-size: clamp(4vh, 10vw, 24vh);
 
-    /* LETTER SPACING:
-       Mobile: 22px (Wide)
-       Desktop: -32px (Tight)
+    /* LETTER SPACING (Unchanged):
+       Mobile: 22px
+       Desktop: -32px
     */
     letter-spacing: clamp(-32px, 37.6px - 3.62vw, 22px);
 }
