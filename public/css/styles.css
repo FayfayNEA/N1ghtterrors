@@ -1511,7 +1511,12 @@ body:has(#fmyVideo.fade) .scroll-hint {
     z-index: 110;
 }
 
-/* Show button when intro is active */
+.intro.active ~ .click-hint-btn,
+body:has(.intro.active) .click-hint-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .intro.active .click-hint-btn {
     opacity: 1;
     transform: translateY(0);
