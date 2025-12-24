@@ -1358,9 +1358,9 @@ span.flex {
   }
 
   .click-words-hint {
-        font-size: 15px;      /* Smaller text for iPhones */
-        padding: 15px 20px;   /* Tighter padding */
-        line-height: 1.4;
+        font-size: 12px;      
+        padding: 14px 18px;   
+        line-height: 1.0;
         letter-spacing: 1px;
     }
     
@@ -1372,7 +1372,7 @@ span.flex {
     .scroll-hint, .click-hint-btn {
         bottom: 15px; 
         right: 15px;  
-        font-size: 11px;
+        font-size: 10px;
     }
 }
 
