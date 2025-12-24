@@ -1726,7 +1726,8 @@ body {
     }
     
     .intro {
-        max-width: 80% !important;      /* Use more screen width on mobile */
+        max-width: 80% !important;      
+        right: 50;
     }
 
     /* Corner hints pull closer to the edges on mobile */
