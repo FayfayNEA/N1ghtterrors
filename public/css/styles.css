@@ -1506,8 +1506,8 @@ span.flex {
 
 
 @keyframes clickWordsPulse {
-  0%, 100% { transform: translate(-50%, -5px) scale(1); }
-  50% { transform: translate(-50%, -5px) scale(1.05); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .intro.active .click-words-hint {
