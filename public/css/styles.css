@@ -1406,13 +1406,17 @@ span.flex {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    /* This ensures the center of the text block stays at the center of the screen */
+    transform: translate(-50%, -50%); 
     font-family: "Ogilvie";
-    -webkit-text-stroke: 0.01px #000; /* gives thin “spine” like chiller */
+    -webkit-text-stroke: 0.01px #000;
     font-style: normal;
     letter-spacing: clamp(-1.5rem, calc(0.6867rem - 0.1170vw), 0.1rem);
     z-index: 101;
     transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Prevent any text-alignment from pushing it right */
+    text-align: center;
+    width: max-content;
 } 
 
 .titleName.phase-3 {
@@ -1497,8 +1501,8 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  top: 95%;
-  left: 95%;
+  top: 20%;
+  left: 50%;
   transform: translate(-50%, 20px);
   padding: 8px 16px;
   font-family: "chandler-42-regular", sans-serif;
