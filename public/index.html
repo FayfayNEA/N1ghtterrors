@@ -27,48 +27,44 @@
         <meta name="twitter:description" content="BUY BUY BUY... its the only WAY">
         <meta name="twitter:image" content="https://n1ghtterrors.com/titlepageforphoen.jpg">
     </head>
-    <body class = "no-scrollbar">
-        <div class = "fpcontainer"> 
-            <div class = "screaming">
-                <div class="video-containerfp">
-                    <div class = "screaming">
-                                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" id="fmyVideo">
-                                    <source src="/images/ezgif.com-gif-to-mp4-converter.mp4" type="video/mp4">
-                                </video>
-                                <a class="SERECT BUTTON"> SCROLL SCROLL SCROLL</a>
-                    </div>
-                </div> 
+    <body class="no-scrollbar">
+    <div class="fpcontainer">
+        <div class="scroll-hint">SCROLL SCROLL SCROLL</div>
 
-                <div class="intro"> 
-                    <a href="/shop" class="click-words-hint">
-                        I admit you need one thing above all in order to understand my works
-                        -- and so it will be some time before my creations are 'understood' --, 
-                        you almost need to be a cow for this one thing and certainly not a 'modern man':
-                        it is rumination... 
-                    </a>
-            
-                </div>
+        <div class="screaming">
+            <div class="video-containerfp">
+                <video autoplay muted loop playsinline webkit-playsinline preload="metadata" id="fmyVideo">
+                    <source src="/images/ezgif.com-gif-to-mp4-converter.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="intro">
+                <a href="/shop" class="click-words-hint">
+                    I admit you need one thing above all in order to understand my works
+                    -- and so it will be some time before my creations are 'understood' --, 
+                    you almost need to be a cow for this one thing and certainly not a 'modern man':
+                    it is rumination... 
+                </a>
+                
+                <a href="/shop" class="click-hint-btn">CLICK TO ENTER</a>
+            </div>
         </div>
+    </div>
         <script>
-            document.querySelector('.intro').addEventListener('wheel', function(e) {
-                // Let the scroll event bubble up to the window
-                window.scrollBy(0, e.deltaY);
-            }, { passive: false });
-
             window.addEventListener('scroll', function() {
                 const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
                 const video = document.getElementById('fmyVideo');
                 const intro = document.querySelector('.intro');
-                const instructionText = document.querySelector('.instruction-text');
+                const scrollHint = document.querySelector('.scroll-hint'); // Added this
                 
                 if (scrollPercent > 0.2) {
                     video.classList.add('fade');
                     intro.classList.add('active');
-                    instructionText.classList.add('active');
+                    if(scrollHint) scrollHint.style.opacity = "0"; // Hide scroll text
                 } else {
                     video.classList.remove('fade');
                     intro.classList.remove('active');
-                    instructionText.classList.remove('active');
+                    if(scrollHint) scrollHint.style.opacity = "1"; // Show scroll text
                 }
             });
         </script>
