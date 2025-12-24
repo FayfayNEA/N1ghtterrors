@@ -1469,7 +1469,7 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  bottom: 30%;
+  top: auto;
   left: 50%;
   transform: translate(-50%, 20px);
   padding: 10px 29px;
