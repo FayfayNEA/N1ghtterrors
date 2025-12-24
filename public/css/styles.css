@@ -1494,19 +1494,21 @@ body:has(#fmyVideo.fade) .scroll-hint {
 
 /* --- CLICK BUTTON (On Paragraph) --- */
 .click-hint-btn {
-    display: inline-block;
-    margin-top: 30px; /* Space below paragraph */
-    padding: 12px 30px;
+    position: fixed;
+    bottom: 30px; /* Anchored to bottom */
+    right: 30px;  /* Anchored to right */
+    padding: 8px 15px; /* Smaller padding */
     border: 1px solid white;
     background: black;
     color: white;
     font-family: "chandler-42-regular", sans-serif;
-    font-size: 20px;
+    font-size: 14px; /* Reduced font size */
     text-decoration: none;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     transition: all 0.3s ease;
     opacity: 0; /* Hidden initially */
-    transform: translateY(10px);
+    pointer-events: none;
+    z-index: 110;
 }
 
 /* Show button when intro is active */
@@ -1535,22 +1537,24 @@ body:has(#fmyVideo.fade) .scroll-hint {
     display: block;
     width: 100%;
     padding: 25px 40px;
-    
-    /* Typography */
     font-family: "chandler-42-regular", sans-serif;
     font-size: 20px;
     line-height: 1.6;
     text-align: center;
     text-decoration: none;
     letter-spacing: 2px;
-    
-    /* Visual Style */
     color: white;
     background: black;
     border: 1px solid #fff;
     white-space: normal; 
     cursor: pointer;
     transition: all 0.4s ease;
+}
+
+.click-words-hint:hover {
+    background: white;
+    color: black;
+    border-color: black;
 }
 
 .intro.active .click-words-hint {
