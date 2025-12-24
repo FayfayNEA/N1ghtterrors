@@ -107,7 +107,7 @@ a.button {
 }
 
 .intro.active {
-    opacity: 100%;
+    opacity: 1;
     top: 50%;
     pointer-events: auto;
 }
@@ -1476,18 +1476,18 @@ span.flex {
 
 .click-words-hint {
     display: block;
-    left: 80%;
     width: 100%;
     padding: 25px 40px;
     
-    
+    /* Typography */
     font-family: "chandler-42-regular", sans-serif;
     font-size: 20px;
-    line-height: 1.6; 
+    line-height: 1.6;
     text-align: center;
     text-decoration: none;
     letter-spacing: 2px;
     
+    /* Visual Style */
     color: white;
     background: black;
     border: 1px solid #fff;
