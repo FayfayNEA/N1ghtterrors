@@ -109,6 +109,7 @@ a.button {
 .intro.active {
     opacity: 100%;
     top: 50%;
+    pointer-events: auto;
 }
 
 .screaming:hover .instruction-text {
@@ -1458,46 +1459,50 @@ span.flex {
 }
 
 .intro {
-    text-align: center;
-    padding: 30px;
-    max-width: 800px;
     position: fixed;
-    top: -100%;
+    top: -100%; /* Hidden off-screen initially */
     left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.8s ease, top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    opacity: 0%;
-    list-style: none;
-    z-index: 1;
+    transform: translate(-50%, -50%); 
+    width: 90%;
+    max-width: 800px; /* Constrains it so it looks like a paragraph */
+    z-index: 100;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease, top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    justify-content: center;
 }
 
 
 .click-words-hint {
-  bottom: 30%;
-  transform: translate(-50%, 20px);
-  padding: 10px 29px;
-  font-family: "chandler-42-regular", sans-serif;
-  font-size: 0.9rem;
-  width: auto;      
-  max-width: 100000px;     
-  white-space: normal;
-  letter-spacing: 2px;
-  border: 1px solid #fff;
-  background: black;
-  color: white;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 3;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+    display: block;
+    width: 100%;
+    padding: 25px 40px;
+    
+    
+    font-family: "chandler-42-regular", sans-serif;
+    font-size: 20px;
+    line-height: 1.6; 
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 2px;
+    
+    color: white;
+    background: black;
+    border: 1px solid #fff;
+    white-space: normal; 
+    cursor: pointer;
+    transition: all 0.4s ease;
 }
 
 .intro.active .click-words-hint {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -5px); 
+  animation: clickWordsPulse 2s ease-in-out infinite;
 }
+
+
 
 @keyframes clickWordsPulse {
   0%, 100% { transform: translate(-50%, -5px) scale(1); }
