@@ -63,7 +63,7 @@
             <div class="video-container">
                 <video autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="/images/videc.png" id="myVideo">
                     <source src="/images/shirts-mobile.mp4" type="video/mp4" media="(max-width: 600px)">
-                    <source src="/images/shirts.faststart.mp4" type="video/mp4">
+                    <source src="https://xq9fvf3j5hgipkqm.public.blob.vercel-storage.com/shirts.faststart.mp4" type="video/mp4">
                 </video>
                 <div class="menu-container">
                     <div class="menu-bar">
@@ -439,7 +439,7 @@
             });
         }
 
-        /* --- 2. SHIRT DEPLOYMENT (Open on Load) --- */
+        
         const adjustContentHeight = (content) => {
             if (content.style.maxHeight && content.style.maxHeight !== "0px") {
                 content.style.maxHeight = "0px";
@@ -450,27 +450,27 @@
             }
         };
 
-        // FORCE EVERYTHING OPEN ON LOAD
+        
         window.addEventListener('load', function() {
             const shirts = document.getElementsByClassName("shirt");
             
-            // We loop through twice to ensure the browser registers the state change
+            
             for (let i = 0; i < shirts.length; i++) {
                 const button = shirts[i];
                 const content = button.nextElementSibling;
 
-                // 1. Apply the classes immediately
+                
                 button.classList.add("active");
                 content.classList.add("active");
 
-                // 2. Wait 200ms for images to settle, then calculate height
+                
                 setTimeout(() => {
                     const fullHeight = content.scrollHeight;
                     content.style.maxHeight = (fullHeight + 120) + "px";
                     console.log(`Deployed shirt ${i} at height: ${fullHeight}`);
                 }, 200);
 
-                // 3. Re-attach the click listener so they can still be closed
+                
                 button.onclick = function() {
                     if (content.style.maxHeight !== "0px") {
                         content.style.maxHeight = "0px";
