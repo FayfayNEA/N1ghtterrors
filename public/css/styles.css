@@ -1720,14 +1720,14 @@ body {
 
   .click-words-hint {
         font-size: 15px;      
-        padding: 15px 18px;   
+        padding: 15px 16px;   
         line-height: 1.2;
         letter-spacing: 1px;
     }
     
     .intro {
         max-width: 80% !important; 
-        right: 50%;
+        right: 50% !important;
     }
 
     /* Corner hints pull closer to the edges on mobile */
