@@ -1076,11 +1076,16 @@ span.flex {
 
 @font-face {
   font-family: "Ogilvie";
-  src: url("/fonts/Ogilvie.woff2") format("woff2"),
-       url("/fonts/Ogilvie.woff") format("woff");
+  src: url("/fonts/Ogilvie.woff2") format("woff2");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+  font-display: swap; /* Add this line */
+}
+
+@font-face {
+  font-family: "chandler-42-regular";
+  src: url("/fonts/chandler-42-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap; /* Add this line */
 }
 
 .custom-play-button {
@@ -1351,6 +1356,24 @@ span.flex {
     transform: scale(1.0); 
     transform-origin: center center;
   }
+
+  .click-words-hint {
+        font-size: 15px;      /* Smaller text for iPhones */
+        padding: 15px 20px;   /* Tighter padding */
+        line-height: 1.4;
+        letter-spacing: 1px;
+    }
+    
+    .intro {
+        max-width: 95%;       /* Use more screen width on mobile */
+    }
+
+    /* Corner hints pull closer to the edges on mobile */
+    .scroll-hint, .click-hint-btn {
+        bottom: 15px; 
+        right: 15px;  
+        font-size: 11px;
+    }
 }
 
 @media (max-width: 1020px) {
