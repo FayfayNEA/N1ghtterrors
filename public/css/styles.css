@@ -1496,16 +1496,15 @@ body:has(#fmyVideo.fade) .scroll-hint {
 .click-hint-btn {
     position: fixed;
     bottom: 30px; /* Anchored to bottom */
-    right: 30px;  /* Anchored to right */
+    right: 220px;  /* Anchored to right */
     padding: 7px 15px; 
-    border: 1px solid white;
     font-weight: 400;
     background: black;
     color: white;
     font-family: "chandler-42-regular", sans-serif;
-    font-size: 12px; 
+    font-size: 18px; 
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
     transition: all 0.3s ease;
     opacity: 0; /* Hidden initially */
     pointer-events: none;
