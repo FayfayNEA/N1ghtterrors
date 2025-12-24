@@ -602,6 +602,34 @@
                 } else { el.classList.add("done"); }
             })();
         }
+        
+        (() => {
+            const menu = document.getElementById("diagonalMenu");
+                if (!menu) return;
+
+                let isTransitioning = false; 
+                let scrolling = false;
+                let scrollTimer = null;
+
+                window.addEventListener("scroll", () => {
+                    scrolling = true;
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => { scrolling = false; }, 180);
+                }, { passive: true });
+
+                menu.addEventListener("click", (e) => {
+                    if (scrolling || isTransitioning) return;
+
+                    
+                    menu.classList.toggle("centered");
+
+                    
+                    isTransitioning = true;
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 2000); 
+                }, true);
+            })();
         </script>
 
     </body>

@@ -1474,17 +1474,19 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  top: auto;
+  top: 5%;
   left: 50%;
   transform: translate(-50%, 20px);
   padding: 10px 29px;
   font-family: "chandler-42-regular", sans-serif;
   font-size: 0.9rem;
+  width: 90%;            
+  max-width: 900px;     
+  white-space: normal;
   letter-spacing: 2px;
   border: 1px solid #fff;
   background: black;
   color: white;
-  text-transform: uppercase;
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
