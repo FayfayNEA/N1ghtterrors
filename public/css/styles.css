@@ -1480,8 +1480,8 @@ span.flex {
   padding: 10px 29px;
   font-family: "chandler-42-regular", sans-serif;
   font-size: 0.9rem;
-  width: 90%;            
-  max-width: 900px;     
+  width: auto;      
+  max-width: 10000px;     
   white-space: normal;
   letter-spacing: 2px;
   border: 1px solid #fff;
