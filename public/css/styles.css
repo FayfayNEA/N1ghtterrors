@@ -1719,14 +1719,14 @@ body {
   }
 
   .click-words-hint {
-        font-size: 12px;      
-        padding: 14px 18px;   
-        line-height: 1.0;
+        font-size: 13px;      
+        padding: 15px 19px;   
+        line-height: 1.2;
         letter-spacing: 1px;
     }
     
     .intro {
-        max-width: 60% !important;      /* Use more screen width on mobile */
+        max-width: 80% !important;      /* Use more screen width on mobile */
     }
 
     /* Corner hints pull closer to the edges on mobile */
