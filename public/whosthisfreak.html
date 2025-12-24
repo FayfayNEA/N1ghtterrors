@@ -88,31 +88,84 @@
                         they hope you enjoy the current line sublinaml, each graphic is layered with stories and fear.<br>
                         enjoy.<br>
 
-                <p class="serect"> whats up, here are my old prints where i leanred SO Much.</p>  
-                <div class="content">  
-                    <span class="flex">
-                        <div class="holder">  
-                            <div class="gallery">
-                                <img loading= "lazy" src="/images/P0(1).png" onclick="myFunction5(this)" width="180" height="2"/>
-                                <img src="/images/it3.png" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/it2.png" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(2).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(3).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(4).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(5).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(6).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(7).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(8).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(9).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(10).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(11).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/P0(12).jpg" onclick="myFunction5(this)"/>
-                                <img loading= "lazy" src="/images/IT5.png" onclick="myFunction5(this)"/>
-                                
-                            </div>
-                        </div>
-                        <div class="bigimage">
-                            <img id="imageBox5" src="/images/P0(11).jpg">
-                        </div>
+                <p class="serect"> whats up, here are my old prints where i leanred SO Much.</p>
+                <div class="gallery-wrapper">
+                    <div class="main-stage">
+                        <button class="nav-arrow left" onclick="moveSlide(-1)">❮</button>
+                        
+                        <img id="mainImage" src="/images/P0(1).png" alt="Main View">
+                        
+                        <button class="nav-arrow right" onclick="moveSlide(1)">❯</button>
+                    </div>
+
+                    <div class="thumb-strip">
+                        <img class="thumb active" src="/images/P0(1).png" onclick="setSlide(0)">
+                        <img class="thumb" src="/images/it3.png" onclick="setSlide(1)">
+                        <img class="thumb" src="/images/it2.png" onclick="setSlide(2)">
+                        <img class="thumb" src="/images/P0(2).jpg" onclick="setSlide(3)">
+                        <img class="thumb" src="/images/P0(3).jpg" onclick="setSlide(4)">
+                        <img class="thumb" src="/images/P0(4).jpg" onclick="setSlide(5)">
+                        <img class="thumb" src="/images/P0(5).jpg" onclick="setSlide(6)">
+                        <img class="thumb" src="/images/P0(6).jpg" onclick="setSlide(7)">
+                        <img class="thumb" src="/images/P0(7).jpg" onclick="setSlide(8)">
+                        <img class="thumb" src="/images/P0(8).jpg" onclick="setSlide(9)">
+                        <img class="thumb" src="/images/P0(9).jpg" onclick="setSlide(10)">
+                        <img class="thumb" src="/images/P0(10).jpg" onclick="setSlide(11)">
+                        <img class="thumb" src="/images/P0(11).jpg" onclick="setSlide(12)">
+                        <img class="thumb" src="/images/P0(12).jpg" onclick="setSlide(13)">
+                        <img class="thumb" src="/images/IT5.png" onclick="setSlide(14)">
+                    </div>
+                </div>
     </body>
+    <script>
+        // 1. Create an array of all your image sources
+        const images = [
+            "/images/P0(1).png", "/images/it3.png", "/images/it2.png", 
+            "/images/P0(2).jpg", "/images/P0(3).jpg", "/images/P0(4).jpg", 
+            "/images/P0(5).jpg", "/images/P0(6).jpg", "/images/P0(7).jpg", 
+            "/images/P0(8).jpg", "/images/P0(9).jpg", "/images/P0(10).jpg", 
+            "/images/P0(11).jpg", "/images/P0(12).jpg", "/images/IT5.png"
+        ];
+
+        let currentIndex = 0;
+        const mainImg = document.getElementById('mainImage');
+        const thumbnails = document.querySelectorAll('.thumb');
+
+        // Function to jump to a specific slide (clicking a thumbnail)
+        function setSlide(index) {
+            currentIndex = index;
+            updateGallery();
+        }
+
+        // Function for arrows (-1 for left, +1 for right)
+        function moveSlide(direction) {
+            currentIndex += direction;
+
+            // Wrap around logic (Infinite loop)
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1; // Go to last
+            } else if (currentIndex >= images.length) {
+                currentIndex = 0; // Go to first
+            }
+            
+            updateGallery();
+        }
+
+        // Core function to update DOM
+        function updateGallery() {
+            // 1. Update Main Image
+            mainImg.src = images[currentIndex];
+
+            // 2. Update Active Thumbnail Styling
+            thumbnails.forEach(thumb => thumb.classList.remove('active')); // Reset all
+            thumbnails[currentIndex].classList.add('active'); // Highlight new one
+
+            // 3. Auto-scroll thumbnail strip to keep active thumb in view
+            thumbnails[currentIndex].scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'nearest', 
+                inline: 'center' 
+            });
+        }
+    </script>
 </html>

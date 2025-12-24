@@ -1557,3 +1557,94 @@ span.flex {
     font-family: "chandler-42-regular", sans-serif;
     font-size: 13px;
 }
+
+/* Container for the whole gallery */
+.gallery-wrapper {
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto; /* Centers it and adds spacing */
+    position: relative;
+}
+
+/* --- THE MAIN IMAGE STAGE --- */
+.main-stage {
+    position: relative;
+    width: 100%;
+    height: clamp(300px, 50vw, 600px); /* Responsive height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    margin-bottom: 20px;
+}
+
+.main-stage img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures image isn't stretched */
+    display: block;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 40px;
+    font-family: "chandler-42-regular", sans-serif;
+    cursor: pointer;
+    padding: 20px;
+    z-index: 10;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.nav-arrow:hover {
+    opacity: 1;
+}
+
+.nav-arrow.left { left: 0; }
+.nav-arrow.right { right: 0; }
+
+/* --- THE THUMBNAIL STRIP --- */
+.thumb-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto; /* Allows side scrolling if many images */
+    padding-bottom: 10px;
+    justify-content: flex-start; /* Aligns left */
+    
+    /* Hide ugly scrollbars but keep functionality */
+    scrollbar-width: thin;
+    scrollbar-color: #333 black;
+}
+
+.thumb-strip::-webkit-scrollbar {
+    height: 6px;
+}
+.thumb-strip::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+.thumb {
+    height: 80px; /* Thumbnail height */
+    width: auto;
+    cursor: pointer;
+    opacity: 0.4; /* Dimmed by default */
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.thumb:hover {
+    opacity: 0.8;
+}
+
+/* The selected image gets full brightness and a border */
+.thumb.active {
+    opacity: 1;
+    border: 1px solid white;
+}
