@@ -1365,7 +1365,7 @@ span.flex {
     }
     
     .intro {
-        max-width: 95%;       /* Use more screen width on mobile */
+        max-width: 70%;       /* Use more screen width on mobile */
     }
 
     /* Corner hints pull closer to the edges on mobile */
