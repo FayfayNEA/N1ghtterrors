@@ -1460,33 +1460,35 @@ span.flex {
 
 .intro {
     position: fixed;
-    top: -100%; /* Hidden off-screen initially */
+    top: -100%; 
     left: 50%;
     transform: translate(-50%, -50%); 
     width: 90%;
-    max-width: 800px; /* Constrains it so it looks like a paragraph */
-    z-index: 100;
+    max-width: 800px; 
+    z-index: 150; /* Higher than hints */
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.8s ease, top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    display: flex;
-    justify-content: center;
 }
 
-.scroll-hint {
+.scroll-hint, .click-hint-btn {
     position: fixed;
     bottom: 30px; 
     right: 30px;  
-    transform: translateX(-50%);
     font-family: "chandler-42-regular", sans-serif;
-    font-size: 18px;
-    letter-spacing: 5px;
-    color: white;
-    z-index: 5;
+    font-size: 14px; 
+    letter-spacing: 3px;
     text-transform: uppercase;
     transition: opacity 0.5s ease;
-    pointer-events: none; 
+    pointer-events: none;
 }
+
+.scroll-hint {
+    z-index: 100; 
+    color: white;
+    opacity: 1; /* Visible at start */
+}
+
 #fmyVideo.fade ~ .scroll-hint, 
 body:has(#fmyVideo.fade) .scroll-hint {
     opacity: 0;
@@ -1494,21 +1496,13 @@ body:has(#fmyVideo.fade) .scroll-hint {
 
 
 .click-hint-btn {
-    position: fixed;
-    bottom: 30px; /* Anchored to bottom */
-    right: 220px;  /* Anchored to right */
-    padding: 7px 15px; 
-    font-weight: 400;
+    z-index: 101; 
+    padding: 8px 15px;
     background: black;
     color: white;
-    font-family: "chandler-42-regular", sans-serif;
-    font-size: 18px; 
+    border: 1px solid white;
     text-decoration: none;
-    letter-spacing: 5px;
-    transition: all 0.3s ease;
-    opacity: 0; /* Hidden initially */
-    pointer-events: none;
-    z-index: 110;
+    opacity: 0;
 }
 
 .intro.active ~ .click-hint-btn,
