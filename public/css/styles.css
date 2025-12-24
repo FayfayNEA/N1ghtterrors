@@ -91,11 +91,6 @@ a.button {
 
 .intro {
     text-align: center;
-    padding: 30px;
-    max-width: 800px;
-    position: fixed;
-    top: -100%;
-    left: 50%;
     transform: translate(-50%, -50%);
     transition: opacity 0.8s ease, top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     opacity: 0%;
@@ -1474,7 +1469,7 @@ span.flex {
 
 .click-words-hint {
   position: fixed;
-  bottom: 50%;
+  bottom: 30%;
   left: 50%;
   transform: translate(-50%, 20px);
   padding: 10px 29px;
