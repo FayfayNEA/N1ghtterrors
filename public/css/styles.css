@@ -9,7 +9,7 @@ html, body {
 body {
     padding: 0;
     margin: 0;
-    min-height: 300vh; /* Make page scrollable */
+    min-height: 250vh; 
     overflow-y: auto;
     background-color: black;
     cursor: no-drop;
@@ -248,11 +248,11 @@ a.button:hover {
 }
 
 .scroll-spacer {
-    height: 300vh; /* Creates scroll space */
+    height: 200vh; 
 }
 
 button.shirt:first-of-type {
-    margin-top: 100vh; /* Push first content down by full viewport height */
+    margin-top: 70vh; /* Push first content down by full viewport height */
 }
 
 .content
@@ -1374,39 +1374,13 @@ span.flex {
     .diagonal-menu.centered.centered .menu-text {
         left: 55%;
     }
-     /*.titleName.phase-3{
-    bottom: clamp(350px, calc(557.70px - 14.42vw), 410px);
-  }*/
+     
 }
-
-/* @media (min-width: 1480px){
- .titleName.phase-3 .titleText{
-    letter-spacing: calc(
-    clamp(-3rem, 3.8571rem - 4.7619vw, 2rem) - 0.2rem
-  );
- } 
-    .titleName.phase-3{
-    bottom: clamp(350px, calc(-81.46px + 29.96vw), 430px);
-  }
-}
-
-@media (min-width: 1707px){
-  .titleName.phase-3{
-    bottom: 430px;
-  }
-}
-
-@media (min-width: 1900px){
-  .titleName.phase-3{
-    bottom: clamp(350px, calc(-81.46px + 29.96vw), 500px);
-  } 
-} */
 
 .titleName {
     position: fixed;
     top: 50%;
-    left: 50%;
-    /* This ensures the center of the text block stays at the center of the screen */
+    left: 20%;
     transform: translate(-50%, -50%); 
     font-family: "Ogilvie";
     -webkit-text-stroke: 0.01px #000;
