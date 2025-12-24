@@ -283,7 +283,7 @@
         </div>
 
         <script>
-        /* --- 1. CORE CART & SHOPPING LOGIC (Money & Stock) --- */
+        /* --- 1. CORE SHOPPING & INVENTORY (Your Original Logic) --- */
         function ready() {
             var removeCartItemButtons = document.getElementsByClassName('remove');
             for (var i = 0; i < removeCartItemButtons.length; i++) {
@@ -365,8 +365,10 @@
             for (var i = 0; i < cartItemNames.length; i++) {
                 if (cartItemNames[i].innerText.trim() === title) {
                     var existingRow = cartItemNames[i].closest('.cartrow');
-                    var quantityInput = existingRow.querySelector('.cartInput');
-                    quantityInput.value = parseInt(quantityInput.value) + quantity;
+                    var qtyInput = existingRow.querySelector('.cartInput');
+                    qtyInput.value = parseInt(qtyInput.value) + quantity;
+                    updateCartTotal();
+                    updateCartCounter();
                     return;
                 }
             }
@@ -380,6 +382,8 @@
             cartItems.append(cartRow);
             cartRow.getElementsByClassName("remove")[0].addEventListener('click', removeCartItem);
             cartRow.getElementsByClassName('cartInput')[0].addEventListener('change', quantityChanged);
+            updateCartTotal();
+            updateCartCounter();
         }
 
         function processCheckout(event) {
@@ -435,33 +439,33 @@
             });
         }
 
-        /* --- 2. SHIRT DEPLOYMENT (Updated to be Fully Open on Load) --- */
+        /* --- 2. SHIRT DEPLOYMENT (Open on Load) --- */
         const adjustContentHeight = (content) => {
-            if (content.classList.contains('active')) {
-                content.style.maxHeight = (content.scrollHeight + 60) + "px"; 
-            } else {
+            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
                 content.style.maxHeight = "0px";
+                content.classList.remove("active");
+            } else {
+                content.style.maxHeight = (content.scrollHeight + 100) + "px";
+                content.classList.add("active");
             }
         };
 
         window.addEventListener('load', function() {
-            var coll = document.getElementsByClassName("shirt");
-            for (var i = 0; i < coll.length; i++) {
-                var content = coll[i].nextElementSibling;
-                coll[i].classList.add("active");
+            var shirts = document.getElementsByClassName("shirt");
+            for (var i = 0; i < shirts.length; i++) {
+                var content = shirts[i].nextElementSibling;
+                // Deploy instantly
+                shirts[i].classList.add("active");
                 content.classList.add("active");
-                content.style.maxHeight = (content.scrollHeight + 60) + "px";
-
-                coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    this.nextElementSibling.classList.toggle("active");
-                    adjustContentHeight(this.nextElementSibling);
-                });
+                content.style.maxHeight = (content.scrollHeight + 100) + "px";
+                // Click behavior
+                shirts[i].onclick = function() { adjustContentHeight(this.nextElementSibling); };
             }
+            ready(); // Initialize shopping functions
         });
 
         function recalcOpenContent(content, extra = 60) {
-            if (!content || !content.classList.contains('active')) return;
+            if (!content || content.style.maxHeight === "0px") return;
             content.style.maxHeight = (content.scrollHeight + extra) + "px";
         }
 
@@ -473,13 +477,27 @@
         function myFunction4(smallImg) { document.getElementById("imageBox4").src = smallImg.src; }
         function myFunction5(smallImg) { document.getElementById("imageBox5").src = smallImg.src; }
 
-        document.querySelector('.shopping').addEventListener('click', () => { document.body.classList.add('active'); });
-        document.querySelector('.closeShopping').addEventListener('click', () => { document.body.classList.remove('active'); });
+        let openShopping = document.querySelector('.shopping');
+        let closeShopping = document.querySelector('.closeShopping');
+        openShopping.addEventListener('click', () => { document.body.classList.add('active'); });
+        closeShopping.addEventListener('click', () => { document.body.classList.remove('active'); });
 
-        /* --- 4. PERFORMANCE & SCROLL (iPhone Fixes) --- */
-        let titleTriggered = false;
-        let hasTriggered = false;
+        /* --- 4. VIDEO LOGIC --- */
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.querySelector(".video-container");
+            const video = document.getElementById("myVideo");
+            if (!container || !video) return;
+            ["loadeddata", "playing"].forEach((evt) => {
+                video.addEventListener(evt, () => container.classList.add("video-ready"));
+            });
+            const tryPlay = () => video.play().catch(() => {});
+            tryPlay();
+            // Special fix for iPhone low power mode
+            window.addEventListener("click", tryPlay, { once: true });
+        });
 
+        /* --- 5. PERFORMANCE & SCROLL (Lag Fix) --- */
+        let titleTriggered = false, hasTriggered = false;
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -499,14 +517,12 @@
         }, { threshold: 0.1 });
 
         document.addEventListener('DOMContentLoaded', () => {
-            ready();
-            const menu = document.getElementById('diagonalMenu');
-            const title = document.getElementById('titleElement');
+            const menu = document.getElementById('diagonalMenu'), title = document.getElementById('titleElement');
             if (menu) scrollObserver.observe(menu);
             if (title) scrollObserver.observe(title);
         });
 
-        // Menu Scroll-Safety logic
+        // Menu Scroll-Safety Hack
         (() => {
             const menu = document.getElementById("diagonalMenu");
             if (!menu) return;
@@ -519,26 +535,10 @@
             menu.addEventListener("click", (e) => { if (!scrolling) menu.classList.toggle("centered"); }, true);
         })();
 
-        // Video-Ready Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.querySelector(".video-container");
-            const video = document.getElementById("myVideo");
-            if (!container || !video) return;
-            ["loadeddata", "playing"].forEach((evt) => {
-                video.addEventListener(evt, () => container.classList.add("video-ready"));
-            });
-            const tryPlay = () => video.play().catch(() => {});
-            tryPlay();
-            const start = () => { tryPlay(); window.removeEventListener("click", start); };
-            window.addEventListener("click", start, { once: true });
-        });
-
-        /* --- 5. COLOR DETECTION (Over-Dark Logic) --- */
+        /* --- 6. COLOR DETECTION (Over-Dark Logic) --- */
         (() => {
-            const titleWrap = document.getElementById("titleElement");
-            const menuWrap = document.getElementById("diagonalMenu");
-            const titleText = document.querySelector("#titleElement .titleText");
-            const menuText = document.querySelector("#diagonalMenu .menu-text");
+            const titleWrap = document.getElementById("titleElement"), menuWrap = document.getElementById("diagonalMenu");
+            const titleText = document.querySelector("#titleElement .titleText"), menuText = document.querySelector("#diagonalMenu .menu-text");
             const DARK_SELECTOR = ".shirt, .content, .contact";
             if (!titleWrap || !menuWrap || !titleText || !menuText) return;
 
