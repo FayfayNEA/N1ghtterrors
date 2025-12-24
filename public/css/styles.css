@@ -263,15 +263,17 @@ button.shirt:first-of-type {
     width: 80%;
     color: white;
     background-color: black;
-    max-height: 0;
+    max-height: 0; 
     overflow: hidden;
     box-sizing: border-box;
-    visibility: hidden; 
-    opacity: 0;         
-    text-rendering: optimizeSpeed;
-    -webkit-font-smoothing: antialiased;
-    transition: max-height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+    visibility: visible !important; 
+    opacity: 0; 
+    transition: max-height 0.5s ease, opacity 0.3s ease;
 
+}
+
+.content.active {
+    opacity: 1;
 }
 
 .shirt img {
@@ -1133,7 +1135,6 @@ span.flex {
 @media (max-width: 450px){
 
     .content.active {
-        visibility: visible;
         opacity: 1;
     }
 

@@ -450,18 +450,42 @@
             }
         };
 
+        // FORCE EVERYTHING OPEN ON LOAD
         window.addEventListener('load', function() {
-            var shirts = document.getElementsByClassName("shirt");
-            for (var i = 0; i < shirts.length; i++) {
-                var content = shirts[i].nextElementSibling;
-                // Deploy instantly
-                shirts[i].classList.add("active");
+            const shirts = document.getElementsByClassName("shirt");
+            
+            // We loop through twice to ensure the browser registers the state change
+            for (let i = 0; i < shirts.length; i++) {
+                const button = shirts[i];
+                const content = button.nextElementSibling;
+
+                // 1. Apply the classes immediately
+                button.classList.add("active");
                 content.classList.add("active");
-                content.style.maxHeight = (content.scrollHeight + 100) + "px";
-                // Click behavior
-                shirts[i].onclick = function() { adjustContentHeight(this.nextElementSibling); };
+
+                // 2. Wait 200ms for images to settle, then calculate height
+                setTimeout(() => {
+                    const fullHeight = content.scrollHeight;
+                    content.style.maxHeight = (fullHeight + 120) + "px";
+                    console.log(`Deployed shirt ${i} at height: ${fullHeight}`);
+                }, 200);
+
+                // 3. Re-attach the click listener so they can still be closed
+                button.onclick = function() {
+                    if (content.style.maxHeight !== "0px") {
+                        content.style.maxHeight = "0px";
+                        this.classList.remove("active");
+                        content.classList.remove("active");
+                    } else {
+                        content.style.maxHeight = (content.scrollHeight + 120) + "px";
+                        this.classList.add("active");
+                        content.classList.add("active");
+                    }
+                };
             }
-            ready(); // Initialize shopping functions
+            
+            // Initialize your shopping functions
+            ready(); 
         });
 
         function recalcOpenContent(content, extra = 60) {
