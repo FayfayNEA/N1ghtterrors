@@ -283,150 +283,59 @@
         </div>
 
         <script>
-
+        /* --- 1. CORE CART & SHOPPING LOGIC (Money & Stock) --- */
         function ready() {
             var removeCartItemButtons = document.getElementsByClassName('remove');
             for (var i = 0; i < removeCartItemButtons.length; i++) {
-                var button = removeCartItemButtons[i];
-                button.addEventListener('click', removeCartItem);
+                removeCartItemButtons[i].addEventListener('click', removeCartItem);
             }
-
             var quantityInputs = document.getElementsByClassName('cartInput');
             for (var i = 0; i < quantityInputs.length; i++) {
-                var input = quantityInputs[i];
-                input.addEventListener('change', quantityChanged);
+                quantityInputs[i].addEventListener('change', quantityChanged);
             }
-
             var addToCartButtons = document.getElementsByClassName('checkout');
             for (var i = 0; i < addToCartButtons.length; i++) {
-                var button = addToCartButtons[i];
-                button.addEventListener('click', addToCartClicked);
+                addToCartButtons[i].addEventListener('click', addToCartClicked);
             }
-
             var checkoutButton = document.getElementsByClassName('checkOut')[0];
             if (checkoutButton) {
-            checkoutButton.addEventListener('click', processCheckout);
+                checkoutButton.addEventListener('click', processCheckout);
             }
-
             initOutOfStockButtons();
         }
 
-        var coll = document.getElementsByClassName("shirt");
-        var i;
-
-        const adjustContentHeight = (content) => {
-            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
-                content.style.maxHeight = "0px"; 
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        }
-
-        for (i = 0; i < coll.length; i++) {
-            
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                adjustContentHeight(this.nextElementSibling);
-            }); 
-        }
-
-
-        window.addEventListener('load', function() {
-            var coll = document.getElementsByClassName("shirt");
-            for (var i = 0; i < coll.length; i++) {
-                var content = coll[i].nextElementSibling;
-                content.style.maxHeight = (content.scrollHeight + 40) + "px"; 
-            }
-        });
-
-        function recalcOpenContent(content, extra = 40) {
-            if (!content) return;
-            if (!content.style.maxHeight || content.style.maxHeight === "0px") return;
-            content.style.maxHeight = (content.scrollHeight + extra) + "px";
-        }
-
-  
-        function myFunction(smallImg) {
-            var fullImg = document.getElementById("imageBox");
-            fullImg.src = smallImg.src;
-        }
-
-        function myFunction1(smallImg) {
-            var fullImg = document.getElementById("imageBox1");
-            fullImg.src = smallImg.src;
-        }
-
-        function myFunction2(smallImg) {
-            var fullImg = document.getElementById("imageBox2");
-            fullImg.src = smallImg.src;
-        }
-
-        function myFunction3(smallImg) {
-            var fullImg = document.getElementById("imageBox3");
-            fullImg.src = smallImg.src;
-        }
-
-        function myFunction4(smallImg) {
-            var fullImg = document.getElementById("imageBox4");
-            fullImg.src = smallImg.src;
-        }
-
-        function myFunction5(smallImg) {
-            var fullImg = document.getElementById("imageBox5");
-            fullImg.src = smallImg.src;
-        }
-
-        
-        let openShopping = document.querySelector('.shopping');
-        let closeShopping = document.querySelector('.closeShopping');
-        let body = document.querySelector('body');
-
-        openShopping.addEventListener('click', () => {
-            body.classList.add('active');
-        });
-
-        closeShopping.addEventListener('click', () => {
-            body.classList.remove('active');
-        });
-
         function removeCartItem(event) {
-            var buttonClicked = event.target;
-            buttonClicked.parentElement.parentElement.remove();
+            event.target.parentElement.parentElement.remove();
             updateCartTotal();
             updateCartCounter();
         }
 
         function quantityChanged(event) {
             var input = event.target;
-            if (isNaN(input.value) || input.value <= 0) {
-                input.value = 1;
-            }
+            if (isNaN(input.value) || input.value <= 0) { input.value = 1; }
             validateQuantity(input);
             updateCartTotal();
             updateCartCounter();
-        } 
+        }
 
         function validateQuantity(input) {
             var cartRow = input.closest('.cartrow');
             var quantity = parseInt(input.value, 10) || 1;
-
             var inventoryId = Number(cartRow.dataset.inventoryId);
             if (!Number.isFinite(inventoryId)) return;
 
             fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
                 .then(r => r.json())
                 .then(data => {
-                var maxQuantity = Number(data.inStock || 0);
-                if (quantity > maxQuantity) {
-                    alert(`Sorry, only ${maxQuantity} of this item is available.`);
-                    input.value = maxQuantity;
-                    updateCartTotal();
-                    updateCartCounter();
-                }
-                })
-                .catch(err => console.error('Error checking inventory:', err));
+                    var maxQuantity = Number(data.inStock || 0);
+                    if (quantity > maxQuantity) {
+                        alert(`Sorry, only ${maxQuantity} of this item is available.`);
+                        input.value = maxQuantity;
+                        updateCartTotal();
+                        updateCartCounter();
+                    }
+                }).catch(err => console.error('Error checking inventory:', err));
         }
-
 
         function addToCartClicked(event) {
             var button = event.target;
@@ -435,467 +344,241 @@
             var price = shopItem.getElementsByClassName('thingPrice')[0].innerText;
             var imageSrc = shopItem.getElementsByClassName('random')[0].src;
             var sizeDropdown = shopItem.querySelector('select');
-            var inventoryId = sizeDropdown
-                ? Number(sizeDropdown.value)
-                : Number(shopItem.dataset.inventoryId);
+            var inventoryId = sizeDropdown ? Number(sizeDropdown.value) : Number(shopItem.dataset.inventoryId);
             var sizeLabel = sizeDropdown ? sizeDropdown.options[sizeDropdown.selectedIndex].text : '';
             var displayTitle = sizeLabel ? `${sizeLabel} - ${title}` : title;
-
-            if (!Number.isFinite(inventoryId)) {
-                console.error("Missing inventoryId for item:", shopItem);
-                alert("This item is missing an inventory id.");
-                return;
-            }
 
             fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
                 .then(r => r.json())
                 .then(data => {
-                if ((data.inStock || 0) > 0) {
-                    addItemToCart(displayTitle, price, imageSrc, 1, null, inventoryId);
-                    updateCartTotal();
-                    updateCartCounter();
-                } else {
-                    alert('Sorry, this item is sold out.');
-                }
-                })
-                .catch(err => {
-                console.error('Error checking inventory:', err);
-                alert('Error checking inventory. Please try again.');
+                    if ((data.inStock || 0) > 0) {
+                        addItemToCart(displayTitle, price, imageSrc, 1, null, inventoryId);
+                        updateCartTotal();
+                        updateCartCounter();
+                    } else { alert('Sorry, this item is sold out.'); }
                 });
-            }
-
-        function addItemToCart(title, price, imageSrc, quantity, lookupTitle = null, inventoryId = null) {
-        var cartItems = document.getElementsByClassName('cartItems')[0];
-        var cartItemNames = cartItems.getElementsByClassName('shop-title');
-        
-       
-        for (var i = 0; i < cartItemNames.length; i++) {
-            if (cartItemNames[i].innerText.trim() === title) {
-                
-                var existingRow = cartItemNames[i].closest('.cartrow');
-                var quantityInput = existingRow.querySelector('.cartInput');
-                var currentQuantity = parseInt(quantityInput.value);
-                var newQuantity = currentQuantity + quantity;
-                
-                
-                var existingRow = cartItemNames[i].closest('.cartrow');
-                var quantityInput = existingRow.querySelector('.cartInput');
-                var currentQuantity = parseInt(quantityInput.value, 10) || 0;
-                var newQuantity = currentQuantity + quantity;
-
-                var existingInventoryId = Number(existingRow.dataset.inventoryId);
-                if (!Number.isFinite(existingInventoryId)) {
-                alert('Inventory id missing for this cart item.');
-                return;
-                }
-
-                fetch(`/check-inventory?id=${encodeURIComponent(existingInventoryId)}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (newQuantity <= (data.inStock || 0)) {
-                    quantityInput.value = newQuantity;
-                    updateCartTotal();
-                    updateCartCounter();
-                    } else {
-                    alert(`Sorry, only ${data.inStock} of "${title}" is available. You already have ${currentQuantity} in your cart.`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error checking inventory:', error);
-                    alert('Error checking inventory. Please try again.');
-                });
-
-                return;
-
-            }
         }
 
-        
-        var cartRow = document.createElement('div');
-        cartRow.classList.add('cartrow');
-        if (inventoryId != null) cartRow.dataset.inventoryId = inventoryId;
-        var cartRowContents = `
-            <div class="itemsInCart">
-                <img class="cart-item" src="${imageSrc}" width="100" height="100">
-                <span class="shop-title">${title}</span>
-            </div>
-            <span class="priceboi">$${price}</span>
-            <div class="cart-quanity">
-                <input class="cartInput" type="number" value="${quantity}" min="1">
-                <button class="remove">remove</button>
-            </div>
-        `;
-        cartRow.innerHTML = cartRowContents;
-        cartItems.append(cartRow);
-        
-        cartRow.getElementsByClassName("remove")[0].addEventListener('click', removeCartItem);
-        cartRow.getElementsByClassName('cartInput')[0].addEventListener('change', quantityChanged);
-        updateCartCounter();
-    }
+        function addItemToCart(title, price, imageSrc, quantity, lookupTitle = null, inventoryId = null) {
+            var cartItems = document.getElementsByClassName('cartItems')[0];
+            var cartItemNames = cartItems.getElementsByClassName('shop-title');
+            for (var i = 0; i < cartItemNames.length; i++) {
+                if (cartItemNames[i].innerText.trim() === title) {
+                    var existingRow = cartItemNames[i].closest('.cartrow');
+                    var quantityInput = existingRow.querySelector('.cartInput');
+                    quantityInput.value = parseInt(quantityInput.value) + quantity;
+                    return;
+                }
+            }
+            var cartRow = document.createElement('div');
+            cartRow.classList.add('cartrow');
+            if (inventoryId != null) cartRow.dataset.inventoryId = inventoryId;
+            cartRow.innerHTML = `
+                <div class="itemsInCart"><img class="cart-item" src="${imageSrc}" width="100" height="100"><span class="shop-title">${title}</span></div>
+                <span class="priceboi">$${price}</span>
+                <div class="cart-quanity"><input class="cartInput" type="number" value="${quantity}" min="1"><button class="remove">remove</button></div>`;
+            cartItems.append(cartRow);
+            cartRow.getElementsByClassName("remove")[0].addEventListener('click', removeCartItem);
+            cartRow.getElementsByClassName('cartInput')[0].addEventListener('change', quantityChanged);
+        }
 
         function processCheckout(event) {
             event.preventDefault();
-            
             var cartRows = document.querySelectorAll('.cartItems .cartrow');
-            if (cartRows.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-
-            var items = [];
-            
-            cartRows.forEach(cartRow => {
-                var inventoryId = parseInt(cartRow.dataset.inventoryId, 10);
-                var quantity_wa = parseInt(cartRow.querySelector('.cartInput').value);
-                
-                items.push({
-                    inventoryId: inventoryId,
-                    quantity_wa: quantity_wa,
-                });
-            });
-
-            console.log('Processing checkout with items:', items);
-            
+            if (cartRows.length === 0) { alert('Your cart is empty!'); return; }
+            var items = Array.from(cartRows).map(row => ({
+                inventoryId: parseInt(row.dataset.inventoryId, 10),
+                quantity_wa: parseInt(row.querySelector('.cartInput').value)
+            }));
             fetch('/checkout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: items })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => Promise.reject(err));
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    throw new Error('No checkout URL received');
-                }
-            })
-            .catch(error => {
-                console.error('Checkout Error:', error);
-                alert(error.error || 'Checkout failed. Please try again.');
-            });
+            }).then(r => r.json()).then(data => { if (data.url) window.location.href = data.url; });
         }
 
         function updateCartTotal() {
-            var cartItemContainer = document.getElementsByClassName('cartItems')[0];
-            var cartRows = cartItemContainer.getElementsByClassName('cartrow');
+            var cartRows = document.getElementsByClassName('cartrow');
             var total = 0;
-
             for (var i = 0; i < cartRows.length; i++) {
-                var cartRow = cartRows[i];
-                var priceElement = cartRow.getElementsByClassName('priceboi')[0];
-                var quantityElement = cartRow.getElementsByClassName('cartInput')[0];
-
-                var price = parseFloat(priceElement.innerText.replace('$', ''));
-                var quantity = parseInt(quantityElement.value) || 1;
-
-                var subtotal = price * quantity;
-                total += subtotal;
+                var price = parseFloat(cartRows[i].getElementsByClassName('priceboi')[0].innerText.replace('$', ''));
+                var qty = parseInt(cartRows[i].getElementsByClassName('cartInput')[0].value) || 1;
+                total += (price * qty);
             }
-
-            total = Math.round(total * 100) / 100;
-            document.getElementsByClassName('totalPrice')[0].innerText = '$' + total;
+            document.getElementsByClassName('totalPrice')[0].innerText = '$' + (Math.round(total * 100) / 100);
         }
-
-        if (document.readyState == 'loading') {
-            document.addEventListener('DOMContentLoaded', ready);
-        } else {
-            ready();
-        }
-
-        function shortenTitle(displayTitle, maxLength = 15) {
-        if (!displayTitle) return '';
-        
-        if (displayTitle.length <= maxLength) {
-            return displayTitle;
-        }
-
-        const truncated = displayTitle.substring(0, maxLength);
-        const lastSpaceIndex = truncated.lastIndexOf(' ');
-        
-        
-        if (lastSpaceIndex > maxLength * 0.7) {
-            return truncated.substring(0, lastSpaceIndex).trim();
-        }
-        
-       
-        return truncated.trim();
-    }
-
-    function initOutOfStockButtons() {
-    
-    const productTextBlocks = document.querySelectorAll(".content .texts");
-
-    productTextBlocks.forEach(block => {
-        const addBtn = block.querySelector("button.checkout");
-        const soldOutEl = block.querySelector(".soldout");
-        const sizeSelect = block.querySelector("select"); // only exists on the ribbed tee
-
-        if (!addBtn || !soldOutEl) return;
-
-        async function checkStockForCurrentSelection() {
-        try {
-            
-            const inventoryId = sizeSelect
-            ? Number(sizeSelect.value)
-            : Number(block.dataset.inventoryId);
-
-            if (!Number.isFinite(inventoryId)) {
-            console.warn("Missing/invalid inventory id for block:", block);
-            
-            addBtn.disabled = false;
-            soldOutEl.hidden = true;
-            return;
-            }
-            const content = block.closest(".content");
-            recalcOpenContent(content, 40);
-            const res = await fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`);
-            const data = await res.json();
-            const inStock = Number(data.inStock || 0);
-
-            if (inStock > 0) {
-            addBtn.disabled = false;
-            soldOutEl.hidden = true;
-            } else {
-            addBtn.disabled = true;
-            soldOutEl.hidden = false;
-            }
-        } catch (e) {
-            
-            addBtn.disabled = false;
-            soldOutEl.hidden = true;
-            console.error("Stock check failed:", e);
-        }
-        }
-
-        
-        checkStockForCurrentSelection();
-
-        
-        if (sizeSelect) {
-        sizeSelect.addEventListener("change", checkStockForCurrentSelection);
-        }
-    });
-    }
 
         function updateCartCounter() {
-        var cartRows = document.querySelectorAll('.cartItems .cartrow');
-        var totalItems = 0;
-        
-        cartRows.forEach(cartRow => {
-            var quantityInput = cartRow.querySelector('.cartInput');
-            totalItems += parseInt(quantityInput.value) || 0;
-        });
-        
-        var counter = document.getElementById('cartCounter');
-        counter.textContent = totalItems;
+            var count = 0;
+            document.querySelectorAll('.cartItems .cartInput').forEach(input => { count += parseInt(input.value) || 0; });
+            document.getElementById('cartCounter').textContent = count;
+        }
+
+        function initOutOfStockButtons() {
+            const productTextBlocks = document.querySelectorAll(".content .texts");
+            productTextBlocks.forEach(block => {
+                const addBtn = block.querySelector("button.checkout");
+                const soldOutEl = block.querySelector(".soldout");
+                const sizeSelect = block.querySelector("select");
+                if (!addBtn || !soldOutEl) return;
+                async function checkStock() {
+                    const id = sizeSelect ? Number(sizeSelect.value) : Number(block.dataset.inventoryId);
+                    const res = await fetch(`/check-inventory?id=${encodeURIComponent(id)}`);
+                    const data = await res.json();
+                    const inStock = Number(data.inStock || 0);
+                    addBtn.disabled = inStock <= 0;
+                    soldOutEl.hidden = inStock > 0;
+                    recalcOpenContent(block.closest(".content"));
+                }
+                checkStock();
+                if (sizeSelect) sizeSelect.addEventListener("change", checkStock);
+            });
+        }
+
+        /* --- 2. SHIRT DEPLOYMENT (Updated to be Fully Open on Load) --- */
+        const adjustContentHeight = (content) => {
+            if (content.classList.contains('active')) {
+                content.style.maxHeight = (content.scrollHeight + 60) + "px"; 
+            } else {
+                content.style.maxHeight = "0px";
             }
+        };
+
+        window.addEventListener('load', function() {
+            var coll = document.getElementsByClassName("shirt");
+            for (var i = 0; i < coll.length; i++) {
+                var content = coll[i].nextElementSibling;
+                coll[i].classList.add("active");
+                content.classList.add("active");
+                content.style.maxHeight = (content.scrollHeight + 60) + "px";
+
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    this.nextElementSibling.classList.toggle("active");
+                    adjustContentHeight(this.nextElementSibling);
+                });
+            }
+        });
+
+        function recalcOpenContent(content, extra = 60) {
+            if (!content || !content.classList.contains('active')) return;
+            content.style.maxHeight = (content.scrollHeight + extra) + "px";
+        }
+
+        /* --- 3. GALLERY & UI TRIGGERS --- */
+        function myFunction(smallImg) { document.getElementById("imageBox").src = smallImg.src; }
+        function myFunction1(smallImg) { document.getElementById("imageBox1").src = smallImg.src; }
+        function myFunction2(smallImg) { document.getElementById("imageBox2").src = smallImg.src; }
+        function myFunction3(smallImg) { document.getElementById("imageBox3").src = smallImg.src; }
+        function myFunction4(smallImg) { document.getElementById("imageBox4").src = smallImg.src; }
+        function myFunction5(smallImg) { document.getElementById("imageBox5").src = smallImg.src; }
+
+        document.querySelector('.shopping').addEventListener('click', () => { document.body.classList.add('active'); });
+        document.querySelector('.closeShopping').addEventListener('click', () => { document.body.classList.remove('active'); });
+
+        /* --- 4. PERFORMANCE & SCROLL (iPhone Fixes) --- */
         let titleTriggered = false;
         let hasTriggered = false;
 
-        function handleScroll() {
-            const scrollPosition = window.scrollY;
-            const menuTriggerPoint = window.innerHeight * 2;
-            const titleTriggerPoint = window.innerHeight * 0.5;
-            
-            
-            if (scrollPosition > menuTriggerPoint && !hasTriggered) {
-            const menuElement = document.getElementById('diagonalMenu');
-            menuElement.classList.add('active');
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'diagonalMenu' && !hasTriggered) {
+                        entry.target.classList.add('active');
+                        setTimeout(() => { entry.target.classList.add('typed'); }, 2000);
+                        hasTriggered = true;
+                    }
+                    if (entry.target.id === 'titleElement' && !titleTriggered) {
+                        entry.target.classList.add('active');
+                        startTypingTitle();
+                        setTimeout(() => { entry.target.classList.add('phase-3'); }, 3000);
+                        titleTriggered = true;
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
 
-            setTimeout(() => {
-            menuElement.classList.add('typed');
-            }, 2000);
-
-            hasTriggered = true;
-
-        }
-            
-            
-            if (scrollPosition > titleTriggerPoint && !titleTriggered) {
-                const titleElement = document.getElementById('titleElement');
-                titleElement.classList.add('active');
-                titleTriggered = true;
-                
-                startTypingTitle();
-
-                setTimeout(() => {
-                    titleElement.classList.add('phase-3');
-                }, 3000);
-            }
-        }
-        
-
-        
-        window.addEventListener('scroll', handleScroll);
-
-        
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.diagonal-menu')) {
-                document.getElementById('diagonalMenu').classList.remove('centered');
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            ready();
+            const menu = document.getElementById('diagonalMenu');
+            const title = document.getElementById('titleElement');
+            if (menu) scrollObserver.observe(menu);
+            if (title) scrollObserver.observe(title);
         });
 
-        
-    (() => {
-    const menu = document.getElementById("diagonalMenu");
-    if (!menu) return;
+        // Menu Scroll-Safety logic
+        (() => {
+            const menu = document.getElementById("diagonalMenu");
+            if (!menu) return;
+            let scrolling = false, scrollTimer = null;
+            window.addEventListener("scroll", () => {
+                scrolling = true;
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => { scrolling = false; }, 180);
+            }, { passive: true });
+            menu.addEventListener("click", (e) => { if (!scrolling) menu.classList.toggle("centered"); }, true);
+        })();
 
-    let scrolling = false;
-    let scrollTimer = null;
-
-    const setScrolling = () => {
-        scrolling = true;
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
-        scrolling = false;
-        }, 180); 
-    };
-
-    window.addEventListener("scroll", setScrolling, { passive: true });
-    window.addEventListener("touchmove", setScrolling, { passive: true });
-
-    
-    menu.addEventListener("click", (e) => {
-        if (scrolling) {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
-        }
-        
-        menu.classList.toggle("centered");
-    }, true);
-
-    
-    let lastTouchMove = 0;
-    window.addEventListener("touchmove", () => { lastTouchMove = Date.now(); }, { passive: true });
-
-    menu.addEventListener("touchend", (e) => {
-        if (Date.now() - lastTouchMove < 200) {
-        e.preventDefault();
-        e.stopPropagation();
-        }
-    }, { passive: false, capture: true });
-    })();
-
-
+        // Video-Ready Logic
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.querySelector(".video-container");
             const video = document.getElementById("myVideo");
-            if (!container||!video) return;
-
-            ["loadeddata", "playing"].forEach((evt) => { 
+            if (!container || !video) return;
+            ["loadeddata", "playing"].forEach((evt) => {
                 video.addEventListener(evt, () => container.classList.add("video-ready"));
             });
-
             const tryPlay = () => video.play().catch(() => {});
             tryPlay();
-
-            const start = () => {
-                tryPlay();
-                window.removeEventListener("touchstart", start);
-                window.removeEventListener("click", start);
-                window.removeEventListener("pointerdown", start);
-            };
-            
-            window.addEventListener("touchstart", start, { once: true, passive: true });
+            const start = () => { tryPlay(); window.removeEventListener("click", start); };
             window.addEventListener("click", start, { once: true });
-            window.addEventListener("pointerdown", start, { once: true });
-            });
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        });
 
-        const videoContainer = document.querySelector('.video-container');
-        const video2= document.getElementById('myVideo');
-        let hasPlayed = false;
-
-
+        /* --- 5. COLOR DETECTION (Over-Dark Logic) --- */
         (() => {
-        const titleWrap  = document.getElementById("titleElement");
-        const menuWrap   = document.getElementById("diagonalMenu");
+            const titleWrap = document.getElementById("titleElement");
+            const menuWrap = document.getElementById("diagonalMenu");
+            const titleText = document.querySelector("#titleElement .titleText");
+            const menuText = document.querySelector("#diagonalMenu .menu-text");
+            const DARK_SELECTOR = ".shirt, .content, .contact";
+            if (!titleWrap || !menuWrap || !titleText || !menuText) return;
 
-        const titleText  = document.querySelector("#titleElement .titleText");
-        const menuText   = document.querySelector("#diagonalMenu .menu-text");
+            function overDark(targetEl) {
+                const r = targetEl.getBoundingClientRect();
+                let x = Math.max(0, Math.min(window.innerWidth - 1, r.left + r.width / 2));
+                let y = Math.max(0, Math.min(window.innerHeight - 1, r.top + r.height / 2));
+                const prev = targetEl.style.pointerEvents;
+                targetEl.style.pointerEvents = "none";
+                const stack = document.elementsFromPoint(x, y);
+                targetEl.style.pointerEvents = prev;
+                return stack.some(el => el && el.closest && el.closest(DARK_SELECTOR));
+            }
 
-        
-        const DARK_SELECTOR = ".shirt, .content, .contact";
-
-        if (!titleWrap || !menuWrap || !titleText || !menuText) return;
-
-        function overDark(targetEl) {
-            const r = targetEl.getBoundingClientRect();
-
-            
-            let x = r.left + (r.width ? r.width / 2 : 1);
-            let y = r.top  + (r.height ? r.height / 2 : 1);
-
-            
-            x = Math.max(0, Math.min(window.innerWidth  - 1, x));
-            y = Math.max(0, Math.min(window.innerHeight - 1, y));
-
-            
-            const prev = targetEl.style.pointerEvents;
-            targetEl.style.pointerEvents = "none";
-
-            const stack = document.elementsFromPoint(x, y);
-
-            targetEl.style.pointerEvents = prev;
-
-            return stack.some(el => el && el.closest && el.closest(DARK_SELECTOR));
-        }
-
-        let raf = 0;
-        function update() {
-            raf = 0;
-            titleWrap.classList.toggle("on-shirts", overDark(titleText));
-            menuWrap.classList.toggle("on-shirts", overDark(menuText));
-        }
-        function requestUpdate() {
-            if (!raf) raf = requestAnimationFrame(update);
-        }
-
-        window.addEventListener("scroll", requestUpdate, { passive: true });
-        window.addEventListener("resize", requestUpdate);
-        window.addEventListener("load", requestUpdate);
-
-        
-        const mo = new MutationObserver(requestUpdate);
-        mo.observe(titleWrap, { attributes: true, attributeFilter: ["class", "style"] });
-        mo.observe(menuWrap,  { attributes: true, attributeFilter: ["class", "style"] });
-
-        requestUpdate();
+            let raf = 0;
+            function update() {
+                raf = 0;
+                titleWrap.classList.toggle("on-shirts", overDark(titleText));
+                menuWrap.classList.toggle("on-shirts", overDark(menuText));
+            }
+            window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+            const mo = new MutationObserver(() => { if (!raf) raf = requestAnimationFrame(update); });
+            mo.observe(titleWrap, { attributes: true, attributeFilter: ["class"] });
+            mo.observe(menuWrap, { attributes: true, attributeFilter: ["class"] });
         })();
 
         let titleHasTyped = false;
-
         function startTypingTitle() {
-        if (titleHasTyped) return;
-        titleHasTyped = true;
-
-        const el = document.getElementById("titleText");
-        if (!el) return;
-
-        const full = (el.dataset.text || "N1GHTTERRORS");
-        el.textContent = "";
-
-        let i = 0;
-        const speed = 200; 
-
-        (function typeNext() {
-            if (i <= full.length) {
-            el.textContent = full.slice(0, i);
-            i++;
-            setTimeout(typeNext, speed);
-            } else {
-            el.classList.add("done");
-            }
-        })();
+            if (titleHasTyped) return; titleHasTyped = true;
+            const el = document.getElementById("titleText");
+            const full = (el.dataset.text || "N1GHTTERRORS");
+            let i = 0;
+            (function typeNext() {
+                if (i <= full.length) {
+                    el.textContent = full.slice(0, i++);
+                    setTimeout(typeNext, 200);
+                } else { el.classList.add("done"); }
+            })();
         }
         </script>
+
     </body>
 </html>

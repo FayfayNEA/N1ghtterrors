@@ -32,15 +32,15 @@ body::-webkit-scrollbar {
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
-
 .foregroundb{
+
   position: relative;
   z-index: 5;
 }
 
 .fpcontainer video {
     opacity: 100%;
-    transition: all 1s;
+    transition: opacity 1s ease;
     position: fixed;
     top: 0;
     left: 0;
@@ -50,9 +50,12 @@ body::-webkit-scrollbar {
     z-index: -1;
 }
 
+.fpcontainer video, .container video {
+    transition: opacity 1s ease; 
+}
 .container video {
     opacity: 100%;
-    transition: all 1s;
+    transition: opacity 1s ease;
     position: fixed;
     top: 0;
     left: 0;
@@ -94,7 +97,7 @@ a.button {
     top: -100%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: opacity 0.8s ease, top 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     opacity: 0%;
     list-style: none;
     z-index: 1;
@@ -262,8 +265,12 @@ button.shirt:first-of-type {
     background-color: black;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
     box-sizing: border-box;
+    visibility: hidden; 
+    opacity: 0;         
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    transition: max-height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
 
 }
 
@@ -964,7 +971,7 @@ span.flex {
     transform: translateX(-50%) translateY(-50%) rotate(-10deg);
     transform-origin: center;
     z-index: 150;
-    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 1s, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 1s, top 1s;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1126,7 +1133,8 @@ span.flex {
 @media (max-width: 450px){
 
     .content.active {
-        max-height: none; 
+        visibility: visible;
+        opacity: 1;
     }
 
     .texts {
@@ -1194,6 +1202,8 @@ span.flex {
         width: 100%;
         height: auto;
         display: block;
+        backface-visibility: hidden;
+        transform: translateZ(0);
     }
 
     .texts p.size {
@@ -1647,4 +1657,22 @@ span.flex {
 .thumb.active {
     opacity: 1;
     border: 1px solid white;
+}
+
+.video-container, 
+.video-containerfp, 
+.diagonal-menu, 
+.titleName, 
+.card,
+.foregroundb {
+    -webkit-transform: translateZ(0); 
+    transform: translateZ(0);
+    will-change: transform, opacity; 
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+
+body {
+    -webkit-overflow-scrolling: touch;
 }
