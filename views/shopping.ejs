@@ -31,7 +31,6 @@
             <div class="bar">
                     <div class="shopping">
                         <button class="cart"> 
-                            <!--<img src="/images/basket-cart-icon-27.png" alt="cart" width="80" height="80"/> --> 
                             <p class="word4cart">cart</p>
                             <div class="cartcounter" id="cartCounter">0</div>
                         </button>
@@ -69,7 +68,7 @@
                 </div>
             </div>
 
-            
+            <div class="scroll-hint">SCROLL SCROLL SCROLL</div>
 
             <div class="scroll-spacer"></div>
             <div class="titleName" id="titleElement">
@@ -77,11 +76,12 @@
             </div>
             
             <div class="diagonal-menu" id="diagonalMenu">
+                <button class="menu-close-x" aria-label="Close Menu">X</button>
+
                 <div class="menu-text">MENU</div>
                 <div class="video-menu">
                     <a href="contactMe.html">Returns, Contacts, Anixety</a>
                     <a href="whosthisfreak.html">A much due explanation</a>
-                    <a href="portfolio.html">My other work as a Shiet PDF</a>
                 </div> 
             </div>
             <div class = "foregroundb">
@@ -280,7 +280,6 @@
         </div>
 
         <script>
-        /* --- 1. CORE SHOPPING & INVENTORY (Your Original Logic) --- */
         function ready() {
             var removeCartItemButtons = document.getElementsByClassName('remove');
             for (var i = 0; i < removeCartItemButtons.length; i++) {
@@ -553,8 +552,35 @@
                 clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(() => { scrolling = false; }, 180);
             }, { passive: true });
-            menu.addEventListener("click", (e) => { if (!scrolling) menu.classList.toggle("centered"); }, true);
+            
+            // MENU CLICK LOGIC
+            menu.addEventListener("click", (e) => { 
+                // Don't toggle if scrolling or transitioning
+                if (scrolling) return;
+                
+                // Toggle the class. 
+                // Since the X button is INSIDE the menu, clicking it bubbles up to here
+                // and toggles 'centered' OFF (closing the menu).
+                // So no separate listener is needed for the X button, 
+                // assuming you want the menu background click to close it too.
+                menu.classList.toggle("centered"); 
+                
+            }, true);
         })();
+
+        /* --- NEW: SCROLL HINT FADE LOGIC --- */
+        window.addEventListener('scroll', () => {
+            const scrollHint = document.querySelector('.scroll-hint');
+            if (!scrollHint) return;
+            
+            // If scrolled down more than 100px, fade out hint
+            if (window.scrollY > 100) {
+                scrollHint.style.opacity = '0';
+            } else {
+                scrollHint.style.opacity = '1';
+            }
+        }, { passive: true });
+
 
         /* --- 6. COLOR DETECTION (Over-Dark Logic) --- */
         (() => {
