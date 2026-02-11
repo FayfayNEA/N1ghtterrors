@@ -1193,7 +1193,7 @@ span.flex {
 .scroll-hint, .click-hint-btn {
     position: fixed;
     bottom: 30px; 
-    right: 30px;  
+    left: 30px;  
     font-family: "chandler-42-regular", sans-serif;
     font-size: 14px; 
     font-weight: 600; /* Added weight */
@@ -1205,7 +1205,7 @@ span.flex {
 
 .scroll-hint {
     z-index: 100; 
-    color: white;
+    color: black;
     opacity: 1; /* Visible at start */
 }
 
@@ -1718,8 +1718,8 @@ body {
         
 .menu-close-x {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    left: 20px;
     background: transparent;
     border: none;
     color: white;

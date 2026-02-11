@@ -76,7 +76,7 @@
             </div>
             
             <div class="diagonal-menu" id="diagonalMenu">
-                <button class="menu-close-x" aria-label="Close Menu">X</button>
+                <button class="menu-close-x" id="menuCloseBtn" aria-label="Close Menu">X</button>
 
                 <div class="menu-text">MENU</div>
                 <div class="video-menu">
@@ -89,9 +89,9 @@
                     <img src="/images/buckingbronc.png" alt="shirt" width="30" height="30"/>
                     <p class="lyrics"> STARE INTO THE VOID UNTIL THE VOID STARES BACK. </p>
                 </button>
-                <div class="content">  
+                <div class="content">   
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/buckingbronc.png" onclick="myFunction(this)"/>
                                 <img src="/images/shirt1.png" onclick="myFunction(this)"/>
@@ -118,9 +118,9 @@
                     <img src="/images/sumbmial man.png" alt="shirt" width="30" height="40"/>
                     <p class="lyrics"> I'M SACRED OF WHAT HAPPENS WHEN IDEAS CONSUME YOU.</p>
                 </button>
-                <div class="content">  
+                <div class="content">   
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/sumbmial man.png" onclick="myFunction1(this)"/>
                                 <img src="/images/Black3.jpg" onclick="myFunction1(this)"/>
@@ -147,9 +147,9 @@
                     <img src="/images/virginmary.png" alt="shirt" width="30" height="40"/>
                     <p class="lyrics">  WHEN I'M AFRAID I LOOSE MY MIND.</p>
                 </button>
-                <div class="content">  
+                <div class="content">   
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/virginmary.png" onclick="myFunction2(this)"/>
                                 <img src="/images/nary1.jpg" onclick="myFunction2(this)"/>
@@ -180,7 +180,7 @@
                 </button>
                 <div class="content">
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/fatcat.png" onclick="myFunction3(this)" width="140" height="200"/>
                                 <img loading= "lazy" src="/images/inside3.jpg" onclick="myFunction3(this)"/>
@@ -209,9 +209,9 @@
                     <img src="/images/douvlepeople.png" alt="shirt" width="30" height="30"/>
                     <p class="lyrics"> YOU MAKE COMES CRAWLING BACK TO YOU. </p> 
                 </button>
-                <div class="content">  
+                <div class="content">   
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/douvlepeople.png" onclick="myFunction4(this)"/>
                                 <img src="/images/bbyt1.jpg" onclick="myFunction4(this)"/>
@@ -242,9 +242,9 @@
                     <img src="/images/buckingbronc.png" alt="shirt" width="30" height="30"/>
                     <p class="lyrics"> AND I HOPE THAT IT ALL SWALLOWS YOU. </p>
                 </button>
-                <div class="content">  
+                <div class="content">   
                     <span class="flex">
-                        <div class="holder">  
+                        <div class="holder">   
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/horserearing.png" onclick="myFunction5(this)" width="180" height="2"/>
                                 <img src="/images/graycolared1.jpg" onclick="myFunction5(this)"/>
@@ -268,12 +268,12 @@
                 </div>
 
                 <div class="contact">
-                    <p class="contacttitle"> Contact </p>  
+                    <p class="contacttitle"> Contact </p>   
                     <p>     email - failennaselta@gmail.com <br>
                             instagram - n1ghtterrors
                         <br> hit my line if you have any questions, concerns or fears. 
                     <br> </p>
-                    <p class="serect"> ill hold your hand and tell you what mom could never. (im proud of you.) </p>  
+                    <p class="serect"> ill hold your hand and tell you what mom could never. (im proud of you.) </p>   
                     <p class="RETURNSHIT">return tab in menu</p>   <br> 
                 </div>
             </div>
@@ -542,32 +542,6 @@
             if (title) scrollObserver.observe(title);
         });
 
-        // Menu Scroll-Safety Hack
-        (() => {
-            const menu = document.getElementById("diagonalMenu");
-            if (!menu) return;
-            let scrolling = false, scrollTimer = null;
-            window.addEventListener("scroll", () => {
-                scrolling = true;
-                clearTimeout(scrollTimer);
-                scrollTimer = setTimeout(() => { scrolling = false; }, 180);
-            }, { passive: true });
-            
-            // MENU CLICK LOGIC
-            menu.addEventListener("click", (e) => { 
-                // Don't toggle if scrolling or transitioning
-                if (scrolling) return;
-                
-                // Toggle the class. 
-                // Since the X button is INSIDE the menu, clicking it bubbles up to here
-                // and toggles 'centered' OFF (closing the menu).
-                // So no separate listener is needed for the X button, 
-                // assuming you want the menu background click to close it too.
-                menu.classList.toggle("centered"); 
-                
-            }, true);
-        })();
-
         /* --- NEW: SCROLL HINT FADE LOGIC --- */
         window.addEventListener('scroll', () => {
             const scrollHint = document.querySelector('.scroll-hint');
@@ -626,33 +600,49 @@
             })();
         }
         
+        // --- UPDATED MENU LOGIC WITH FIX FOR X BUTTON ---
         (() => {
             const menu = document.getElementById("diagonalMenu");
-                if (!menu) return;
+            const closeBtn = document.getElementById("menuCloseBtn");
+            if (!menu) return;
 
-                let isTransitioning = false; 
-                let scrolling = false;
-                let scrollTimer = null;
+            let isTransitioning = false; 
+            let scrolling = false;
+            let scrollTimer = null;
 
-                window.addEventListener("scroll", () => {
-                    scrolling = true;
-                    clearTimeout(scrollTimer);
-                    scrollTimer = setTimeout(() => { scrolling = false; }, 180);
-                }, { passive: true });
+            // Scroll Safety
+            window.addEventListener("scroll", () => {
+                scrolling = true;
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => { scrolling = false; }, 180);
+            }, { passive: true });
 
-                menu.addEventListener("click", (e) => {
-                    if (scrolling || isTransitioning) return;
-
+            // 1. SPECIFIC LISTENER FOR THE X BUTTON (Prioritized)
+            if(closeBtn) {
+                closeBtn.addEventListener("click", (e) => {
+                    // Stop this click from bubbling up to the menu container
+                    e.stopPropagation(); 
                     
-                    menu.classList.toggle("centered");
+                    // Force close immediately, ignoring transition locks
+                    menu.classList.remove("centered");
+                    isTransitioning = false; 
+                });
+            }
 
-                    
-                    isTransitioning = true;
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 2000); 
-                }, true);
-            })();
+            // 2. LISTENER FOR THE MENU STRIP (Opening)
+            menu.addEventListener("click", (e) => {
+                // If we are scrolling or currently animating, ignore the click
+                if (scrolling || isTransitioning) return;
+
+                menu.classList.toggle("centered");
+
+                // Set a lock so we don't accidentally double-toggle immediately
+                isTransitioning = true;
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 1000); // Reduced to 1 second for snappier feel
+            });
+        })();
         </script>
 
     </body>
