@@ -1670,6 +1670,7 @@ body {
   #fmyVideo {
     transform: scale(0.5); 
     transform-origin: center center;
+    object-fit: contain;
   }
 
   .click-words-hint {
