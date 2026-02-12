@@ -1028,7 +1028,7 @@ span.flex {
     position: absolute;
     left: clamp(50%, calc(50% + (58% - 50%) * (100vw - 320px) / (1707px - 320px)), 58%);
     text-align: center;
-    bottom: 65%;
+    bottom: 55%;
     transform: translateX(-50%) rotate(0deg); 
     font-size: clamp(5px, calc(15vw - 16.5px), 96px);
     margin: 0;
@@ -1048,7 +1048,7 @@ span.flex {
     flex-direction: column; 
     gap: 50px; 
     position: absolute;
-    top: 43%;
+    top: 50%;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -1668,7 +1668,7 @@ body {
   }
 
   #fmyVideo {
-    transform: scale(1.0); 
+    transform: scale(0.5); 
     transform-origin: center center;
   }
 
