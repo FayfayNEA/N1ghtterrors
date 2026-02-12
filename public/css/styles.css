@@ -1668,11 +1668,15 @@ body {
   }
 
   #fmyVideo {
-    transform: scale(0.8); 
     transform-origin: center center;
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
+    transform: none; 
+    
+    /* Set specific dimensions for mobile */
+    width: 90vw;   /* 90% of screen width */
+    height: 60vh;  /* 60% of screen height */
+    
+    /* "Cover" ensures it fills this new box size without black bars */
+    object-fit: cover;
   }
 
   .click-words-hint {
