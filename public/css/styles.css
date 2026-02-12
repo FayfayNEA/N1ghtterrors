@@ -1668,7 +1668,7 @@ body {
   }
 
   #fmyVideo {
-    transform: scale(0.5); 
+    transform: scale(0.8); 
     transform-origin: center center;
     object-fit: contain;
     width: 100%;
