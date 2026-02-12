@@ -955,7 +955,7 @@ span.flex {
     top: 50%;
     left: 50%;
     width: min(90vw, 1700px);
-    height: 150px;
+    height: 80px;
     transform: translateX(-50%) translateY(-50%) rotate(-10deg);
     transform-origin: center;
     z-index: 150;
@@ -1016,7 +1016,7 @@ span.flex {
     top: 40%;
     transform: translateX(-50%) translateY(-50%) rotate(0deg);
     width: min(90vw, 560px); 
-    height: min(80vh, 450px);
+    height: min(70vh, 400px);
     background: black;
     border: .25px solid white;
     transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1192,15 +1192,21 @@ span.flex {
 
 .scroll-hint, .click-hint-btn {
     position: fixed;
-    bottom: 30px; 
-    left: 30px;  
+    bottom: 30px;
+    right: 30px;  /* Force to the right */
+    left: auto;   /* Reset any centering code */
+    transform: none; /* Reset any centering transforms */
+    
     font-family: "chandler-42-regular", sans-serif;
     font-size: 14px; 
-    font-weight: 600; /* Added weight */
+    font-weight: 600; 
     letter-spacing: 3px;
     text-transform: uppercase;
-    transition: opacity 0.5s ease;
+    color: white; 
+    z-index: 100;
     pointer-events: none;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: difference; 
 }
 
 .scroll-hint {
@@ -1724,7 +1730,7 @@ body {
     border: none;
     color: white;
     font-family: "chandler-42-regular", sans-serif;
-    font-size: 30px; 
+    font-size: 20px; 
     font-weight: 600; /* Added weight */
     cursor: pointer;
     opacity: 0;

@@ -19,7 +19,7 @@
         }
 
         html, body {
-            background-color: #111; /* Added dark background to match white text */
+            background-color: #000; /* Added dark background to match white text */
             color: white;
             font-family: "chandler-42-regular", "Fragment Mono", monospace; /* Fallback added */
             font-size: 18px; /* Increased font size */
@@ -39,19 +39,22 @@
             padding: 40px 0;
         }
 
+        /* --- UPDATED BACK BUTTON STYLES --- */
         .back-button {
             color: white;
-            font-size: 18px;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            padding: 10px 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            padding: 10px 20px;
-            border: 1px solid transparent;
             transition: all 0.3s ease;
         }
 
         .back-button:hover {
-            border-color: white;
-            background: rgba(255,255,255,0.1);
+            background: white;
+            color: black;
+            cursor: pointer;
         }
 
         /* --- PROFILE SECTION (Image next to text) --- */
@@ -179,7 +182,7 @@
     <div class="container">
         
         <div class="header">
-            <a href="/shop" class="back-button">← Back to Shop</a>
+            <a href="/shop" class="back-button">← BACK TO SHOP</a>
         </div>
 
         <div class="profile-section">
