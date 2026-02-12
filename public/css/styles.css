@@ -1191,12 +1191,11 @@ span.flex {
 }
 
 .scroll-hint, .click-hint-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;  /* Force to the right */
-    left: auto;   /* Reset any centering code */
-    transform: none; /* Reset any centering transforms */
-    
+    position: fixed ;
+    bottom: 30px ;
+    left: 30px ;   /* Force Left */
+    right: auto ;  /* Reset Right */
+    transform: none ; /* Reset Centering */
     font-family: "chandler-42-regular", sans-serif;
     font-size: 14px; 
     font-weight: 600; 
@@ -1204,7 +1203,6 @@ span.flex {
     text-transform: uppercase;
     color: white; 
     z-index: 100;
-    pointer-events: none;
     transition: opacity 0.5s ease;
     mix-blend-mode: difference; 
 }
