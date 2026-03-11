@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "server.js": {
+      "excludeFiles": "public/images/**"
+    }
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "server.js" }
   ]
