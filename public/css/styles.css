@@ -985,6 +985,12 @@ span.flex {
     height: min(90vh, 1700px);
     width: clamp(15px, 4vw, 30px);
     height: 1700px;
+    pointer-events: none;
+}
+
+.diagonal-menu.typed .menu-text {
+    pointer-events: auto;
+    cursor: pointer;
 }
 
 .menu-text {
@@ -1020,7 +1026,7 @@ span.flex {
     background: black;
     border: .25px solid white;
     transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
+    pointer-events: auto;
 }
 
 .diagonal-menu.centered.centered .menu-text {
