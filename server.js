@@ -257,7 +257,90 @@ app.post("/checkout", async (req, res) => {
 });
 
 app.get("/success", (req, res) => {
-  res.send("<h1>🖤 COMPLETE 🖤</h1>");
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N1GHTTERRORS - Order Complete</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+  <link rel="preload" href="/fonts/Ogilvie.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
+  <style>
+    @font-face { font-family: 'Ogilvie'; src: url('/fonts/Ogilvie.woff2') format('woff2'); font-display: swap; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Georgia, 'Times New Roman', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-family: 'Ogilvie', Georgia, serif;
+      font-size: clamp(28px, 6vw, 52px);
+      letter-spacing: 8px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 400px;
+      margin-bottom: 40px;
+    }
+    .back-btn {
+      display: inline-block;
+      padding: 14px 40px;
+      border: 1px solid #fff;
+      color: #fff;
+      text-decoration: none;
+      font-family: "chandler-42-regular", sans-serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+      margin-bottom: 50px;
+    }
+    .back-btn:hover { background: #fff; color: #000; }
+    .contact {
+      color: #555;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .contact a { color: #888; text-decoration: underline; }
+    .contact a:hover { color: #fff; }
+    .whisper {
+      color: #333;
+      font-size: 10px;
+      font-style: italic;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>N1GHTTERRORS</h1>
+  <p class="subtitle">
+    order complete. your receipt is on its way.<br>
+    thank you for supporting something real.
+  </p>
+  <a href="/shop" class="back-btn">back to shop</a>
+  <div class="contact">
+    <a href="mailto:orders@n1ghtterrors.com">orders@n1ghtterrors.com</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://instagram.com/n1ghtterrors" target="_blank" rel="noopener">@n1ghtterrors</a>
+    <br>questions, concerns, or fears? hit my line.
+  </div>
+  <p class="whisper">ill hold your hand and tell you what mom could never. (im proud of you.)</p>
+</body>
+</html>`);
 });
 
 // ---- Vercel handler export (NO app.listen) ----
