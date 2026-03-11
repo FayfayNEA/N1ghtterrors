@@ -3,198 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>listen here ;)</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Kumbh+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>N1GHTTERRORS - The Story</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+    <link rel="preload" href="/fonts/Ogilvie.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
-    <link rel="icon" type="image/png" href="/images/buckingbronc.png">
-
     <style>
-        /* --- RESET & BASICS --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @font-face { font-family: 'Ogilvie'; src: url('/fonts/Ogilvie.woff2') format('woff2'); font-display: swap; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Georgia, 'Times New Roman', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 80px;
         }
-
-        html, body {
-            background-color: #000; /* Added dark background to match white text */
-            color: white;
-            font-family: "chandler-42-regular", "Fragment Mono", monospace; /* Fallback added */
-            font-size: 12px; /* Increased font size */
-            line-height: 1.6;
-        }
-
-        a { text-decoration: none; color: inherit; }
-
-        /* --- LAYOUT --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .header {
-            padding: 40px 0;
-        }
-
-        /* --- UPDATED BACK BUTTON STYLES --- */
-        .back-button {
-            color: white;
+        .back-btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border: 1px solid #fff;
+            color: #fff;
             text-decoration: none;
-            font-size: 16px;
-            border: none;
-            padding: 10px 20px;
+            font-family: "chandler-42-regular", sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 50px;
+            align-self: flex-start;
         }
-
-        .back-button:hover {
-            background: white;
-            color: black;
-            cursor: pointer;
+        .back-btn:hover { background: #fff; color: #000; }
+        .wrapper {
+            max-width: 700px;
+            width: 100%;
         }
-
-        /* --- PROFILE SECTION (Image next to text) --- */
+        h1 {
+            font-family: 'Ogilvie', Georgia, serif;
+            font-size: clamp(28px, 6vw, 52px);
+            letter-spacing: 8px;
+            font-weight: 400;
+            margin-bottom: 50px;
+            text-align: center;
+        }
         .profile-section {
             display: flex;
-            flex-direction: row; /* Side by side */
-            gap: 50px;
+            gap: 40px;
             margin-bottom: 60px;
             align-items: flex-start;
         }
-
         .profile-img {
-            width: 250px;       /* Fixed width */
-            height: 300px; 
-            margin-top: 2px;     /* Fixed height */
-            object-fit: cover;  /* Prevents squishing! Crops image to fill box */
-            flex-shrink: 0;     /* Prevents image from shrinking on mobile */
-           
+            width: 220px;
+            height: 280px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
-
         .profile-text {
-            max-width: 800px;
+            color: #999;
+            font-size: 14px;
+            line-height: 1.8;
         }
-
-        .profile-text p {
-            margin-bottom: 20px;
-        }
-
+        .profile-text p { margin-bottom: 18px; }
         .serect {
-            color: white;
-            font-family: "chandler-42-regular", "Fragment Mono", monospace; /* Fallback added */
-            font-size: 11px; /* Increased font size */
-            line-height: 1.6;
-            margin-top: 30px;
+            color: #555;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 24px;
         }
-
-        /* --- GALLERY --- */
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: #222;
+            margin: 0 auto 50px;
+        }
         .gallery-wrapper {
+            max-width: 700px;
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto 100px auto;
+            margin: 0 auto 60px;
         }
-
         .main-stage {
             position: relative;
             width: 100%;
-            height: 600px; /* Fixed height for consistency */
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            background: #000;
+            margin-bottom: 16px;
         }
-
         #mainImage {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain; /* Shows full image without cropping */
+            object-fit: contain;
         }
-
-        /* Navigation Arrows */
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            font-size: 2rem;
-            padding: 10px 15px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            border: 1px solid #333;
+            font-size: 1.4rem;
+            padding: 10px 14px;
             cursor: pointer;
-            z-index: 10;
-            transition: background 0.2s;
+            transition: background 0.2s, border-color 0.2s;
         }
-        .nav-arrow:hover { background: rgba(255,255,255,0.2); }
+        .nav-arrow:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
         .left { left: 0; }
         .right { right: 0; }
-
-        /* Thumbnails */
         .thumb-strip {
             display: flex;
-            gap: 10px;
-            overflow-x: auto; /* Allow scrolling sideways */
-            padding-bottom: 10px;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
             scroll-behavior: smooth;
-            /* Hide scrollbar for cleaner look */
-            scrollbar-width: thin; 
-            scrollbar-color: #555 #111;
+            scrollbar-width: thin;
+            scrollbar-color: #333 #000;
         }
-        
-        /* Webkit scrollbar styling */
-        .thumb-strip::-webkit-scrollbar { height: 8px; }
-        .thumb-strip::-webkit-scrollbar-track { background: #111; }
-        .thumb-strip::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
-
+        .thumb-strip::-webkit-scrollbar { height: 6px; }
+        .thumb-strip::-webkit-scrollbar-track { background: #000; }
+        .thumb-strip::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         .thumb {
-            height: 80px;
+            height: 70px;
             width: auto;
             cursor: pointer;
-            opacity: 0.5;
+            opacity: 0.4;
             transition: opacity 0.2s;
-            flex-shrink: 0; /* Ensures thumbs don't squish */
+            flex-shrink: 0;
         }
-
-        .thumb:hover { opacity: 0.8; }
-        .thumb.active { opacity: 1; border: 2px solid white; }
-
-        /* --- MOBILE RESPONSIVE --- */
+        .thumb:hover { opacity: 0.7; }
+        .thumb.active { opacity: 1; border: 1px solid #fff; }
+        .footer-contact {
+            text-align: center;
+            color: #555;
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+        .footer-contact a { color: #888; text-decoration: underline; }
+        .footer-contact a:hover { color: #fff; }
+        .whisper {
+            text-align: center;
+            color: #333;
+            font-size: 10px;
+            font-style: italic;
+            margin-top: 20px;
+        }
         @media (max-width: 768px) {
+            body { padding: 20px 16px 60px; }
             .profile-section {
-                flex-direction: column; /* Stack vertically on phones */
-                gap: 30px;
+                flex-direction: column;
+                gap: 24px;
             }
             .profile-img {
                 width: 100%;
                 height: auto;
-                max-height: 400px;
+                max-height: 350px;
             }
-            .main-stage {
-                height: 400px;
-            }
+            .main-stage { height: 350px; }
         }
     </style>
 </head>
 <body>
+    <a href="/shop" class="back-btn">← back to shop</a>
 
-    <div class="container">
-        
-        <div class="header">
-            <a href="/shop" class="back-button">← BACK TO SHOP</a>
-        </div>
+    <div class="wrapper">
+        <h1>N1GHTTERRORS</h1>
 
         <div class="profile-section">
-            <img class="profile-img" src="/images/000566410036.jpg" alt="Portrait">
-            
+            <img class="profile-img" src="/images/000566410036.jpg" alt="Portrait" loading="lazy">
             <div class="profile-text">
                 <p>
-                    Let’s take a throwback to 2020. Covid had just ravaged all of our souls and wildly, it was my first year of architecture school.
+                    Let's take a throwback to 2020. Covid had just ravaged all of our souls and wildly, it was my first year of architecture school.
                     One solemn morning, I heard of this radical professor. He taught a screenprinting class where he told legendary
-                    stories of kids who screenprinted with piss and cow’s blood. He blasted Bad Religion at the beginning of
+                    stories of kids who screenprinted with piss and cow's blood. He blasted Bad Religion at the beginning of
                     each class and valued unadulterated rebellion, in the name of art and change, of course.
                 </p>
                 <p>
@@ -208,18 +191,18 @@
                     They hope you enjoy the current line, Subliminal. Each graphic is layered with stories and fear.
                 </p>
                 <p>Enjoy.</p>
-                
                 <p class="serect">whats up, here are my old prints where i learned SO Much.</p>
             </div>
         </div>
 
+        <div class="divider"></div>
+
         <div class="gallery-wrapper">
             <div class="main-stage">
-                <button class="nav-arrow left" onclick="moveSlide(-1)">❮</button>
+                <button class="nav-arrow left" onclick="moveSlide(-1)">&#10094;</button>
                 <img id="mainImage" src="/images/P0-1.jpg" alt="Main View">
-                <button class="nav-arrow right" onclick="moveSlide(1)">❯</button>
+                <button class="nav-arrow right" onclick="moveSlide(1)">&#10095;</button>
             </div>
-
             <div class="thumb-strip">
                 <img class="thumb active" src="/images/P0-1.jpg" onclick="setSlide(0)">
                 <img class="thumb" src="/images/it3.png" onclick="setSlide(1)">
@@ -240,14 +223,21 @@
             </div>
         </div>
 
+        <div class="footer-contact">
+            <a href="mailto:orders@n1ghtterrors.com">orders@n1ghtterrors.com</a>
+            &nbsp;&middot;&nbsp;
+            <a href="https://instagram.com/n1ghtterrors" target="_blank" rel="noopener">@n1ghtterrors</a>
+            <br>questions, concerns, or fears? hit my line.
+        </div>
+        <p class="whisper">ill hold your hand and tell you what mom could never. (im proud of you.)</p>
     </div>
 
     <script>
         const images = [
-            "/images/P0-1.jpg", "/images/it3.png", "/images/it4.png", 
-            "/images/P0 (2).jpg", "/images/P0 (3).jpg", "/images/P0 (4).jpg", 
-            "/images/P0 (5).jpg", "/images/P0 (6).jpg", "/images/P0 (7).jpg", 
-            "/images/P0 (8).jpg", "/images/P0 (9).jpg", "/images/P0 (10).jpg", 
+            "/images/P0-1.jpg", "/images/it3.png", "/images/it4.png",
+            "/images/P0 (2).jpg", "/images/P0 (3).jpg", "/images/P0 (4).jpg",
+            "/images/P0 (5).jpg", "/images/P0 (6).jpg", "/images/P0 (7).jpg",
+            "/images/P0 (8).jpg", "/images/P0 (9).jpg", "/images/P0 (10).jpg",
             "/images/P0 (11).jpg", "/images/P0 (12).jpg", "/images/IT5.png",
             "/images/P0.jpg"
         ];
@@ -263,27 +253,17 @@
 
         function moveSlide(direction) {
             currentIndex += direction;
-            if (currentIndex < 0) {
-                currentIndex = images.length - 1;
-            } else if (currentIndex >= images.length) {
-                currentIndex = 0;
-            }
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            else if (currentIndex >= images.length) currentIndex = 0;
             updateGallery();
         }
 
         function updateGallery() {
             mainImg.src = images[currentIndex];
-            
-            thumbnails.forEach(thumb => thumb.classList.remove('active'));
-            if(thumbnails[currentIndex]) {
+            thumbnails.forEach(t => t.classList.remove('active'));
+            if (thumbnails[currentIndex]) {
                 thumbnails[currentIndex].classList.add('active');
-                
-                // Ensure the active thumbnail stays visible in the strip
-                thumbnails[currentIndex].scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest', 
-                    inline: 'center' 
-                });
+                thumbnails[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
         }
     </script>

@@ -1,157 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>im scared dadddyyyy</title>
-        <link href="/css/styles.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
-        <link rel="preload" href="/fonts/chandler-42-regular.woff2" as="font" type="font/woff2" crossorigin>
-        <link rel="icon" type="image/png" href="/images/buckingbronc.png">
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            
-            body {
-                background-color: black;
-                color: white;
-                font-family: "chandler-42-regular", sans-serif;
-                line-height: 1.6;
-                min-height: 100vh;
-                padding-bottom: 100px;
-            }
-
-            
-            .header {
-                padding: 40px;
-                display: flex;
-                justify-content: flex-start;
-            }
-            
-            .back-button {
-                color: white;
-                text-decoration: none;
-                font-size: 16px;
-                border: none;
-                padding: 10px 20px;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                transition: all 0.3s ease;
-            }
-            
-            .back-button:hover {
-                background: white;
-                color: black;
-                cursor: pointer;
-            }
-
-            
-            .content-wrapper {
-                max-width: 800px; 
-                margin: 0 auto;
-                padding: 0 40px;
-                text-align: center; 
-            }
-
-            section {
-                margin-bottom: 80px;
-            }
-
-            
-            .section-title {
-                font-size: 32px;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 5px;
-                margin-bottom: 30px;
-                display: block;
-            }
-
-            .body-text {
-                font-size: 15px;
-                font-weight: 400;
-                letter-spacing: 1px;
-            }
-
-            .body-text p {
-                margin-bottom: 25px;
-            }
-
-            
-            .contact-links {
-                list-style: none;
-                margin-top: 20px;
-            }
-
-            .contact-links li {
-                margin: 15px 0;
-            }
-
-            .contact-links a {
-                color: white;
-                text-decoration: none;
-                border-bottom: 1px solid transparent;
-                transition: border 0.3s;
-                font-size: 20px;
-            }
-
-            .contact-links a:hover {
-                border-bottom: 1px solid white;
-            }
-
-            .flavor-text {
-                margin-top: 40px;
-                font-style: italic;
-                opacity: 0.8;
-                font-size: 14px;
-            }
-
-            /* --- MOBILE ADJUSTMENTS --- */
-            @media (max-width: 600px) {
-                .content-wrapper { padding: 0 20px; }
-                .section-title { font-size: 24px; }
-                .body-text { font-size: 16px; }
-                .header { padding: 20px; }
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N1GHTTERRORS - Contact</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+    <link rel="preload" href="/fonts/Ogilvie.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
+    <style>
+        @font-face { font-family: 'Ogilvie'; src: url('/fonts/Ogilvie.woff2') format('woff2'); font-display: swap; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Georgia, 'Times New Roman', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 80px;
+        }
+        .wrapper {
+            max-width: 560px;
+            width: 100%;
+            text-align: center;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border: 1px solid #fff;
+            color: #fff;
+            text-decoration: none;
+            font-family: "chandler-42-regular", sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 50px;
+            align-self: flex-start;
+        }
+        .back-btn:hover { background: #fff; color: #000; }
+        h1 {
+            font-family: 'Ogilvie', Georgia, serif;
+            font-size: clamp(28px, 6vw, 52px);
+            letter-spacing: 8px;
+            font-weight: 400;
+            margin-bottom: 50px;
+        }
+        h2 {
+            font-family: 'Ogilvie', Georgia, serif;
+            font-size: clamp(18px, 4vw, 28px);
+            letter-spacing: 5px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+        section { margin-bottom: 60px; }
+        .body-text {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.8;
+            text-align: left;
+        }
+        .body-text p { margin-bottom: 20px; }
+        .body-text strong { color: #ccc; }
+        .contact-links {
+            list-style: none;
+            margin-top: 20px;
+        }
+        .contact-links li {
+            margin: 18px 0;
+            font-size: 15px;
+            color: #888;
+        }
+        .contact-links a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+            transition: border-color 0.3s;
+        }
+        .contact-links a:hover { border-bottom-color: #fff; }
+        .flavor-text {
+            margin-top: 30px;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: #222;
+            margin: 0 auto 60px;
+        }
+        .whisper {
+            color: #333;
+            font-size: 10px;
+            font-style: italic;
+            margin-top: 40px;
+        }
+        @media (max-width: 600px) {
+            body { padding: 20px 16px 60px; }
+            .body-text { font-size: 13px; }
+        }
+    </style>
+</head>
 <body>
+    <a href="/shop" class="back-btn">← back to shop</a>
 
-        <div class="header">
-            <a href="/shop" class="back-button">← BACK TO SHOP</a>
-        </div>
+    <div class="wrapper">
+        <h1>N1GHTTERRORS</h1>
 
-        <div class="content-wrapper">
-            
-            <section class="returns">
-                <h1 class="section-title">Returns</h1>
-                <div class="body-text">
-                    <p>This is a test. Stocks are extremely limited and sizing is fixed.</p>
-                    
-                    <p>If something is wrong due to shipping or damage, email me. 
-                    You cover return shipping, and once the shirt arrives, I will refund the full price of the garment ($30 shirt = $30 back). 
-                    Returns are accepted within 30 days.</p>
-                    
-                    <p><strong>sizing:</strong> I don't have other sizes, one day I will though. Let's chat if you need something else.</p>
-                
-                </div>
-            </section>
+        <section>
+            <h2>Returns</h2>
+            <div class="body-text">
+                <p>This is a test. Stocks are extremely limited and sizing is fixed.</p>
+                <p>If something is wrong due to shipping or damage, email me.
+                You cover return shipping, and once the shirt arrives, I will refund the full price of the garment ($30 shirt = $30 back).
+                Returns are accepted within 30 days.</p>
+                <p><strong>sizing:</strong> I don't have other sizes, one day I will though. Let's chat if you need something else.</p>
+            </div>
+        </section>
 
-            <section class="contact">
-                <h1 class="section-title">Contact</h1>
-                <ul class="contact-links">
-                    <li>Email: <a href="mailto:orders@n1ghtterrors.com">orders@n1ghtterrors.com</a></li>
-                    <li>Instagram: <a href="https://instagram.com/n1ghtterrors" target="_blank">@n1ghtterrors</a></li>
-                </ul>
-                
-                <p class="flavor-text">
-                    Hit my line if you have any questions, concerns, or fears.
-                </p>
-            </section>
+        <div class="divider"></div>
 
-        </div>
-    </body>
+        <section>
+            <h2>Contact</h2>
+            <ul class="contact-links">
+                <li>email — <a href="mailto:orders@n1ghtterrors.com">orders@n1ghtterrors.com</a></li>
+                <li>instagram — <a href="https://instagram.com/n1ghtterrors" target="_blank" rel="noopener">@n1ghtterrors</a></li>
+            </ul>
+            <p class="flavor-text">
+                hit my line if you have any questions, concerns, or fears.
+            </p>
+        </section>
+
+        <p class="whisper">ill hold your hand and tell you what mom could never. (im proud of you.)</p>
+    </div>
+</body>
 </html>
