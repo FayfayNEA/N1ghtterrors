@@ -378,9 +378,9 @@ span.title {
     color: white;
     width: 100%;
     margin: 10px 0; /* Add margin instead */
-    font-size: clamp(0.4rem, 1vw, 0.8rem); 
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 400; /* Increased from 200 - Critical Readability Fix */
+    font-size: clamp(0.4rem, 1vw, 0.8rem);
+    font-family: 'Fragment Mono', sans-serif;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -388,9 +388,9 @@ span.title {
     color: white;
     width: 100%;
     margin: 10px 0; /* Add margin instead */
-    font-size: clamp(0.6rem, 1vw, 1.0rem); 
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 400; /* Increased from 100 - Critical Readability Fix */
+    font-size: clamp(0.6rem, 1vw, 1.0rem);
+    font-family: 'Fragment Mono', sans-serif;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -901,21 +901,29 @@ button.remove:hover{
 }
 
 .contact {
-    color: white;
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 500; /* Increased from 300 */
-    font-style: normal;
+    color: #fff;
+    font-family: 'Fragment Mono', sans-serif;
+    font-size: 12px;
+    line-height: 1.8;
     text-align: center;
-    
+    padding: 40px 0 20px;
 }
 
-.contacttitle{
-    color: white;
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 600; /* Increased from 400 */
-    font-size: 20px;
-    font-style: normal;
-    text-align: center;
+.contact a {
+    color: #fff;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.contact a:hover {
+    color: #ccc;
+}
+
+.contact .whisper {
+    color: #555;
+    font-size: 10px;
+    font-style: italic;
+    margin-top: 20px;
 }
 
 span.flex {

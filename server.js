@@ -131,9 +131,8 @@ async function sendReceipt(session, orderItems) {
     session.amount_total ||
     enriched.reduce((s, i) => s + i.price_cents * i.quantity, 0);
 
-  // Switch from onboarding@resend.dev to your verified domain when ready
   await resend.emails.send({
-    from: "N1GHTTERRORS <orders@n1ightterrors.com>",
+    from: "N1GHTTERRORS <orders@n1ghtterrors.com>",
     to: email,
     subject: "your n1ghtterrors order receipt",
     html: buildReceiptHtml(name, enriched, totalCents),
