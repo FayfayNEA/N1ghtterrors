@@ -1,24 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "public/images/**", "use": "@vercel/static" },
-    {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": { "excludeFiles": "public/images/**" }
-    }
-  ],
-  "routes": [
-    { "src": "/webhook/stripe", "dest": "/server.js" },
-    { "src": "/check-inventory", "dest": "/server.js" },
-    { "src": "/checkout", "dest": "/server.js" },
-    { "src": "/shop", "dest": "/server.js" },
-    { "src": "/success", "dest": "/server.js" },
-
-    { "src": "/images/(.*)", "dest": "/public/images/$1" },
-
-    { "handle": "filesystem" },
-
-    { "src": "/(.*)", "dest": "/server.js" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "server.js" }
   ]
 }

@@ -379,7 +379,7 @@ span.title {
     width: 100%;
     margin: 10px 0; /* Add margin instead */
     font-size: clamp(0.4rem, 1vw, 0.8rem);
-    font-family: 'Fragment Mono', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-weight: 400;
     font-style: normal;
 }
@@ -389,7 +389,7 @@ span.title {
     width: 100%;
     margin: 10px 0; /* Add margin instead */
     font-size: clamp(0.6rem, 1vw, 1.0rem);
-    font-family: 'Fragment Mono', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-weight: 400;
     font-style: normal;
 }
@@ -401,8 +401,8 @@ span.title {
     padding-left: 0;
     padding-top: 1%;
     font-size: calc(0.6rem + 0.2vw);
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 600; /* Increased from 400 */
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 600;
     font-style: normal;
 
 }
@@ -419,8 +419,8 @@ span.title {
     margin-top: 1%;
     border: none;
     color: white;
-    font-family: "chandler-42-regular", sans-serif;
-    font-weight: 600; /* Increased from 400 */
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 600;
     font-style: normal;
     
 }
@@ -902,7 +902,7 @@ button.remove:hover{
 
 .contact {
     color: #fff;
-    font-family: 'Fragment Mono', sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 12px;
     line-height: 1.8;
     text-align: center;
