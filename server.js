@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 const stripeLib = require("stripe");
+const { Resend } = require("resend");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -14,14 +15,17 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 if (!STRIPE_SECRET_KEY) throw new Error("Missing STRIPE_SECRET_KEY");
 if (!STRIPE_WEBHOOK_SECRET) console.warn("Missing STRIPE_WEBHOOK_SECRET (webhook will fail)");
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) throw new Error("Missing Supabase env vars");
+if (!RESEND_API_KEY) console.warn("Missing RESEND_API_KEY (receipt emails will be skipped)");
 
 // ---- Clients ----
 const stripe = stripeLib(STRIPE_SECRET_KEY);
 const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 // ---- STATIC ----
 app.use("/css", express.static(path.join(__dirname, "public/css")));
@@ -32,6 +36,111 @@ app.use(express.static(path.join(__dirname, "public"))); // for favicon files, h
 // ---- Views ----
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// ---- Receipt Email ----
+function buildReceiptHtml(name, items, totalCents) {
+  const rows = items
+    .map(
+      (i) => `
+        <tr>
+          <td style="padding:12px 0;color:#ccc;font-size:14px;border-bottom:1px solid #1a1a1a;">
+            ${i.title}${i.quantity > 1 ? ` <span style="color:#555;">&times;${i.quantity}</span>` : ""}
+          </td>
+          <td align="right" style="padding:12px 0;color:#fff;font-size:14px;border-bottom:1px solid #1a1a1a;">
+            $${((i.price_cents * i.quantity) / 100).toFixed(2)}
+          </td>
+        </tr>`
+    )
+    .join("");
+
+  const total = (totalCents / 100).toFixed(2);
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#000;font-family:Georgia,'Times New Roman',serif;color:#fff;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#000;">
+<tr><td align="center" style="padding:40px 20px;">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+
+  <tr><td style="text-align:center;padding:36px 0;border-bottom:1px solid #222;">
+    <h1 style="font-size:26px;letter-spacing:8px;margin:0;color:#fff;font-weight:400;">N1GHTTERRORS</h1>
+    <p style="color:#555;font-size:11px;letter-spacing:3px;margin:10px 0 0;text-transform:uppercase;">Order Receipt</p>
+  </td></tr>
+
+  <tr><td style="padding:28px 0 20px;">
+    <p style="color:#999;font-size:14px;line-height:1.7;margin:0;">
+      hey ${name},<br>your order went through. here's what you got:
+    </p>
+  </td></tr>
+
+  <tr><td>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="padding:8px 0;color:#555;font-size:11px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #222;">Item</td>
+        <td align="right" style="padding:8px 0;color:#555;font-size:11px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #222;">Price</td>
+      </tr>
+      ${rows}
+      <tr>
+        <td style="padding:16px 0;color:#888;font-size:14px;letter-spacing:2px;text-transform:uppercase;">Total</td>
+        <td align="right" style="padding:16px 0;color:#fff;font-size:20px;font-weight:bold;">$${total}</td>
+      </tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:32px 0;text-align:center;border-top:1px solid #222;">
+    <p style="color:#555;font-size:12px;line-height:1.6;margin:0;">
+      questions, concerns, or fears?<br>
+      <a href="mailto:orders@n1ghtterrors.com" style="color:#888;text-decoration:underline;">orders@n1ghtterrors.com</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://instagram.com/n1ghtterrors" style="color:#888;text-decoration:underline;">@n1ghtterrors</a>
+    </p>
+    <p style="color:#333;font-size:10px;margin:18px 0 0;font-style:italic;">
+      ill hold your hand and tell you what mom could never. (im proud of you.)
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+async function sendReceipt(session, orderItems) {
+  if (!resend) return;
+  const email = session.customer_details?.email;
+  if (!email) return;
+
+  const name = session.customer_details?.name || "friend";
+
+  const enriched = [];
+  for (const item of orderItems) {
+    const { data } = await supabaseAdmin
+      .from("inventory")
+      .select("title, price_cents")
+      .eq("id", item.productId)
+      .single();
+
+    enriched.push({
+      title: data?.title || `Item #${item.productId}`,
+      price_cents: data?.price_cents || 0,
+      quantity: item.quantity,
+    });
+  }
+
+  const totalCents =
+    session.amount_total ||
+    enriched.reduce((s, i) => s + i.price_cents * i.quantity, 0);
+
+  // Switch from onboarding@resend.dev to your verified domain when ready
+  await resend.emails.send({
+    from: "N1GHTTERRORS <orders@n1ightterrors.com>",
+    to: email,
+    subject: "your n1ghtterrors order receipt",
+    html: buildReceiptHtml(name, enriched, totalCents),
+  });
+
+  console.log(`Receipt sent to ${email}`);
+}
 
 // IMPORTANT: Webhook must be BEFORE express.json()
 app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (req, res) => {
@@ -52,6 +161,10 @@ app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (re
           });
           if (error) throw error;
         }
+
+        sendReceipt(session, orderItems).catch((err) =>
+          console.error("Receipt email failed:", err.message)
+        );
       }
     }
 
