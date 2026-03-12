@@ -31,6 +31,16 @@ const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 app.use("/css", express.static(path.join(__dirname, "public/css")));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/fonts", express.static(path.join(__dirname, "public/fonts")));
+
+// Block direct access to specific html files while keeping them on disk
+app.use((req, res, next) => {
+  const blockedPaths = ["/index.html", "/whosthisfreak.html", "/whoisthisfreak.html"];
+  if (blockedPaths.includes(req.path.toLowerCase())) {
+    return res.status(404).send("Not found");
+  }
+  return next();
+});
+
 app.use(express.static(path.join(__dirname, "public"))); // for favicon files, html, pdf, etc.
 
 // ---- Views ----
@@ -179,8 +189,8 @@ app.use(express.json());
 
 // Routes
 app.get("/", (req, res) => {
-  // serve static index.html
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  // redirect homepage to main shop page
+  res.redirect(302, "/shop");
 });
 
 app.get("/shop", (req, res) => {
