@@ -683,7 +683,8 @@
                 content.style.maxHeight = "0px";
                 content.classList.remove("active");
             } else {
-                content.style.maxHeight = (content.scrollHeight + 100) + "px";
+                // Give a generous buffer so mobile layouts/images don't clip content
+                content.style.maxHeight = (content.scrollHeight + 600) + "px";
                 content.classList.add("active");
             }
         };
@@ -704,9 +705,9 @@
                 
                 setTimeout(() => {
                     const fullHeight = content.scrollHeight;
-                    content.style.maxHeight = (fullHeight + 120) + "px";
+                    content.style.maxHeight = (fullHeight + 600) + "px";
                     console.log(`Deployed shirt ${i} at height: ${fullHeight}`);
-                }, 200);
+                }, 300);
 
                 
                 button.onclick = function() {
@@ -715,7 +716,7 @@
                         this.classList.remove("active");
                         content.classList.remove("active");
                     } else {
-                        content.style.maxHeight = (content.scrollHeight + 120) + "px";
+                        content.style.maxHeight = (content.scrollHeight + 600) + "px";
                         this.classList.add("active");
                         content.classList.add("active");
                     }
@@ -726,7 +727,7 @@
             ready(); 
         });
 
-        function recalcOpenContent(content, extra = 60) {
+        function recalcOpenContent(content, extra = 600) {
             if (!content || content.style.maxHeight === "0px") return;
             content.style.maxHeight = (content.scrollHeight + extra) + "px";
         }
