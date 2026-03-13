@@ -9,6 +9,7 @@
         <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="preload" href="/fonts/Ogilvie.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/images/shirts-mobile.mp4" as="video" type="video/mp4" media="(max-width: 600px)">
         <link rel="stylesheet" href="https://use.typekit.net/art4fxf.css">
         <link rel="stylesheet" href="https://use.typekit.net/otx4ebk.css">
         <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap" rel="stylesheet">
@@ -482,14 +483,14 @@
                     <span class="flex">
                         <div class="holder">   
                             <div class="gallery">
-                                <img loading= "lazy" src="/images/douvlepeople.png" onclick="myFunction13(this)" width="180" height="2"/>
-                                <img loading="lazy" src="/images/graycolared1.jpg" onclick="myFunction13(this)"/>
-                                <img loading= "lazy" src="/images/graycollar3.jpg" onclick="myFunction13(this)"/>
-                                <img loading= "lazy" src="/images/graycollared2.jpg" onclick="myFunction13(this)"/>
+                                <img loading= "lazy" src="/images/blackgen1.jpg" onclick="myFunction13(this)" width="180" height="2"/>
+                                <img loading="lazy" src="/images/blackgenback.jpg" onclick="myFunction13(this)"/>
+                                <img loading= "lazy" src="/images/purplegen.jpg" onclick="myFunction13(this)"/>
+                                <img loading= "lazy" src="/images/whitegen.jpg" onclick="myFunction13(this)"/>
                             </div>
                         </div>
                         <div class="bigimage">
-                            <img id="imageBox13" loading="lazy" decoding="async" src="/images/graycolared1.jpg" />
+                            <img id="imageBox13" loading="lazy" decoding="async" src="/images/blackgenback.jpg" />
                         </div>
                         <div class="texts">
                             <img class="random" src="/images/douvlepeople.png" hidden/>
@@ -499,10 +500,10 @@
                             <select id="gen1sizes" name="gen1sizes" class="sizebutton">
                                 <option value="15">1GEN Purple S</option>
                                 <option value="16">1GEN White S</option>
-                                <option value="17">1GEN XS</option>
-                                <option value="18">1GEN S</option>
-                                <option value="19">1GEN M</option>
-                                <option value="20">1GEN Cropped L</option>
+                                <option value="17">1GEN BLACK XS</option>
+                                <option value="18">1GEN BLACKS</option>
+                                <option value="19">1GEN BLACKM</option>
+                                <option value="20">1GEN BLACK Cropped L</option>
                             </select>
                             <span class="thingPrice"> 5 </span>
                             <button class="checkout"> ADD TO BAG </button>
@@ -580,11 +581,19 @@
             var shopItem = button.parentElement;
             var title = shopItem.getElementsByClassName('title')[0].innerText.trim();
             var price = shopItem.getElementsByClassName('thingPrice')[0].innerText;
-            var imageSrc = shopItem.getElementsByClassName('random')[0].src;
             var sizeDropdown = shopItem.querySelector('select');
             var inventoryId = sizeDropdown ? Number(sizeDropdown.value) : Number(shopItem.dataset.inventoryId);
             var sizeLabel = sizeDropdown ? sizeDropdown.options[sizeDropdown.selectedIndex].text : '';
             var displayTitle = sizeLabel ? `${sizeLabel} - ${title}` : title;
+            // 1GEN product: show image for selected variant (Purple/White/Black) in cart and checkout
+            var imageSrc;
+            if (sizeDropdown && sizeDropdown.id === 'gen1sizes') {
+                var gen1Images = { 15: '/images/purplegen.jpg', 16: '/images/whitegen.jpg', 17: '/images/blackgenback.jpg', 18: '/images/blackgenback.jpg', 19: '/images/blackgenback.jpg', 20: '/images/blackgenback.jpg' };
+                var path = gen1Images[inventoryId] || '/images/blackgenback.jpg';
+                imageSrc = (window.location.origin || '') + path;
+            } else {
+                imageSrc = shopItem.getElementsByClassName('random')[0].src;
+            }
 
             fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
                 .then(r => r.json())
@@ -753,7 +762,7 @@
         openShopping.addEventListener('click', () => { document.body.classList.add('active'); });
         closeShopping.addEventListener('click', () => { document.body.classList.remove('active'); });
 
-        /* --- 4. VIDEO LOGIC --- */
+        /* --- 4. VIDEO LOGIC (autoload + autoplay on phones) --- */
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.querySelector(".video-container");
             const video = document.getElementById("myVideo");
@@ -761,9 +770,10 @@
             ["loadeddata", "playing"].forEach((evt) => {
                 video.addEventListener(evt, () => container.classList.add("video-ready"));
             });
-            const tryPlay = () => video.play().catch(() => {});
+            const tryPlay = () => { video.play().catch(() => {}); };
             tryPlay();
-            // Special fix for iPhone low power mode
+            // Start loading and playing as soon as possible on mobile (touch or click)
+            window.addEventListener("touchstart", tryPlay, { passive: true, once: true });
             window.addEventListener("click", tryPlay, { once: true });
         });
 

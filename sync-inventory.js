@@ -31,12 +31,12 @@ const CATALOG = [
   { id: 12, title: "Red Stripe XL Shirt",       image_url: img("/images/red1.jpg") },
   { id: 13, title: "Gray Western XL Shirt",     image_url: img("/images/gray1.jpg") },
   { id: 14, title: "2nd Gen Pig L Tee",         image_url: img("/images/gen1.jpg") },
-  { id: 15, title: "1GEN Purple",               image_url: img("/images/graycolared1.jpg") },
-  { id: 16, title: "1GEN White",                image_url: img("/images/graycolared1.jpg") },
-  { id: 17, title: "1GEN XS",                   image_url: img("/images/graycolared1.jpg") },
-  { id: 18, title: "1GEN S",                    image_url: img("/images/graycolared1.jpg") },
-  { id: 19, title: "1GEN M",                    image_url: img("/images/graycolared1.jpg") },
-  { id: 20, title: "1GEN Cropped L",            image_url: img("/images/graycolared1.jpg") },
+  { id: 15, title: "1GEN Purple",               image_url: img("/images/purplegen.jpg") },
+  { id: 16, title: "1GEN White",                image_url: img("/images/whitegen.jpg") },
+  { id: 17, title: "1GEN XS",                   image_url: img("/images/blackgenback.jpg") },
+  { id: 18, title: "1GEN S",                    image_url: img("/images/blackgenback.jpg") },
+  { id: 19, title: "1GEN M",                    image_url: img("/images/blackgenback.jpg") },
+  { id: 20, title: "1GEN Cropped L",            image_url: img("/images/blackgenback.jpg") },
 ];
 
 async function main() {
