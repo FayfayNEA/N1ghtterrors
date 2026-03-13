@@ -485,7 +485,7 @@
                             <div class="gallery">
                                 <img loading= "lazy" src="/images/blackgen1.jpg" onclick="myFunction13(this)" width="180" height="2"/>
                                 <img loading="lazy" src="/images/blackgenback.jpg" onclick="myFunction13(this)"/>
-                                <img loading= "lazy" src="/images/purplegen.jpg" onclick="myFunction13(this)"/>
+                                <img loading= "lazy" src="/images/purplegen1.jpg" onclick="myFunction13(this)"/>
                                 <img loading= "lazy" src="/images/whitegen.jpg" onclick="myFunction13(this)"/>
                             </div>
                         </div>
@@ -588,7 +588,7 @@
             // 1GEN product: show image for selected variant (Purple/White/Black) in cart and checkout
             var imageSrc;
             if (sizeDropdown && sizeDropdown.id === 'gen1sizes') {
-                var gen1Images = { 15: '/images/purplegen.jpg', 16: '/images/whitegen.jpg', 17: '/images/blackgenback.jpg', 18: '/images/blackgenback.jpg', 19: '/images/blackgenback.jpg', 20: '/images/blackgenback.jpg' };
+                var gen1Images = { 15: '/images/purplegen1.jpg', 16: '/images/whitegen.jpg', 17: '/images/blackgenback.jpg', 18: '/images/blackgenback.jpg', 19: '/images/blackgenback.jpg', 20: '/images/blackgenback.jpg' };
                 var path = gen1Images[inventoryId] || '/images/blackgenback.jpg';
                 imageSrc = (window.location.origin || '') + path;
             } else {
