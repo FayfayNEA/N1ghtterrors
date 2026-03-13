@@ -132,8 +132,8 @@ async function sendReceipt(session, orderItems) {
       .single();
 
     let imageUrl = data?.image_url || null;
-    if (imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/")) {
-      imageUrl = "https://www.n1ghtterrors.com" + imageUrl;
+    if (imageUrl && typeof imageUrl === "string" && !imageUrl.startsWith("http")) {
+      imageUrl = "https://www.n1ghtterrors.com" + (imageUrl.startsWith("/") ? "" : "/") + imageUrl;
     }
     enriched.push({
       title: data?.title || `Item #${item.productId}`,
