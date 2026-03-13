@@ -280,6 +280,7 @@ app.post("/checkout", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: lineItems,
+      allow_promotion_codes: true,
       success_url: `${req.protocol}://${req.get("host")}/success`,
       cancel_url: `${req.protocol}://${req.get("host")}/shop`,
       shipping_address_collection: { allowed_countries: ["US", "CA", "GB", "AU", "NZ", "MX", "JP", "KR", "BR", "NO", "SE", "DK", "FI", "IE", "ES", "IT", "NL", "BE", "CH", "PT", "PL", "DE", "FR"] },
