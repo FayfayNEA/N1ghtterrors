@@ -598,11 +598,30 @@
             fetch(`/check-inventory?id=${encodeURIComponent(inventoryId)}`)
                 .then(r => r.json())
                 .then(data => {
-                    if ((data.inStock || 0) > 0) {
-                        addItemToCart(displayTitle, price, imageSrc, 1, null, inventoryId);
-                        updateCartTotal();
-                        updateCartCounter();
-                    } else { alert('Sorry, this item is sold out.'); }
+                    var inStock = Number(data.inStock || 0);
+                    if (inStock <= 0) {
+                        alert('Sorry, this item is sold out.');
+                        return;
+                    }
+
+                    // Check how many of this inventoryId are already in the cart
+                    var existingQty = 0;
+                    document.querySelectorAll('.cartItems .cartrow').forEach(function (row) {
+                        if (Number(row.dataset.inventoryId) === inventoryId) {
+                            var val = parseInt(row.querySelector('.cartInput').value, 10) || 0;
+                            existingQty += val;
+                        }
+                    });
+
+                    if (existingQty >= inStock) {
+                        alert(`Sorry, only ${inStock} of this item are available.`);
+                        return;
+                    }
+
+                    // Safe to add one more without exceeding stock
+                    addItemToCart(displayTitle, price, imageSrc, 1, null, inventoryId);
+                    updateCartTotal();
+                    updateCartCounter();
                 });
         }
 

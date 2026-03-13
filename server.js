@@ -16,9 +16,6 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-// Stripe Shipping Rates (created in dashboard) for Checkout to pick based on address
-const STRIPE_US_SHIPPING_RATE_ID = process.env.STRIPE_US_SHIPPING_RATE_ID || "";
-const STRIPE_INTL_SHIPPING_RATE_ID = process.env.STRIPE_INTL_SHIPPING_RATE_ID || "";
 
 if (!STRIPE_SECRET_KEY) throw new Error("Missing STRIPE_SECRET_KEY");
 if (!STRIPE_WEBHOOK_SECRET) console.warn("Missing STRIPE_WEBHOOK_SECRET (webhook will fail)");
@@ -57,7 +54,8 @@ function buildReceiptHtml(name, items, totalCents) {
       (i) => `
         <tr>
           <td style="padding:12px 0;color:#ccc;font-size:14px;border-bottom:1px solid #1a1a1a;">
-            ${i.title}${i.quantity > 1 ? ` <span style="color:#555;">&times;${i.quantity}</span>` : ""}
+            ${i.image_url ? `<img src="${i.image_url}" alt="" width="64" height="64" style="object-fit:cover;border-radius:4px;margin-right:12px;vertical-align:middle;">` : ""}
+            <span style="vertical-align:middle;">${i.title}${i.quantity > 1 ? ` <span style="color:#555;">&times;${i.quantity}</span>` : ""}</span>
           </td>
           <td align="right" style="padding:12px 0;color:#fff;font-size:14px;border-bottom:1px solid #1a1a1a;">
             $${((i.price_cents * i.quantity) / 100).toFixed(2)}
@@ -129,7 +127,7 @@ async function sendReceipt(session, orderItems) {
   for (const item of orderItems) {
     const { data } = await supabaseAdmin
       .from("inventory")
-      .select("title, price_cents")
+      .select("title, price_cents, image_url")
       .eq("id", item.productId)
       .single();
 
@@ -137,6 +135,7 @@ async function sendReceipt(session, orderItems) {
       title: data?.title || `Item #${item.productId}`,
       price_cents: data?.price_cents || 0,
       quantity: item.quantity,
+      image_url: data?.image_url || null,
     });
   }
 
@@ -258,14 +257,24 @@ app.post("/checkout", async (req, res) => {
       orderItems.push({ productId: product.id, quantity: qty });
     }
 
-    // Shipping handled by Stripe via shipping rates; user country selection
-    // in Checkout controls which rate is applied.
-    const shippingOptions = [];
-    if (STRIPE_US_SHIPPING_RATE_ID) {
-      shippingOptions.push({ shipping_rate: STRIPE_US_SHIPPING_RATE_ID });
-    }
-    if (STRIPE_INTL_SHIPPING_RATE_ID) {
-      shippingOptions.push({ shipping_rate: STRIPE_INTL_SHIPPING_RATE_ID });
+    // Hybrid shipping: still collect address in Checkout, but charge a flat
+    // shipping line based on the inferred country from the request.
+    // - US (x-vercel-ip-country === "US") -> 600 cents ($6)
+    // - Everyone else -> 1500 cents ($15)
+    const countryHeader = (req.headers["x-vercel-ip-country"] || req.headers["cf-ipcountry"] || "US")
+      .toString()
+      .toUpperCase();
+    const isUS = countryHeader === "US";
+    const shippingAmount = isUS ? 600 : 1500;
+    if (shippingAmount > 0) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: { name: isUS ? "Shipping (US)" : "Shipping (International)" },
+          unit_amount: shippingAmount,
+        },
+        quantity: 1,
+      });
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -274,7 +283,6 @@ app.post("/checkout", async (req, res) => {
       success_url: `${req.protocol}://${req.get("host")}/success`,
       cancel_url: `${req.protocol}://${req.get("host")}/shop`,
       shipping_address_collection: { allowed_countries: ["US", "CA", "GB", "AU", "NZ", "MX", "JP", "KR", "BR", "NO", "SE", "DK", "FI", "IE", "ES", "IT", "NL", "BE", "CH", "PT", "PL", "DE", "FR"] },
-      shipping_options: shippingOptions.length ? shippingOptions : undefined,
       metadata: { orderData: JSON.stringify(orderItems) },
     });
 
