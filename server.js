@@ -131,11 +131,15 @@ async function sendReceipt(session, orderItems) {
       .eq("id", item.productId)
       .single();
 
+    let imageUrl = data?.image_url || null;
+    if (imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/")) {
+      imageUrl = "https://www.n1ghtterrors.com" + imageUrl;
+    }
     enriched.push({
       title: data?.title || `Item #${item.productId}`,
       price_cents: data?.price_cents || 0,
       quantity: item.quantity,
-      image_url: data?.image_url || null,
+      image_url: imageUrl,
     });
   }
 
