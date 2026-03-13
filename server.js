@@ -16,6 +16,9 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// Flat shipping (in cents) per order: 600 for US, 1500 for everyone else by default.
+const SHIPPING_US_CENTS = Number(process.env.SHIPPING_US_CENTS || 600);
+const SHIPPING_INTL_CENTS = Number(process.env.SHIPPING_INTL_CENTS || 1500);
 
 if (!STRIPE_SECRET_KEY) throw new Error("Missing STRIPE_SECRET_KEY");
 if (!STRIPE_WEBHOOK_SECRET) console.warn("Missing STRIPE_WEBHOOK_SECRET (webhook will fail)");
@@ -248,6 +251,23 @@ app.post("/checkout", async (req, res) => {
       });
 
       orderItems.push({ productId: product.id, quantity: qty });
+    }
+
+    // Flat shipping per order:
+    // - US (based on Vercel's x-vercel-ip-country header) -> 600 cents ($6)
+    // - Everyone else -> 1500 cents ($15)
+    const countryHeader = (req.headers["x-vercel-ip-country"] || req.headers["cf-ipcountry"] || "US").toString().toUpperCase();
+    const isUS = countryHeader === "US";
+    const shippingAmount = isUS ? SHIPPING_US_CENTS : SHIPPING_INTL_CENTS;
+    if (shippingAmount > 0) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: { name: isUS ? "Shipping (US)" : "Shipping (International)" },
+          unit_amount: shippingAmount,
+        },
+        quantity: 1,
+      });
     }
 
     const session = await stripe.checkout.sessions.create({
