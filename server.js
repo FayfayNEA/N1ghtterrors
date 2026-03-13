@@ -16,9 +16,9 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-// Flat shipping (in cents) per order: 600 for US, 1500 for everyone else by default.
-const SHIPPING_US_CENTS = Number(process.env.SHIPPING_US_CENTS || 600);
-const SHIPPING_INTL_CENTS = Number(process.env.SHIPPING_INTL_CENTS || 1500);
+// Stripe Shipping Rates (created in dashboard) for Checkout to pick based on address
+const STRIPE_US_SHIPPING_RATE_ID = process.env.STRIPE_US_SHIPPING_RATE_ID || "";
+const STRIPE_INTL_SHIPPING_RATE_ID = process.env.STRIPE_INTL_SHIPPING_RATE_ID || "";
 
 if (!STRIPE_SECRET_KEY) throw new Error("Missing STRIPE_SECRET_KEY");
 if (!STRIPE_WEBHOOK_SECRET) console.warn("Missing STRIPE_WEBHOOK_SECRET (webhook will fail)");
@@ -166,20 +166,25 @@ app.post("/webhook/stripe", express.raw({ type: "application/json" }), async (re
       if (session.payment_status === "paid" && session.metadata?.orderData) {
         const orderItems = JSON.parse(session.metadata.orderData);
 
-        for (const item of orderItems) {
-          const { error } = await supabaseAdmin.rpc("decrement_inventory", {
-            p_id: item.productId,
-            p_qty: item.quantity,
-          });
-          if (error) throw error;
-        }
+        try {
+          // 1. Decrement inventory for each item (awaited)
+          for (const item of orderItems) {
+            const { error } = await supabaseAdmin.rpc("decrement_inventory", {
+              p_id: item.productId,
+              p_qty: item.quantity,
+            });
+            if (error) throw error;
+          }
 
-        sendReceipt(session, orderItems).catch((err) =>
-          console.error("Receipt email failed:", err.message)
-        );
+          // 2. Send receipt email (awaited so Vercel keeps the function alive)
+          await sendReceipt(session, orderItems);
+        } catch (processingErr) {
+          console.error("Stripe webhook processing error:", processingErr.message || processingErr);
+        }
       }
     }
 
+    // Always acknowledge the webhook at the very end so background work can complete first
     return res.json({ received: true });
   } catch (err) {
     console.error("Webhook error:", err.message);
@@ -253,21 +258,14 @@ app.post("/checkout", async (req, res) => {
       orderItems.push({ productId: product.id, quantity: qty });
     }
 
-    // Flat shipping per order:
-    // - US (based on Vercel's x-vercel-ip-country header) -> 600 cents ($6)
-    // - Everyone else -> 1500 cents ($15)
-    const countryHeader = (req.headers["x-vercel-ip-country"] || req.headers["cf-ipcountry"] || "US").toString().toUpperCase();
-    const isUS = countryHeader === "US";
-    const shippingAmount = isUS ? SHIPPING_US_CENTS : SHIPPING_INTL_CENTS;
-    if (shippingAmount > 0) {
-      lineItems.push({
-        price_data: {
-          currency: "usd",
-          product_data: { name: isUS ? "Shipping (US)" : "Shipping (International)" },
-          unit_amount: shippingAmount,
-        },
-        quantity: 1,
-      });
+    // Shipping handled by Stripe via shipping rates; user country selection
+    // in Checkout controls which rate is applied.
+    const shippingOptions = [];
+    if (STRIPE_US_SHIPPING_RATE_ID) {
+      shippingOptions.push({ shipping_rate: STRIPE_US_SHIPPING_RATE_ID });
+    }
+    if (STRIPE_INTL_SHIPPING_RATE_ID) {
+      shippingOptions.push({ shipping_rate: STRIPE_INTL_SHIPPING_RATE_ID });
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -275,6 +273,8 @@ app.post("/checkout", async (req, res) => {
       line_items: lineItems,
       success_url: `${req.protocol}://${req.get("host")}/success`,
       cancel_url: `${req.protocol}://${req.get("host")}/shop`,
+      shipping_address_collection: { allowed_countries: ["US", "CA", "GB", "AU", "NZ", "MX", "JP", "KR", "BR", "NO", "SE", "DK", "FI", "IE", "ES", "IT", "NL", "BE", "CH", "PT", "PL", "DE", "FR"] },
+      shipping_options: shippingOptions.length ? shippingOptions : undefined,
       metadata: { orderData: JSON.stringify(orderItems) },
     });
 
