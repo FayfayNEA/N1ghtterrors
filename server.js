@@ -254,7 +254,7 @@ app.post("/checkout", async (req, res) => {
       mode: "payment",
       line_items: lineItems,
       success_url: `${req.protocol}://${req.get("host")}/success`,
-      cancel_url: `${req.protocol}://${req.get("host")}/`,
+      cancel_url: `${req.protocol}://${req.get("host")}/shop`,
       metadata: { orderData: JSON.stringify(orderItems) },
     });
 
