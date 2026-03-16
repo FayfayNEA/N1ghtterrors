@@ -396,6 +396,10 @@ span.title {
     line-height: 1.8;
 }
 
+.texts.soldout-text {
+    opacity: 0.35;
+}
+
 
 .thingPrice {
     color: white;

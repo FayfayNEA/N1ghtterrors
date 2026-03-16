@@ -696,8 +696,10 @@
                     const res = await fetch(`/check-inventory?id=${encodeURIComponent(id)}`);
                     const data = await res.json();
                     const inStock = Number(data.inStock || 0);
-                    addBtn.disabled = inStock <= 0;
-                    soldOutEl.hidden = inStock > 0;
+                    const isSoldOut = inStock <= 0;
+                    addBtn.disabled = isSoldOut;
+                    soldOutEl.hidden = !isSoldOut;
+                    block.classList.toggle("soldout-text", isSoldOut);
                     recalcOpenContent(block.closest(".content"));
                 }
                 checkStock();
