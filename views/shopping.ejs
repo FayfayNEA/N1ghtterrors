@@ -686,11 +686,51 @@
 
         function initOutOfStockButtons() {
             const productTextBlocks = document.querySelectorAll(".content .texts");
+            const productPairs = []; // { button, content, block, index }
+
             productTextBlocks.forEach(block => {
                 const addBtn = block.querySelector("button.checkout");
                 const soldOutEl = block.querySelector(".soldout");
-                const sizeSelect = block.querySelector("select");
                 if (!addBtn || !soldOutEl) return;
+
+                const contentEl = block.closest(".content");
+                const buttonEl = contentEl ? contentEl.previousElementSibling : null;
+                if (!contentEl || !buttonEl || !buttonEl.classList.contains("shirt")) return;
+
+                productPairs.push({ button: buttonEl, content: contentEl, block, index: productPairs.length });
+            });
+
+            if (productPairs.length === 0) return;
+
+            let reorderTimer = null;
+            const scheduleReorder = () => {
+                if (reorderTimer) clearTimeout(reorderTimer);
+                reorderTimer = setTimeout(() => {
+                    reorderTimer = null;
+                    const parent = productPairs[0].button.parentElement;
+                    if (!parent) return;
+
+                    // In-stock first, sold-out last. Keep original order within each group.
+                    const sorted = [...productPairs].sort((a, b) => {
+                        const aSold = a.block.classList.contains("soldout-text");
+                        const bSold = b.block.classList.contains("soldout-text");
+                        if (aSold === bSold) return a.index - b.index;
+                        return aSold ? 1 : -1;
+                    });
+
+                    sorted.forEach(pair => {
+                        parent.appendChild(pair.button);
+                        parent.appendChild(pair.content);
+                    });
+                }, 50);
+            };
+
+            const checkStockForPair = async (pair) => {
+                const block = pair.block;
+                const addBtn = block.querySelector("button.checkout");
+                const soldOutEl = block.querySelector(".soldout");
+                const sizeSelect = block.querySelector("select");
+
                 async function checkStock() {
                     const id = sizeSelect ? Number(sizeSelect.value) : Number(block.dataset.inventoryId);
                     const res = await fetch(`/check-inventory?id=${encodeURIComponent(id)}`);
@@ -701,9 +741,16 @@
                     soldOutEl.hidden = !isSoldOut;
                     block.classList.toggle("soldout-text", isSoldOut);
                     recalcOpenContent(block.closest(".content"));
+                    scheduleReorder();
                 }
-                checkStock();
+
+                await checkStock();
                 if (sizeSelect) sizeSelect.addEventListener("change", checkStock);
+            };
+
+            // Initial check + reorder after all checks have completed.
+            Promise.all(productPairs.map(checkStockForPair)).then(() => {
+                scheduleReorder();
             });
         }
 
