@@ -1462,6 +1462,15 @@ body:has(.intro.active) .click-hint-btn {
     backface-visibility: hidden;
 }
 
+/* On some mobile browsers, applying transforms to `position: fixed` can cause scroll jitter.
+   Keep the background video truly fixed by removing transforms from the video containers. */
+.video-container,
+.video-containerfp {
+    -webkit-transform: none !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
 
 body {
     -webkit-overflow-scrolling: touch;
