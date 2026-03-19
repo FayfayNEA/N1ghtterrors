@@ -709,6 +709,7 @@
                     reorderTimer = null;
                     const parent = productPairs[0].button.parentElement;
                     if (!parent) return;
+                    const contactEl = parent.querySelector(".contact");
 
                     // In-stock first, sold-out last. Keep original order within each group.
                     const sorted = [...productPairs].sort((a, b) => {
@@ -719,8 +720,13 @@
                     });
 
                     sorted.forEach(pair => {
-                        parent.appendChild(pair.button);
-                        parent.appendChild(pair.content);
+                        if (contactEl) {
+                            parent.insertBefore(pair.button, contactEl);
+                            parent.insertBefore(pair.content, contactEl);
+                        } else {
+                            parent.appendChild(pair.button);
+                            parent.appendChild(pair.content);
+                        }
                     });
                 }, 50);
             };
