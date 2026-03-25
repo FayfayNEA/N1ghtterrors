@@ -102,8 +102,6 @@ function buildReceiptHtml(name, items, totalCents) {
     <p style="color:#555;font-size:12px;line-height:1.6;margin:0;">
       questions, concerns, or fears?<br>
       <a href="mailto:orders@n1ghtterrors.com" style="color:#888;text-decoration:underline;">orders@n1ghtterrors.com</a>
-      &nbsp;&middot;&nbsp;
-      <a href="https://instagram.com/n1ghtterrors" style="color:#888;text-decoration:underline;">@n1ghtterrors</a>
     </p>
     <p style="color:#333;font-size:10px;margin:18px 0 0;font-style:italic;">
       ill hold your hand and tell you what mom could never. (im proud of you.)
@@ -376,8 +374,6 @@ app.get("/success", (req, res) => {
   <a href="/shop" class="back-btn">back to shop</a>
   <div class="contact">
     <a href="mailto:orders@n1ghtterrors.com">orders@n1ghtterrors.com</a>
-    &nbsp;&middot;&nbsp;
-    <a href="https://instagram.com/n1ghtterrors" target="_blank" rel="noopener">@n1ghtterrors</a>
     <br>questions, concerns, or fears? hit my line.
   </div>
   <p class="whisper">ill hold your hand and tell you what mom could never. (im proud of you.)</p>
